@@ -1,0 +1,27 @@
+{
+  "sourceRoot": "packages/linx-next-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "packages/linx-next-e2e/cypress.json",
+        "devServerTarget": "linx-next:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "linx-next:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/linx-next-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["linx-next"]
+}

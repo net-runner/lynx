@@ -1,4 +1,7 @@
 {
   "version": 2,
-  "projects": {}
+  "projects": {
+    "linx-next": "packages/linx-next",
+    "linx-next-e2e": "packages/linx-next-e2e"
+  }
 }
