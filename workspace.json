@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "api": "packages/api",
     "linx-next": "packages/linx-next",
     "linx-next-e2e": "packages/linx-next-e2e"
   }

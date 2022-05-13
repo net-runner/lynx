@@ -12,6 +12,7 @@
     "@nrwl/js": "14.1.4",
     "@nrwl/linter": "14.1.4",
     "@nrwl/next": "^14.1.4",
+    "@nrwl/node": "^14.1.5",
     "@nrwl/nx-cloud": "latest",
     "@nrwl/react": "14.1.4",
     "@nrwl/web": "14.1.4",
