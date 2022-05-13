@@ -1,6 +1,6 @@
 
 
-# Linx
+# Lynx - Links and bookmarks manager
 
 This project was generated using [Nx](https://nx.dev).
 
