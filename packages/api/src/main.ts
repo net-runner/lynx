@@ -1,23 +1,37 @@
 import { Server } from 'hyper-express';
 import 'dotenv';
-import authRouter from './app/routes/auth';
-const webserver = new Server();
+import {
+  authRouter,
+  linkGroupRouter,
+  linkRouter,
+  tagRouter,
+  userGroupRouter,
+  userRouter,
+} from './app/routes';
+const app = new Server();
 
 // Create GET route to serve 'Hello World'
-webserver.get('/hello', (request, response) => {
+app.get('/hello', (request, response) => {
   response.send('Hello World');
 });
 
-// Activate webserver by calling .listen(port, callback);
+// Handle other routes
+app.get('*', (req, res) => {
+  res.send('Unsuported route');
+});
 
 const port = process.env.PORT || 80;
 
-webserver.use('/auth', authRouter);
-webserver.use('/users', authRouter);
-webserver.use('/links', authRouter);
-webserver.use('/linkgroups', authRouter);
+app.use('/auth', authRouter);
+app.use('/users', userRouter);
+app.use('/usersgroup', userGroupRouter);
+app.use('/link', linkRouter);
+app.use('/linkgroup', linkGroupRouter);
+app.use('/tag', tagRouter);
 
-webserver
+app
   .listen(port as number)
-  .then((socket) => console.log('Webserver started on port: ' + port))
-  .catch((error) => console.log('Failed to start webserver on port: ' + port));
+  .then((socket) => console.log('[START] LYNX API: ' + port))
+  .catch((error) =>
+    console.log('[ERROR] FAILED TO START API: ' + port + ' Error ' + error)
+  );
