@@ -31,7 +31,7 @@ app.use('/tag', tagRouter);
 
 app
   .listen(port as number)
-  .then((socket) => console.log('[START] LYNX API: ' + port))
+  .then(() => console.log('[START] LYNX ONLINE API: ' + port))
   .catch((error) =>
     console.log('[ERROR] FAILED TO START API: ' + port + ' Error ' + error)
   );
