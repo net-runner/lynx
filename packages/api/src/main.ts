@@ -3,7 +3,7 @@ import 'dotenv';
 const webserver = new Server();
 
 // Create GET route to serve 'Hello World'
-webserver.get('/', (request, response) => {
+webserver.get('/hello', (request, response) => {
   response.send('Hello World');
 });
 

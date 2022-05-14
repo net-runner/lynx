@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "start": "node dist/packages/api/main",
-    "heroku:push": "git subtree push --prefix dist/packages/api heroku master"
+    "heroku:push": "git push heroku master",
+    "heroku-postbuild": "nx build api --prod"
   },
   "private": true,
   "engines": {
