@@ -1,5 +1,6 @@
 import { Router } from 'hyper-express';
 import githubRouter from './github';
+import googleRouter from './google';
 
 const authRouter = new Router();
 
@@ -12,9 +13,6 @@ authRouter.post('/signup', async (req, res) => {
 });
 
 authRouter.use('/signin/github', githubRouter);
-
-authRouter.get('/signin/google', async (req, res) => {
-  res.redirect('https://github.com/login/oauth/authorize');
-});
+authRouter.use('/signin/google', googleRouter);
 
 export default authRouter;

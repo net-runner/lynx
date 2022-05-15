@@ -4,8 +4,7 @@ import { Router } from 'hyper-express';
 import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
 
 const githubRouter = new Router();
-const { GITHUB_APP_SECRET, GITHUB_APP_ID, FRONTEND_URL, DISCORD_WEBHOOK_URL } =
-  process.env;
+const { GITHUB_APP_SECRET, GITHUB_APP_ID, FRONTEND_URL } = process.env;
 
 //Dictionary for request state checks
 const stateDict = {};
@@ -60,6 +59,16 @@ githubRouter.get('/callback', async (req, res) => {
         .then((_res) => _res.data)
         .then((git_user_data) => {
           console.log(git_user_data);
+          const webhBody = {
+            embeds: [
+              {
+                title: `Github new user: ${git_user_data.login}`,
+                description: `user authorization accepted`,
+              },
+            ],
+          };
+          pushDiscordWebhook(webhBody, res).then(() => res.end());
+          //TODO add user to database, forward token data to frontend
         });
     })
     .catch((err) => res.status(500).json({ err: err.message }));
@@ -73,6 +82,7 @@ githubRouter.post('/hook', async (req, res) => {
   const { action } = body;
   if (action === 'revoked') {
     //TODO implement app revoke
+    //TODO Drop user data?
     //https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#github_app_authorization=
 
     const webhBody = {

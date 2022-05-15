@@ -23,6 +23,9 @@ class Database {
     client.release();
     return data;
   }
+  async addNewOrCheckGithubUser(username: string) {
+    const client = await this.pool.connect();
+  }
 }
 
 module.exports = new Database();

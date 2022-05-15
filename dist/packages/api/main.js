@@ -36,7 +36,7 @@ const axios_1 = __webpack_require__("axios");
 const hyper_express_1 = __webpack_require__("hyper-express");
 const pushDiscordWebhook_1 = __webpack_require__("./packages/api/src/app/helpers/pushDiscordWebhook.ts");
 const githubRouter = new hyper_express_1.Router();
-const { GITHUB_APP_SECRET, GITHUB_APP_ID, FRONTEND_URL, DISCORD_WEBHOOK_URL } = process.env;
+const { GITHUB_APP_SECRET, GITHUB_APP_ID, FRONTEND_URL } = process.env;
 //Dictionary for request state checks
 const stateDict = {};
 //Route for Oauth login with github
@@ -82,6 +82,16 @@ githubRouter.get('/callback', (req, res) => tslib_1.__awaiter(void 0, void 0, vo
             .then((_res) => _res.data)
             .then((git_user_data) => {
             console.log(git_user_data);
+            const webhBody = {
+                embeds: [
+                    {
+                        title: `Github new user: ${git_user_data.login}`,
+                        description: `user authorization accepted`,
+                    },
+                ],
+            };
+            (0, pushDiscordWebhook_1.default)(webhBody, res).then(() => res.end());
+            //TODO add user to database, forward token data to frontend
         });
     })
         .catch((err) => res.status(500).json({ err: err.message }));
@@ -93,6 +103,7 @@ githubRouter.post('/hook', (req, res) => tslib_1.__awaiter(void 0, void 0, void 
     const { action } = body;
     if (action === 'revoked') {
         //TODO implement app revoke
+        //TODO Drop user data?
         //https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#github_app_authorization=
         const webhBody = {
             embeds: [
@@ -113,6 +124,22 @@ exports["default"] = githubRouter;
 
 /***/ }),
 
+/***/ "./packages/api/src/app/routes/auth/google.ts":
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const tslib_1 = __webpack_require__("tslib");
+const hyper_express_1 = __webpack_require__("hyper-express");
+const googleRouter = new hyper_express_1.Router();
+googleRouter.get('/', (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    res.redirect('https://github.com/login/oauth/authorize');
+}));
+exports["default"] = googleRouter;
+
+
+/***/ }),
+
 /***/ "./packages/api/src/app/routes/auth/index.ts":
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
@@ -121,6 +148,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const tslib_1 = __webpack_require__("tslib");
 const hyper_express_1 = __webpack_require__("hyper-express");
 const github_1 = __webpack_require__("./packages/api/src/app/routes/auth/github.ts");
+const google_1 = __webpack_require__("./packages/api/src/app/routes/auth/google.ts");
 const authRouter = new hyper_express_1.Router();
 authRouter.post('/signin', (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     res.send('amogus');
@@ -129,9 +157,7 @@ authRouter.post('/signup', (req, res) => tslib_1.__awaiter(void 0, void 0, void 
     res.send('mogus');
 }));
 authRouter.use('/signin/github', github_1.default);
-authRouter.get('/signin/google', (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    res.redirect('https://github.com/login/oauth/authorize');
-}));
+authRouter.use('/signin/google', google_1.default);
 exports["default"] = authRouter;
 
 
@@ -295,10 +321,6 @@ const app = new hyper_express_1.Server();
 app.get('/hello', (request, response) => {
     response.send('Hello World');
 });
-// Handle other routes
-app.get('*', (req, res) => {
-    res.send('Unsuported route');
-});
 const port = process.env.PORT || 80;
 app.use('/auth', routes_1.authRouter);
 app.use('/users', routes_1.userRouter);
@@ -310,6 +332,10 @@ app
     .listen(port)
     .then(() => console.log('[START] LYNX API ONLINE: ' + port))
     .catch((error) => console.log('[ERROR] FAILED TO START API: ' + port + ' Error ' + error));
+//Handle all of unsuported routes
+app.get('/*', (req, res) => {
+    res.status(404).send('Unsuported route');
+});
 
 })();
 

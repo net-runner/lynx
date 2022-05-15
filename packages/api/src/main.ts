@@ -15,11 +15,6 @@ app.get('/hello', (request, response) => {
   response.send('Hello World');
 });
 
-// Handle other routes
-app.get('*', (req, res) => {
-  res.send('Unsuported route');
-});
-
 const port = process.env.PORT || 80;
 
 app.use('/auth', authRouter);
@@ -35,3 +30,8 @@ app
   .catch((error) =>
     console.log('[ERROR] FAILED TO START API: ' + port + ' Error ' + error)
   );
+
+//Handle all of unsuported routes
+app.get('/*', (req, res) => {
+  res.status(404).send('Unsuported route');
+});
