@@ -1,15 +1,14 @@
-import axios from 'axios';
 import { Router } from 'hyper-express';
 import githubRouter from './github';
 
 const authRouter = new Router();
 
 authRouter.post('/signin', async (req, res) => {
-  return 'amogus';
+  res.send('amogus');
 });
 
-authRouter.post('/singup', async (req, res) => {
-  return 'amogus';
+authRouter.post('/signup', async (req, res) => {
+  res.send('mogus');
 });
 
 authRouter.use('/signin/github', githubRouter);

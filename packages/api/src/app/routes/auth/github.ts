@@ -1,4 +1,4 @@
-import { uuid } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import { Router } from 'hyper-express';
 
@@ -14,7 +14,7 @@ githubRouter.get('/', async (req, res) => {
   if (!GITHUB_APP_ID) {
     res.send('GitHub app id not specified');
   }
-  const state = uuid.v4();
+  const state = uuidv4();
   stateDict[state] = new Date().getMilliseconds() + 5 * 60 * 1000;
   res.redirect(
     `https://github.com/login/oauth/authorize?client_id=${GITHUB_APP_ID}&state=${state}`
@@ -24,7 +24,7 @@ githubRouter.get('/', async (req, res) => {
 //Route for Oauth login callback
 //handle cancelation + token requesting
 githubRouter.get('/callback', async (req, res) => {
-  const { error, code, state } = req.body;
+  const { error, code, state } = req.query;
 
   //If github user cancels auth
   if (error) {
@@ -33,11 +33,11 @@ githubRouter.get('/callback', async (req, res) => {
   }
 
   //Check state parameter in case of cross-forgery attempt
-  if (!stateDict[state]) {
+  if (!stateDict[state as string]) {
     res.send('State diff, posible cross-forgery attempt');
   }
   //Delete unused memory
-  delete stateDict[state];
+  delete stateDict[state as string];
 
   const body = {
     client_id: GITHUB_APP_ID,
@@ -68,20 +68,24 @@ githubRouter.get('/callback', async (req, res) => {
       })
       .catch((err) => res.status(500).json({ err: err.message }));
   }
+  res.redirect(FRONTEND_URL);
 });
 
 //Handle Github hook events.
 githubRouter.post('/hook', async (req, res) => {
-  const { action } = req.body;
-  console.log(action);
+  const body = await req.json();
+  console.log(body);
+  const { action } = body;
   if (action === 'revoked') {
     //TODO implement app revoke
     //https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#github_app_authorization=
   }
   axios
-    .post(DISCORD_WEBHOOK_URL + '/github', req.body, {
+    .post(DISCORD_WEBHOOK_URL + '/github', JSON.stringify(body), {
       headers: { accept: 'application/json' },
     })
+    .then((r) => console.log(r))
+    .then(() => res.end())
     .catch((err) => res.status(500).json({ err: err.message }));
 });
 
