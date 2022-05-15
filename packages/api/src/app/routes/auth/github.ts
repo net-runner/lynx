@@ -47,32 +47,23 @@ githubRouter.get('/callback', async (req, res) => {
   };
   const opts = { headers: { accept: 'application/json' } };
 
-  let oauthToken = null;
   await axios
-    .post(
-      'https://github.com/login/oauth/access_token',
-      JSON.stringify(body),
-      opts
-    )
+    .post('https://github.com/login/oauth/access_token', body, opts)
     .then((_res) => _res.data)
     .then((git_res) => {
       //https://docs.github.com/en/developers/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps
-      oauthToken = git_res.access_token;
+      const oauthToken = git_res.access_token;
+      axios
+        .get('https://api.github.com/user', {
+          headers: { Authorization: `token ${oauthToken}` },
+        })
+        .then((_res) => _res.data)
+        .then((git_user_data) => {
+          console.log(git_user_data);
+        });
     })
     .catch((err) => res.status(500).json({ err: err.message }));
-  console.log(oauthToken);
-  if (oauthToken !== null) {
-    //Get user data from github api
-    await axios
-      .get('https://api.github.com/user', {
-        headers: { Authorization: `token ${oauthToken}` },
-      })
-      .then((_res) => _res.data)
-      .then((git_user_data) => {
-        console.log(git_user_data);
-      })
-      .catch((err) => res.status(500).json({ err: err.message }));
-  }
+
   res.redirect(FRONTEND_URL);
 });
 
@@ -93,10 +84,10 @@ githubRouter.post('/hook', async (req, res) => {
       ],
     };
 
-    pushDiscordWebhook(webhBody, res);
+    await pushDiscordWebhook(webhBody, res).then(() => res.end());
+  } else {
+    res.end();
   }
-
-  res.end();
 });
 
 export default githubRouter;

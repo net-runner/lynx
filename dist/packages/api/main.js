@@ -12,6 +12,7 @@ const axios_1 = __webpack_require__("axios");
 const { DISCORD_WEBHOOK_URL } = process.env;
 function default_1(webhook_body, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        console.log('[WEBHOOK] New push on discord');
         yield axios_1.default
             .post(DISCORD_WEBHOOK_URL, JSON.stringify(webhook_body), {
             headers: { 'Content-Type': 'application/json' },
@@ -68,28 +69,22 @@ githubRouter.get('/callback', (req, res) => tslib_1.__awaiter(void 0, void 0, vo
         code,
     };
     const opts = { headers: { accept: 'application/json' } };
-    let oauthToken = null;
     yield axios_1.default
-        .post('https://github.com/login/oauth/access_token', JSON.stringify(body), opts)
+        .post('https://github.com/login/oauth/access_token', body, opts)
         .then((_res) => _res.data)
         .then((git_res) => {
         //https://docs.github.com/en/developers/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps
-        oauthToken = git_res.access_token;
-    })
-        .catch((err) => res.status(500).json({ err: err.message }));
-    console.log(oauthToken);
-    if (oauthToken !== null) {
-        //Get user data from github api
-        yield axios_1.default
+        const oauthToken = git_res.access_token;
+        axios_1.default
             .get('https://api.github.com/user', {
             headers: { Authorization: `token ${oauthToken}` },
         })
             .then((_res) => _res.data)
             .then((git_user_data) => {
             console.log(git_user_data);
-        })
-            .catch((err) => res.status(500).json({ err: err.message }));
-    }
+        });
+    })
+        .catch((err) => res.status(500).json({ err: err.message }));
     res.redirect(FRONTEND_URL);
 }));
 //Handle Github hook events.
@@ -107,9 +102,11 @@ githubRouter.post('/hook', (req, res) => tslib_1.__awaiter(void 0, void 0, void 
                 },
             ],
         };
-        (0, pushDiscordWebhook_1.default)(webhBody, res);
+        yield (0, pushDiscordWebhook_1.default)(webhBody, res).then(() => res.end());
     }
-    res.end();
+    else {
+        res.end();
+    }
 }));
 exports["default"] = githubRouter;
 
@@ -311,7 +308,7 @@ app.use('/linkgroup', routes_1.linkGroupRouter);
 app.use('/tag', routes_1.tagRouter);
 app
     .listen(port)
-    .then(() => console.log('[START] LYNX ONLINE API: ' + port))
+    .then(() => console.log('[START] LYNX API ONLINE: ' + port))
     .catch((error) => console.log('[ERROR] FAILED TO START API: ' + port + ' Error ' + error));
 
 })();
