@@ -46,7 +46,7 @@
   "start_url": "/",
   "scope": "/",
   "prefer_related_applications": false,
-  "theme_color": "00A8AD",
-  "background_color": "00A8AD",
+  "theme_color": "#00A8AD",
+  "background_color": "#00A8AD",
   "display": "standalone"
 }
