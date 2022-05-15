@@ -2,6 +2,28 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./packages/api/src/app/helpers/pushDiscordWebhook.ts":
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const tslib_1 = __webpack_require__("tslib");
+const axios_1 = __webpack_require__("axios");
+const { DISCORD_WEBHOOK_URL } = process.env;
+function default_1(webhook_body, res) {
+    return tslib_1.__awaiter(this, void 0, void 0, function* () {
+        yield axios_1.default
+            .post(DISCORD_WEBHOOK_URL, JSON.stringify(webhook_body), {
+            headers: { 'Content-Type': 'application/json' },
+        })
+            .catch((err) => res.status(500).json({ err: err.message }));
+    });
+}
+exports["default"] = default_1;
+
+
+/***/ }),
+
 /***/ "./packages/api/src/app/routes/auth/github.ts":
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
@@ -11,6 +33,7 @@ const tslib_1 = __webpack_require__("tslib");
 const uuid_1 = __webpack_require__("uuid");
 const axios_1 = __webpack_require__("axios");
 const hyper_express_1 = __webpack_require__("hyper-express");
+const pushDiscordWebhook_1 = __webpack_require__("./packages/api/src/app/helpers/pushDiscordWebhook.ts");
 const githubRouter = new hyper_express_1.Router();
 const { GITHUB_APP_SECRET, GITHUB_APP_ID, FRONTEND_URL, DISCORD_WEBHOOK_URL } = process.env;
 //Dictionary for request state checks
@@ -46,17 +69,18 @@ githubRouter.get('/callback', (req, res) => tslib_1.__awaiter(void 0, void 0, vo
     };
     const opts = { headers: { accept: 'application/json' } };
     let oauthToken = null;
-    axios_1.default
-        .post('https://github.com/login/oauth/access_token', body, opts)
+    yield axios_1.default
+        .post('https://github.com/login/oauth/access_token', JSON.stringify(body), opts)
         .then((_res) => _res.data)
         .then((git_res) => {
         //https://docs.github.com/en/developers/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps
         oauthToken = git_res.access_token;
     })
         .catch((err) => res.status(500).json({ err: err.message }));
+    console.log(oauthToken);
     if (oauthToken !== null) {
         //Get user data from github api
-        axios_1.default
+        yield axios_1.default
             .get('https://api.github.com/user', {
             headers: { Authorization: `token ${oauthToken}` },
         })
@@ -71,19 +95,21 @@ githubRouter.get('/callback', (req, res) => tslib_1.__awaiter(void 0, void 0, vo
 //Handle Github hook events.
 githubRouter.post('/hook', (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const body = yield req.json();
-    console.log(body);
     const { action } = body;
     if (action === 'revoked') {
         //TODO implement app revoke
         //https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#github_app_authorization=
+        const webhBody = {
+            embeds: [
+                {
+                    title: `Github revoked for ${body.login}`,
+                    description: `user authorization removed`,
+                },
+            ],
+        };
+        (0, pushDiscordWebhook_1.default)(webhBody, res);
     }
-    axios_1.default
-        .post(DISCORD_WEBHOOK_URL + '/github', JSON.stringify(body), {
-        headers: { accept: 'application/json' },
-    })
-        .then((r) => console.log(r))
-        .then(() => res.end())
-        .catch((err) => res.status(500).json({ err: err.message }));
+    res.end();
 }));
 exports["default"] = githubRouter;
 
