@@ -1,12 +1,12 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import './styles.css';
+import '../styles/app.scss';
 
 function CustomApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Welcome to linx-next!</title>
+        <title>Lynx - link sharing platform</title>
       </Head>
       <main className="app">
         <Component {...pageProps} />

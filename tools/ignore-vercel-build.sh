@@ -1,4 +1,4 @@
-
+#!/bin/bash
 # Name of the app to check. Change this to your application name!
 APP=linx-next
 
@@ -14,6 +14,7 @@ npm install -D typescript@$TS_VERSION --prefer-offline
 npx nx affected:apps --plain --base HEAD~1 --head HEAD | grep $APP -q
 
 # Store result of the previous command (grep)
+
 IS_AFFECTED=$?
 
 if [ $IS_AFFECTED -eq 1 ]; then
