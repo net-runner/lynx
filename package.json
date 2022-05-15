@@ -7,9 +7,6 @@
     "heroku:push": "git subtree push --prefix dist/packages/api heroku master"
   },
   "private": true,
-  "engines": {
-    "node": "14.x"
-  },
   "devDependencies": {
     "@nrwl/cli": "14.1.4",
     "@nrwl/cypress": "14.1.4",
@@ -22,7 +19,7 @@
     "@nrwl/nx-cloud": "latest",
     "@nrwl/react": "14.1.4",
     "@nrwl/web": "14.1.4",
-    "@nrwl/workspace": "14.1.4",
+    "@nrwl/workspace": "^14.1.4",
     "@testing-library/react": "13.1.1",
     "@types/jest": "27.4.1",
     "@types/node": "16.11.7",
