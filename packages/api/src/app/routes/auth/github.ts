@@ -33,9 +33,9 @@ githubRouter.get('/callback', async (req, res) => {
   }
 
   //Check state parameter in case of cross-forgery attempt
-  // if (!stateDict[state as string]) {
-  //   res.send('State diff, possible cross-forgery attempt');
-  // }
+  if (!stateDict[state as string]) {
+    res.send('State diff, possible cross-forgery attempt');
+  }
   //Delete unused memory
   delete stateDict[state as string];
 
@@ -89,7 +89,7 @@ githubRouter.post('/hook', async (req, res) => {
     const webhBody = {
       embeds: [
         {
-          title: `Github revoked for ${body.login}`,
+          title: `Github revoked for ${body.sender.login}`,
           description: `user authorization removed`,
         },
       ],
