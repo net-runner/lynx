@@ -69,33 +69,39 @@ githubRouter.get('/callback', (req, res) => tslib_1.__awaiter(void 0, void 0, vo
         code,
     };
     const opts = { headers: { accept: 'application/json' } };
-    yield axios_1.default
-        .post('https://github.com/login/oauth/access_token', body, opts)
-        .then((_res) => _res.data)
-        .then((git_res) => {
-        //https://docs.github.com/en/developers/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps
-        const oauthToken = git_res.access_token;
-        axios_1.default
-            .get('https://api.github.com/user', {
-            headers: { Authorization: `token ${oauthToken}` },
-        })
+    let userData;
+    try {
+        yield axios_1.default
+            .post('https://github.com/login/oauth/access_token', body, opts)
             .then((_res) => _res.data)
-            .then((git_user_data) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-            console.log(git_user_data);
-            const webhBody = {
-                embeds: [
-                    {
-                        title: `Github new user: ${git_user_data.login}`,
-                        description: `user authorization accepted`,
-                    },
-                ],
-            };
-            yield (0, pushDiscordWebhook_1.default)(webhBody, res).then(() => res.status(200).end());
-            //TODO add user to database, forward token data to frontend
-        }));
-    })
-        .catch((err) => res.status(500).json({ err: err.message }));
-    res.redirect(FRONTEND_URL);
+            .then((git_res) => {
+            //https://docs.github.com/en/developers/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps
+            const oauthToken = git_res.access_token;
+            axios_1.default
+                .get('https://api.github.com/user', {
+                headers: { Authorization: `token ${oauthToken}` },
+            })
+                .then((_res) => _res.data)
+                .then((git_user_data) => {
+                userData = git_user_data;
+                //TODO add user to database, forward token data to frontend
+            });
+        })
+            .catch((err) => res.status(500).json({ err: err.message }));
+        const webhBody = {
+            embeds: [
+                {
+                    title: `Github new user: ${userData.login}`,
+                    description: `user authorization accepted`,
+                },
+            ],
+        };
+        yield (0, pushDiscordWebhook_1.default)(webhBody, res);
+        res.redirect(FRONTEND_URL);
+    }
+    catch (e) {
+        res.json({ err: e.message });
+    }
 }));
 //Handle Github hook events.
 githubRouter.post('/hook', (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
