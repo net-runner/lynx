@@ -48,14 +48,18 @@ githubRouter.get('/callback', async (req, res) => {
 
   try {
     //https://docs.github.com/en/developers/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps
-    const accessToken = await axios
+    const tokenBundle = await axios
       .post('https://github.com/login/oauth/access_token', body, opts)
-      .then((_res) => _res.data.access_token);
+      .then((_res) => _res.data);
     const githubUser = await axios
       .get('https://api.github.com/user', {
-        headers: { Authorization: `token ${accessToken}` },
+        headers: { Authorization: `token ${tokenBundle.access_token}` },
       })
       .then((_res) => _res.data);
+
+    console.log(tokenBundle);
+    console.log(githubRouter);
+
     const webhBody = {
       embeds: [
         {
@@ -64,7 +68,7 @@ githubRouter.get('/callback', async (req, res) => {
         },
       ],
     };
-    await pushDiscordWebhook(webhBody, res);
+    pushDiscordWebhook(webhBody, res);
     //TODO add user to database, forward token data to frontend
     res.redirect(FRONTEND_URL);
   } catch (e) {
@@ -90,7 +94,7 @@ githubRouter.post('/hook', async (req, res) => {
       ],
     };
 
-    await pushDiscordWebhook(webhBody, res);
+    pushDiscordWebhook(webhBody, res);
   }
   res.end();
 });
