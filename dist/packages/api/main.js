@@ -59,7 +59,7 @@ githubRouter.get('/callback', (req, res) => tslib_1.__awaiter(void 0, void 0, vo
     }
     //Check state parameter in case of cross-forgery attempt
     if (!stateDict[state]) {
-        res.send('State diff, posible cross-forgery attempt');
+        res.send('State diff, possible cross-forgery attempt');
     }
     //Delete unused memory
     delete stateDict[state];
