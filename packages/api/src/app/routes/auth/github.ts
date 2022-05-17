@@ -94,10 +94,9 @@ githubRouter.post('/hook', async (req, res) => {
       ],
     };
 
-    await pushDiscordWebhook(webhBody, res).then(() => res.end());
-  } else {
-    res.end();
+    await pushDiscordWebhook(webhBody, res);
   }
+  res.end();
 });
 
 export default githubRouter;

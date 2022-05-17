@@ -113,11 +113,9 @@ githubRouter.post('/hook', (req, res) => tslib_1.__awaiter(void 0, void 0, void 
                 },
             ],
         };
-        yield (0, pushDiscordWebhook_1.default)(webhBody, res).then(() => res.end());
+        yield (0, pushDiscordWebhook_1.default)(webhBody, res);
     }
-    else {
-        res.end();
-    }
+    res.end();
 }));
 exports["default"] = githubRouter;
 
