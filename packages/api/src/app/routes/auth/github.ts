@@ -33,9 +33,9 @@ githubRouter.get('/callback', async (req, res) => {
   }
 
   //Check state parameter in case of cross-forgery attempt
-  if (!stateDict[state as string]) {
-    res.send('State diff, possible cross-forgery attempt');
-  }
+  // if (!stateDict[state as string]) {
+  //   res.send('State diff, possible cross-forgery attempt');
+  // }
   //Delete unused memory
   delete stateDict[state as string];
 
@@ -47,35 +47,25 @@ githubRouter.get('/callback', async (req, res) => {
   const opts = { headers: { accept: 'application/json' } };
 
   try {
-    await axios
+    //https://docs.github.com/en/developers/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps
+    const accessToken = await axios
       .post('https://github.com/login/oauth/access_token', body, opts)
-      .then((_res) => _res.data)
-      .then((git_res) => {
-        //https://docs.github.com/en/developers/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps
-        const oauthToken = git_res.access_token;
-        axios
-          .get('https://api.github.com/user', {
-            headers: { Authorization: `token ${oauthToken}` },
-          })
-          .then((_res) => _res.data)
-          .then(async (git_user_data) => {
-            console.log(git_user_data);
-
-            const webhBody = {
-              embeds: [
-                {
-                  title: `Github new user: ${git_user_data.login}`,
-                  description: `user authorization accepted`,
-                },
-              ],
-            };
-            await pushDiscordWebhook(webhBody, res);
-
-            //TODO add user to database, forward token data to frontend
-          });
+      .then((_res) => _res.data.access_token);
+    const githubUser = await axios
+      .get('https://api.github.com/user', {
+        headers: { Authorization: `token ${accessToken}` },
       })
-      .catch((err) => res.status(500).json({ err: err.message }));
-
+      .then((_res) => _res.data);
+    const webhBody = {
+      embeds: [
+        {
+          title: `Github new user: ${githubUser.login}`,
+          description: `user authorization accepted`,
+        },
+      ],
+    };
+    await pushDiscordWebhook(webhBody, res);
+    //TODO add user to database, forward token data to frontend
     res.redirect(FRONTEND_URL);
   } catch (e) {
     res.json({ err: e.message });
