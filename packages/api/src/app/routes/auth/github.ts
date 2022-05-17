@@ -58,7 +58,7 @@ githubRouter.get('/callback', async (req, res) => {
       .then((_res) => _res.data);
 
     console.log(tokenBundle);
-    console.log(githubRouter);
+    console.log(githubUser);
 
     const webhBody = {
       embeds: [
@@ -79,6 +79,7 @@ githubRouter.get('/callback', async (req, res) => {
 //Handle Github hook events.
 githubRouter.post('/hook', async (req, res) => {
   const body = await req.json();
+  console.log(body);
   const { action } = body;
   if (action === 'revoked') {
     //TODO implement app revoke
