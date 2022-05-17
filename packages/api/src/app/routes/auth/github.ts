@@ -57,7 +57,7 @@ githubRouter.get('/callback', async (req, res) => {
           headers: { Authorization: `token ${oauthToken}` },
         })
         .then((_res) => _res.data)
-        .then((git_user_data) => {
+        .then(async (git_user_data) => {
           console.log(git_user_data);
           const webhBody = {
             embeds: [
@@ -67,7 +67,9 @@ githubRouter.get('/callback', async (req, res) => {
               },
             ],
           };
-          pushDiscordWebhook(webhBody, res).then(() => res.end());
+          await pushDiscordWebhook(webhBody, res).then(() =>
+            res.status(200).end()
+          );
           //TODO add user to database, forward token data to frontend
         });
     })
@@ -94,9 +96,10 @@ githubRouter.post('/hook', async (req, res) => {
       ],
     };
 
-    await pushDiscordWebhook(webhBody, res);
+    await pushDiscordWebhook(webhBody, res).then(() => res.status(200).end());
+  } else {
+    res.end();
   }
-  res.end();
 });
 
 export default githubRouter;

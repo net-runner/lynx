@@ -13,7 +13,7 @@ const { DISCORD_WEBHOOK_URL } = process.env;
 function default_1(webhook_body, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         console.log('[WEBHOOK] New push on discord');
-        yield axios_1.default
+        return axios_1.default
             .post(DISCORD_WEBHOOK_URL, JSON.stringify(webhook_body), {
             headers: { 'Content-Type': 'application/json' },
         })
@@ -80,7 +80,7 @@ githubRouter.get('/callback', (req, res) => tslib_1.__awaiter(void 0, void 0, vo
             headers: { Authorization: `token ${oauthToken}` },
         })
             .then((_res) => _res.data)
-            .then((git_user_data) => {
+            .then((git_user_data) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
             console.log(git_user_data);
             const webhBody = {
                 embeds: [
@@ -90,9 +90,9 @@ githubRouter.get('/callback', (req, res) => tslib_1.__awaiter(void 0, void 0, vo
                     },
                 ],
             };
-            (0, pushDiscordWebhook_1.default)(webhBody, res).then(() => res.end());
+            yield (0, pushDiscordWebhook_1.default)(webhBody, res).then(() => res.status(200).end());
             //TODO add user to database, forward token data to frontend
-        });
+        }));
     })
         .catch((err) => res.status(500).json({ err: err.message }));
     res.redirect(FRONTEND_URL);
@@ -113,9 +113,11 @@ githubRouter.post('/hook', (req, res) => tslib_1.__awaiter(void 0, void 0, void 
                 },
             ],
         };
-        yield (0, pushDiscordWebhook_1.default)(webhBody, res);
+        yield (0, pushDiscordWebhook_1.default)(webhBody, res).then(() => res.status(200).end());
     }
-    res.end();
+    else {
+        res.end();
+    }
 }));
 exports["default"] = githubRouter;
 

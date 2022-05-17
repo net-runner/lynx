@@ -19,7 +19,7 @@ export default async function (
   res: Response<DefaultResponseLocals>
 ) {
   console.log('[WEBHOOK] New push on discord');
-  await axios
+  return axios
     .post(DISCORD_WEBHOOK_URL, JSON.stringify(webhook_body), {
       headers: { 'Content-Type': 'application/json' },
     })
