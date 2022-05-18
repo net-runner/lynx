@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { DefaultResponseLocals, Response } from 'hyper-express';
 const { DISCORD_WEBHOOK_URL } = process.env;
 
 //See https://discord.com/developers/docs/resources/channel#embed-object

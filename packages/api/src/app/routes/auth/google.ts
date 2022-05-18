@@ -1,37 +1,27 @@
-import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import { Router } from 'hyper-express';
 import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
+import { getGoogleOAuthTokens } from '../../services/user';
 const { GOOGLE_APP_ID, GOOGLE_APP_SECRET, FRONTEND_URL, API_URL } = process.env;
 
 const googleRouter = new Router();
 
 googleRouter.get('/', async (req, res) => {
   res.redirect(
-    `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${GOOGLE_APP_ID}&prompt=consent&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email&redirect_uri=${API_URL}auth/signin/google/callback`
+    `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&access_type=offline&client_id=${GOOGLE_APP_ID}&prompt=consent&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email&redirect_uri=${API_URL}auth/signin/google/callback`
   );
 });
 googleRouter.get('/url', (req, res) => {
   return res.send(
-    `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${GOOGLE_APP_ID}&prompt=consent&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email&redirect_uri=${API_URL}auth/signin/google/callback`
+    `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&access_type=offline&client_id=${GOOGLE_APP_ID}&prompt=consent&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email&redirect_uri=${API_URL}auth/signin/google/callback`
   );
 });
 
 googleRouter.get('/callback', async (req, res) => {
-  const code = req.query.code;
-  const opts = { headers: { accept: 'application/json' } };
+  const code = req.query.code as string;
 
   try {
-    const body = {
-      code,
-      client_id: GOOGLE_APP_ID,
-      client_secret: GOOGLE_APP_SECRET,
-      redirect_uri: `${API_URL}auth/api/google/callback`,
-      grant_type: 'authorization_code',
-    };
-    const tokenBundle = await axios
-      .post('https://oauth2.googleapis.com/token', body, opts)
-      .then((res) => res.data);
+    const tokenBundle = await getGoogleOAuthTokens(code);
 
     console.log(tokenBundle);
 
@@ -62,7 +52,7 @@ googleRouter.get('/callback', async (req, res) => {
     res.json({ err: e.message });
   }
 
-  res.send('amogus');
+  res.redirect(FRONTEND_URL);
 });
 
 export default googleRouter;

@@ -17,6 +17,11 @@ app.get('/hello', (request, response) => {
   response.send('Hello World');
 });
 
+//If user requests server favicon
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(__dirname + '/assets/favicon.ico');
+});
+
 if (env !== 'development') {
   app.use(corsMiddleware);
 }
