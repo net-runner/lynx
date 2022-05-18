@@ -5,8 +5,6 @@ import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
 const { GOOGLE_APP_ID, GOOGLE_APP_SECRET, FRONTEND_URL, API_URL } = process.env;
 
 const googleRouter = new Router();
-console.log(GOOGLE_APP_ID);
-console.log(GOOGLE_APP_SECRET);
 
 googleRouter.get('/', async (req, res) => {
   res.redirect(
@@ -20,6 +18,51 @@ googleRouter.get('/url', (req, res) => {
 });
 
 googleRouter.get('/callback', async (req, res) => {
+  const code = req.query.code;
+  const opts = { headers: { accept: 'application/json' } };
+
+  try {
+    const body = {
+      code,
+      client_id: GOOGLE_APP_ID,
+      client_secret: GOOGLE_APP_SECRET,
+      redirect_uri: `${API_URL}auth/api/google/callback`,
+      grant_type: 'authorization_code',
+    };
+    const tokenBundle = await axios
+      .post('https://oauth2.googleapis.com/token', body, opts)
+      .then((res) => res.data);
+
+    console.log(tokenBundle);
+
+    const googleUser = await axios
+      .get(
+        `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${tokenBundle.access_token}`,
+        {
+          headers: {
+            Authorization: `Bearer ${tokenBundle.id_token}`,
+          },
+        }
+      )
+      .then((res) => res.data);
+
+    console.log(googleUser);
+    const webhBody = {
+      embeds: [
+        {
+          title: `Google new user: ${googleUser.login}`,
+          description: `user authorization accepted`,
+        },
+      ],
+    };
+    pushDiscordWebhook(webhBody);
+    //TODO add user to database, forward token data to frontend
+    res.redirect(FRONTEND_URL);
+  } catch (e) {
+    res.json({ err: e.message });
+  }
+
   res.send('amogus');
 });
+
 export default googleRouter;

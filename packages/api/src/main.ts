@@ -8,12 +8,18 @@ import {
   userGroupRouter,
   userRouter,
 } from './app/routes';
+import corsMiddleware from './app/middlewares';
+const env = process.env.NODE_ENV || 'development';
 const app = new Server();
 
 // Create GET route to serve 'Hello World'
 app.get('/hello', (request, response) => {
   response.send('Hello World');
 });
+
+if (env !== 'development') {
+  app.use(corsMiddleware);
+}
 
 const port = process.env.PORT || 80;
 

@@ -68,7 +68,7 @@ githubRouter.get('/callback', async (req, res) => {
         },
       ],
     };
-    pushDiscordWebhook(webhBody, res);
+    pushDiscordWebhook(webhBody);
     //TODO add user to database, forward token data to frontend
     res.redirect(FRONTEND_URL);
   } catch (e) {
@@ -95,7 +95,7 @@ githubRouter.post('/hook', async (req, res) => {
       ],
     };
 
-    pushDiscordWebhook(webhBody, res);
+    pushDiscordWebhook(webhBody);
   }
   res.end();
 });
