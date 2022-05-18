@@ -11,7 +11,6 @@ const { GOOGLE_APP_ID, API_URL } = process.env;
 
 const env = process.env.NODE_ENV;
 const isDev = env === 'development';
-console.log(env);
 const googleRouter = new Router();
 
 googleRouter.get('/', async (req, res) => {
