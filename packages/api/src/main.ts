@@ -9,7 +9,7 @@ import {
   userRouter,
 } from './app/routes';
 import corsMiddleware from './app/middlewares';
-const env = process.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV;
 const app = new Server();
 
 // Create GET route to serve 'Hello World'
