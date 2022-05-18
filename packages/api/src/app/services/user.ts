@@ -2,6 +2,7 @@ import { User } from '@prisma/client';
 import axios from 'axios';
 import * as qs from 'qs';
 import db from '../lib/db';
+import { GoogleUser, LynxUser } from './user.types';
 
 const { GOOGLE_APP_ID, GOOGLE_APP_SECRET, API_URL, NODE_ENV } = process.env;
 
@@ -38,21 +39,6 @@ export async function getGoogleOAuthTokens(code: string): Promise<TokenBundle> {
   }
 }
 
-interface BasicUser {
-  email: string;
-  name: string;
-  password?: string;
-  repeat_password?: string;
-}
-interface GoogleUser extends BasicUser {
-  id: string;
-  verified_email: boolean;
-  given_name: string;
-  family_name: string;
-  picture: string;
-  locale: string;
-}
-export type LynxUser = BasicUser | GoogleUser;
 export async function getGoogleUser(
   id_token: string,
   access_token: string

@@ -1,15 +1,7 @@
-import {
-  Response,
-  DefaultResponseLocals,
-  Request,
-  DefaultRequestLocals,
-} from 'hyper-express';
+import { defaultRouteMiddlewareInterface } from 'packages/api/src/interfaces';
 const { FRONTEND_URL } = process.env;
-const corsMiddleware = (
-  req: Request<DefaultRequestLocals>,
-  res: Response<DefaultResponseLocals>,
-  next
-) => {
+
+const corsMiddleware: defaultRouteMiddlewareInterface = (req, res, next) => {
   res.header('Access-Control-Allow-Origin', `${FRONTEND_URL}`);
   res.header(
     'Access-Control-Allow-Headers',

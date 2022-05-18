@@ -2,6 +2,9 @@ import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import { Router } from 'hyper-express';
 import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
+import { AuthProvider, findOrCreateUser } from '../../services/user';
+import { GithubUser } from '../../services/user.types';
+import { authorizeAndEnd } from '../../helpers/authorizeAndEnd';
 
 const githubRouter = new Router();
 const { GITHUB_APP_SECRET, GITHUB_APP_ID, FRONTEND_URL } = process.env;
@@ -53,11 +56,11 @@ githubRouter.get('/callback', async (req, res) => {
       .post('https://github.com/login/oauth/access_token', body, opts)
       .then((_res) => _res.data);
 
-    const githubUser = await axios
+    const githubUser = (await axios
       .get('https://api.github.com/user', {
         headers: { Authorization: `token ${tokenBundle.access_token}` },
       })
-      .then((_res) => _res.data);
+      .then((_res) => _res.data)) as GithubUser;
 
     console.log(tokenBundle);
     console.log(githubUser);
@@ -71,8 +74,9 @@ githubRouter.get('/callback', async (req, res) => {
       ],
     };
     pushDiscordWebhook(webhBody);
-    //TODO add user to database, forward token data to frontend
-    res.redirect(FRONTEND_URL);
+    const user = await findOrCreateUser(githubUser, AuthProvider.GitHub);
+
+    authorizeAndEnd(user, req, res);
   } catch (e) {
     res.json({ err: e.message });
   }

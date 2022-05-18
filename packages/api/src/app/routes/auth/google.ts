@@ -8,6 +8,7 @@ import {
   getGoogleUser,
 } from '../../services/user';
 import { createSession } from '../../services/session';
+import { authorizeAndEnd } from '../../helpers/authorizeAndEnd';
 const { GOOGLE_APP_ID, GOOGLE_APP_SECRET, FRONTEND_URL, API_URL, NODE_ENV } =
   process.env;
 
@@ -61,11 +62,7 @@ googleRouter.get('/callback', async (req, res) => {
     //TODO add user to database, forward token data to frontend
     const user = await findOrCreateUser(googleUser, AuthProvider.Google);
 
-    const session = await createSession(
-      user.id,
-      req.get('user-agent') || 'No agent provided'
-    );
-    res.redirect(FRONTEND_URL);
+    authorizeAndEnd(user, req, res);
   } catch (e) {
     console.error({ err: e.message, desc: e.response.data.error_description });
     res.json({ err: e.message, desc: e.response.data.error_description });

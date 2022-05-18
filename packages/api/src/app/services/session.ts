@@ -1,4 +1,5 @@
 import { Session } from '@prisma/client';
+import { signJwt, verifyJwt } from '../helpers/jwt';
 import db from '../lib/db';
 
 export async function createSession(userId: string, userAgent: string) {
@@ -20,6 +21,30 @@ export async function updateSession(sessionId: string, data) {
     where: {
       id: sessionId,
     },
-    data: data,
+    data,
   });
+}
+
+export async function tokenRefresh(refresh_token: string) {
+  const { decoded } = verifyJwt(refresh_token);
+  const incoming_session: Session = decoded;
+
+  const session = await db.session.findUnique({
+    where: {
+      id: incoming_session.id,
+    },
+  });
+
+  if (!session || !session.valid) return false;
+
+  const user = await db.user.findUnique({ where: { id: session.user } });
+
+  if (!user) return false;
+
+  const accessToken = signJwt(
+    { ...user, session: session.id },
+    { expiresIn: '15m' }
+  );
+
+  return accessToken;
 }

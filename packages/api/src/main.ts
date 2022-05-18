@@ -8,7 +8,7 @@ import {
   userGroupRouter,
   userRouter,
 } from './app/routes';
-import corsMiddleware from './app/middlewares';
+import corsMiddleware from './app/middlewares/cors';
 const env = process.env.NODE_ENV;
 const app = new Server();
 
