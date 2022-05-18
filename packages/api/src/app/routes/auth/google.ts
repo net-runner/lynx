@@ -7,7 +7,7 @@ import {
   getGoogleOAuthTokens,
   getGoogleUser,
 } from '../../services/user';
-import jwt from 'jsonwebtoken';
+import { createSession } from '../../services/session';
 const { GOOGLE_APP_ID, GOOGLE_APP_SECRET, FRONTEND_URL, API_URL, NODE_ENV } =
   process.env;
 
@@ -59,7 +59,12 @@ googleRouter.get('/callback', async (req, res) => {
     };
     pushDiscordWebhook(webhBody);
     //TODO add user to database, forward token data to frontend
-    findOrCreateUser(googleUser, AuthProvider.Google);
+    const user = await findOrCreateUser(googleUser, AuthProvider.Google);
+
+    const session = await createSession(
+      user.id,
+      req.get('user-agent') || 'No agent provided'
+    );
     res.redirect(FRONTEND_URL);
   } catch (e) {
     console.error({ err: e.message, desc: e.response.data.error_description });

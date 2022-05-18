@@ -12,6 +12,7 @@ model LinkGroup {
   owner        String? @db.Uuid
   name         String  @db.VarChar
   description  String  @db.VarChar
+  picture      String  @db.VarChar
   stars        Int     @default(0)
   watcherCount Int     @default(0)
   linkedCount  Int     @default(0)

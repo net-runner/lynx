@@ -83,7 +83,7 @@ export async function findOrCreateUser(
       },
     });
     if (!getUser) {
-      await db.user.create({
+      const newUser = await db.user.create({
         data: {
           email: user.email,
           password: 'x',
@@ -91,6 +91,7 @@ export async function findOrCreateUser(
           name: user.name,
         },
       });
+      return newUser;
     }
   } catch (e) {
     throw new Error(e);
