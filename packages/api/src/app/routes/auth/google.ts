@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Router } from 'hyper-express';
 import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
 import { getGoogleOAuthTokens } from '../../services/user';
+import jwt from 'jsonwebtoken';
 const { GOOGLE_APP_ID, GOOGLE_APP_SECRET, FRONTEND_URL, API_URL } = process.env;
 
 const googleRouter = new Router();
@@ -49,6 +50,7 @@ googleRouter.get('/callback', async (req, res) => {
     //TODO add user to database, forward token data to frontend
     res.redirect(FRONTEND_URL);
   } catch (e) {
+    console.error(e.response.data.error);
     res.json({ err: e.message });
   }
 
