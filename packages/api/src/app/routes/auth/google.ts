@@ -50,8 +50,8 @@ googleRouter.get('/callback', async (req, res) => {
     //TODO add user to database, forward token data to frontend
     res.redirect(FRONTEND_URL);
   } catch (e) {
-    console.error(e.response.data.error);
-    res.json({ err: e.message });
+    console.error(e.response.data.error_description);
+    res.json({ err: e.message, desc: e.response.data.error_description });
   }
 
   res.redirect(FRONTEND_URL);
