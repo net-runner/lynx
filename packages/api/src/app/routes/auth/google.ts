@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { Router } from 'hyper-express';
 import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
 import {
@@ -7,10 +6,8 @@ import {
   getGoogleOAuthTokens,
   getGoogleUser,
 } from '../../services/user';
-import { createSession } from '../../services/session';
 import { authorizeAndEnd } from '../../helpers/authorizeAndEnd';
-const { GOOGLE_APP_ID, GOOGLE_APP_SECRET, FRONTEND_URL, API_URL, NODE_ENV } =
-  process.env;
+const { GOOGLE_APP_ID, API_URL } = process.env;
 
 const env = process.env.NODE_ENV;
 const isDev = env === 'development';

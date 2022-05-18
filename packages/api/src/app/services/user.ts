@@ -1,10 +1,9 @@
 import { User } from '@prisma/client';
 import axios from 'axios';
-import * as qs from 'qs';
 import db from '../lib/db';
 import { GoogleUser, LynxUser } from './user.types';
 
-const { GOOGLE_APP_ID, GOOGLE_APP_SECRET, API_URL, NODE_ENV } = process.env;
+const { GOOGLE_APP_ID, GOOGLE_APP_SECRET, API_URL } = process.env;
 
 interface TokenBundle {
   access_token: string;

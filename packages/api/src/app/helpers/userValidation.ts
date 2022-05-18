@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { LynxUser } from '../services/user';
+import { LynxUser } from '../services/user.types';
 
 const signUpSchema = Joi.object({
   name: Joi.string().alphanum().min(3).max(30).required(),
