@@ -5,7 +5,10 @@
   "scripts": {
     "start": "node dist/packages/api/main",
     "heroku:push": "git push heroku dev-api:main",
-    "heroku-postbuild": "nx prisma generate && nx build api --prod"
+    "heroku-postbuild": "npx prisma generate && nx build api --prod",
+    "prisma:generate": "npx prisma generate",
+    "prisma:studio": "npx prisma studio",
+    "prisma:push": "npx prisma db push"
   },
   "private": true,
   "devDependencies": {
