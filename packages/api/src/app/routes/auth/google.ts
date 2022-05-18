@@ -1,7 +1,12 @@
 import axios from 'axios';
 import { Router } from 'hyper-express';
 import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
-import { getGoogleOAuthTokens } from '../../services/user';
+import {
+  AuthProvider,
+  findOrCreateUser,
+  getGoogleOAuthTokens,
+  getGoogleUser,
+} from '../../services/user';
 import jwt from 'jsonwebtoken';
 const { GOOGLE_APP_ID, GOOGLE_APP_SECRET, FRONTEND_URL, API_URL, NODE_ENV } =
   process.env;
@@ -37,16 +42,11 @@ googleRouter.get('/callback', async (req, res) => {
 
     console.log(tokenBundle);
 
-    const googleUser = await axios
-      .get(
-        `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${tokenBundle.access_token}`,
-        {
-          headers: {
-            Authorization: `Bearer ${tokenBundle.id_token}`,
-          },
-        }
-      )
-      .then((res) => res.data);
+    //Get google user from GoogleAPI || also possible to decode from token
+    const googleUser = await getGoogleUser(
+      tokenBundle.id_token,
+      tokenBundle.access_token
+    );
 
     console.log(googleUser);
     const webhBody = {
@@ -59,13 +59,12 @@ googleRouter.get('/callback', async (req, res) => {
     };
     pushDiscordWebhook(webhBody);
     //TODO add user to database, forward token data to frontend
+    findOrCreateUser(googleUser, AuthProvider.Google);
     res.redirect(FRONTEND_URL);
   } catch (e) {
     console.error({ err: e.message, desc: e.response.data.error_description });
     res.json({ err: e.message, desc: e.response.data.error_description });
   }
-
-  res.redirect(FRONTEND_URL);
 });
 
 export default googleRouter;

@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model LinkGroup {
+  id           String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  owner        String? @db.Uuid
+  name         String  @db.VarChar
+  description  String  @db.VarChar
+  stars        Int     @default(0)
+  watcherCount Int     @default(0)
+  linkedCount  Int     @default(0)
+  linksAmmount Int     @default(0)
+  privacyLevel String  @default(dbgenerated("0")) @db.VarChar
+  userId       User?   @relation(fields: [owner], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  links        Link[]
+}
+
+model Link {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  link         String     @db.VarChar
+  tags         String[]   @db.Uuid
+  privacyLevel String     @default(dbgenerated("0")) @db.VarChar
+  owner        String?    @db.Uuid
+  stars        Int        @default(0)
+  description  String?
+  group        String?    @db.Uuid
+  userId       User?      @relation(fields: [owner], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  groupId      LinkGroup? @relation(fields: [group], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([owner], map: "fki_links_owner_fkey")
+}
+
+model Session {
+  user      String    @db.Uuid
+  valid     Boolean   @default(true)
+  createdAt DateTime? @db.Date
+  updatedAt DateTime? @db.Date
+  userAgent String?   @db.VarChar
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    User      @relation(fields: [user], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "sessions_owner_fkey")
+}
+
+model User {
+  id           String      @id(map: "users_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String      @db.VarChar
+  email        String?     @db.VarChar
+  password     String      @db.VarChar
+  createdAt    DateTime?   @default(dbgenerated("CURRENT_DATE")) @db.Date
+  lastLogin    DateTime?   @default(dbgenerated("CURRENT_DATE")) @db.Date
+  authProvider Int         @default(0)
+  links        Link[]
+  sessions     Session[]
+  linkGroups   LinkGroup[]
+
+  @@unique([name, email], map: "unique_name_email")
+}

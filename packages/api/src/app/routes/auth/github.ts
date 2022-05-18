@@ -48,9 +48,11 @@ githubRouter.get('/callback', async (req, res) => {
 
   try {
     //https://docs.github.com/en/developers/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps
+
     const tokenBundle = await axios
       .post('https://github.com/login/oauth/access_token', body, opts)
       .then((_res) => _res.data);
+
     const githubUser = await axios
       .get('https://api.github.com/user', {
         headers: { Authorization: `token ${tokenBundle.access_token}` },
