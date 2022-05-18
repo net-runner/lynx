@@ -50,14 +50,14 @@ model Session {
 model User {
   id           String      @id(map: "users_pk") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name         String      @db.VarChar
-  email        String?     @db.VarChar
+  email        String      @db.VarChar
   password     String      @db.VarChar
-  createdAt    DateTime?   @default(dbgenerated("CURRENT_DATE")) @db.Date
-  lastLogin    DateTime?   @default(dbgenerated("CURRENT_DATE")) @db.Date
+  createdAt    DateTime    @default(dbgenerated("CURRENT_DATE")) @db.Date
+  lastLogin    DateTime    @default(dbgenerated("CURRENT_DATE")) @db.Date
   authProvider Int         @default(0)
   links        Link[]
   sessions     Session[]
   linkGroups   LinkGroup[]
 
-  @@unique([name, email], map: "unique_name_email")
+  @@unique([email], map: "unique_email")
 }

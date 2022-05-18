@@ -77,6 +77,14 @@ export enum AuthProvider {
   GitHub,
   Google,
 }
+export async function isEmailFree(email: string): Promise<boolean> {
+  const getUser: User | null = await db.user.findUnique({
+    where: {
+      email: email,
+    },
+  });
+  return getUser === null ? true : false;
+}
 export async function findOrCreateUser(
   user: LynxUser,
   authProvider: AuthProvider
@@ -98,6 +106,7 @@ export async function findOrCreateUser(
       });
       return newUser;
     }
+    return getUser;
   } catch (e) {
     throw new Error(e);
   }

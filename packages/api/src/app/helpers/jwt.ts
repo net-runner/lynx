@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import log from '../logger';
+import log from './logger';
 const { AUTH_CORE_SECRET } = process.env;
 
 export function signJwt(object, options?: jwt.SignOptions) {
