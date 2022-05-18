@@ -8,9 +8,20 @@ const { GOOGLE_APP_ID, GOOGLE_APP_SECRET, FRONTEND_URL, API_URL } = process.env;
 const googleRouter = new Router();
 
 googleRouter.get('/', async (req, res) => {
-  res.redirect(
-    `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&access_type=offline&client_id=${GOOGLE_APP_ID}&prompt=consent&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email&redirect_uri=${API_URL}auth/signin/google/callback`
-  );
+  const url = 'https://accounts.google.com/o/oauth2/v2/auth';
+  const body = {
+    redirect_uri: `${API_URL}auth/signin/google/callback`,
+    client_id: GOOGLE_APP_ID,
+    access_type: 'offline',
+    response_type: 'code',
+    prompt: 'consent',
+    scope: [
+      'https://www.googleapis.com/auth/userinfo.profile',
+      'https://www.googleapis.com/auth/userinfo.email',
+    ].join(' '),
+  };
+  const qs = new URLSearchParams(body);
+  res.redirect(`${url}?${qs}`);
 });
 googleRouter.get('/url', (req, res) => {
   return res.send(

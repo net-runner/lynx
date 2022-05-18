@@ -23,6 +23,7 @@ export async function getGoogleOAuthTokens(
     redirect_uri: `${API_URL}auth/api/google/callback`,
     grant_type: 'authorization_code',
   };
+  console.log(qs.stringify(body));
   try {
     return axios
       .post(url, qs.stringify(body), {
@@ -32,7 +33,7 @@ export async function getGoogleOAuthTokens(
       })
       .then((res) => res.data);
   } catch (e) {
-    console.error(e.response.data.error);
+    console.error(e.response.data.error_description);
     throw new Error(e);
   }
 }
