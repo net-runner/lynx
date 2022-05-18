@@ -38,16 +38,21 @@ export async function getGoogleOAuthTokens(code: string): Promise<TokenBundle> {
   }
 }
 
-interface GoogleUser {
-  id: string;
+interface BasicUser {
   email: string;
-  verified_email: boolean;
   name: string;
+  password?: string;
+  repeat_password?: string;
+}
+interface GoogleUser extends BasicUser {
+  id: string;
+  verified_email: boolean;
   given_name: string;
   family_name: string;
   picture: string;
   locale: string;
 }
+export type LynxUser = BasicUser | GoogleUser;
 export async function getGoogleUser(
   id_token: string,
   access_token: string
@@ -73,7 +78,7 @@ export enum AuthProvider {
   Google,
 }
 export async function findOrCreateUser(
-  user: GoogleUser,
+  user: LynxUser,
   authProvider: AuthProvider
 ) {
   try {
@@ -86,7 +91,7 @@ export async function findOrCreateUser(
       await db.user.create({
         data: {
           email: user.email,
-          password: 'x',
+          password: user.password || 'x',
           authProvider: authProvider,
           name: user.name,
         },
