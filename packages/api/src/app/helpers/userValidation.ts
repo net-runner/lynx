@@ -14,5 +14,7 @@ const signUpSchema = Joi.object({
   .xor('password', 'access_token')
   .with('password', 'repeat_password');
 
-export const validateSignUp = async (user: LynxUser) =>
-  await signUpSchema.validateAsync(user);
+export const validateSignUp = async (user: LynxUser): Promise<boolean> => {
+  const value = signUpSchema.validate(user);
+  return value.error ? false : true;
+};

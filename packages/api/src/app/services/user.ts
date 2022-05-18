@@ -80,7 +80,7 @@ export enum AuthProvider {
 export async function isEmailFree(email: string): Promise<boolean> {
   const getUser: User | null = await db.user.findUnique({
     where: {
-      email: email,
+      email,
     },
   });
   return getUser === null ? true : false;

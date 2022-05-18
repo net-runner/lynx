@@ -1,7 +1,11 @@
 import { Router } from 'hyper-express';
 import * as bcrypt from 'bcrypt';
 import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
-import { AuthProvider, findOrCreateUser } from '../../services/user';
+import {
+  AuthProvider,
+  findOrCreateUser,
+  isEmailFree,
+} from '../../services/user';
 import { validateSignUp } from '../../helpers/userValidation';
 
 const signupRouter = new Router();
@@ -15,15 +19,18 @@ signupRouter.post('/', async (req, res) => {
       password,
     };
 
-    await validateSignUp({
+    const isUserValidated = await validateSignUp({
       ...lynxUser,
       repeat_password,
-    }).catch(() => res.sendStatus(403));
+    });
+    if (!isUserValidated) return res.status(403).end();
+
+    const isEmailRegistered = await isEmailFree(email);
+    if (!isEmailRegistered) return res.status(403).end();
 
     await bcrypt.hash(password, 10).then((hash) => {
       lynxUser.password = hash;
     });
-
     await findOrCreateUser(lynxUser, AuthProvider.Local);
     const webhBody = {
       embeds: [
