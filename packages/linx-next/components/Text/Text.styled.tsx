@@ -1,0 +1,19 @@
+import styled from 'styled-components';
+
+export const LandingHeader = styled.h1`
+  font-family: 'Segoe UI';
+  font-weight: bold;
+  text-align: center;
+  line-height: 100%;
+  font-size: 11rem;
+  margin-bottom: 60px;
+`;
+
+export const BigInformationSection = styled.p`
+  font-size: 2.5rem;
+  font-family: Inter;
+  font-weight: regular;
+  line-height: 160%;
+  text-align: center;
+  margin: 0 1rem;
+`;
