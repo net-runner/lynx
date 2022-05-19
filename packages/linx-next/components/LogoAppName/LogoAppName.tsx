@@ -1,16 +1,16 @@
 import Link from 'next/link';
 import React from 'react';
 import LogoSmall from '../../assets/icons/LogoSmall';
-import { LAN } from './LogoAppName.styled';
+import * as S from './LogoAppName.styled';
 
 const LogoAppName = () => {
   return (
     <Link href={'/'} passHref>
       <a>
-        <LAN>
+        <S.LAN>
           <LogoSmall />
           <p>LYNX</p>
-        </LAN>
+        </S.LAN>
       </a>
     </Link>
   );

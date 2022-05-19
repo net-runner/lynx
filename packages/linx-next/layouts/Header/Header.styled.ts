@@ -2,21 +2,13 @@ import Link from 'next/link';
 import styled from 'styled-components';
 
 export const Header = styled.header`
-  text-align: center;
+  display: flex;
   align-items: center;
   justify-items: center;
   justify-content: space-between;
-  display: flex;
-  padding: 5px 30px 5px 30px;
-  height: 40px;
-  margin-top: 20px;
+  padding: 0 3rem;
+  height: 8rem;
   font-family: Inter;
-  & > div > a {
-    font-weight: bold;
-  }
-  & > div {
-    padding-top: 2px;
-  }
 `;
 
 export const HeaderTextLink = styled(Link)`
@@ -24,4 +16,17 @@ export const HeaderTextLink = styled(Link)`
   font-size: 20;
   font-family: Inter;
   font-weight: regular;
+`;
+
+export const Nav = styled.nav`
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-items: center;
+  justify-content: space-between;
+  a {
+    &:not(:first-child) {
+      margin-left: 20px;
+    }
+  }
 `;

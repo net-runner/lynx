@@ -5,8 +5,10 @@ export const LAN = styled.div`
   display: flex;
   align-items: center;
   flex-direction: row;
+
   & > p {
-    font-size: 28px;
+    margin-left: 0.5rem;
+    font-size: 2.8rem;
     font-family: 'Open Sans', sans-serif;
   }
 `;
