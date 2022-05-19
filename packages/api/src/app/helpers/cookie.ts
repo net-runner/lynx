@@ -7,7 +7,7 @@ const isDev = env === 'development';
 export const cookieOptions: CookieOptions = {
   maxAge: 900000,
   httpOnly: true,
-  domain: isDev ? 'localhost' : FRONTEND_URL,
+  domain: FRONTEND_URL,
   path: '/',
   sameSite: 'strict',
   secure: false,

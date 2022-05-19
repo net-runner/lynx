@@ -1,4 +1,5 @@
-import { defaultRouteMiddlewareInterface } from 'packages/api/src/interfaces';
+import { defaultRouteMiddlewareInterface } from '../../../interfaces/index';
+
 const { FRONTEND_URL } = process.env;
 
 const corsMiddleware: defaultRouteMiddlewareInterface = (req, res, next) => {

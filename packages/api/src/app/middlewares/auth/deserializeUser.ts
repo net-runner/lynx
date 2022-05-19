@@ -1,4 +1,4 @@
-import { defaultRouteMiddlewareInterface } from 'packages/api/src/interfaces';
+import { defaultRouteMiddlewareInterface } from '../../../interfaces/index';
 import { cookieOptions } from '../../helpers/cookie';
 import { verifyJwt } from '../../helpers/jwt';
 import { tokenRefresh } from '../../services/session';
@@ -31,7 +31,7 @@ const deserializeUser: defaultRouteMiddlewareInterface = async (
       res.cookie('access_token', newAccessToken, 900000, cookieOptions);
     }
 
-    const result = verifyJwt(newAccessToken);
+    const result = verifyJwt(newAccessToken as string);
     res.locals.user = result.decoded;
     return next();
   }

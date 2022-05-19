@@ -1,14 +1,14 @@
-import jwt from 'jsonwebtoken';
+import { sign, SignOptions, verify } from 'jsonwebtoken';
 import log from './logger';
 const { AUTH_CORE_SECRET } = process.env;
 
-export function signJwt(object, options?: jwt.SignOptions) {
-  return jwt.sign(object, AUTH_CORE_SECRET, { options });
+export function signJwt(object, options?: SignOptions) {
+  return sign(object, AUTH_CORE_SECRET, options);
 }
 
 export function verifyJwt(token: string) {
   try {
-    const decoded = jwt.verify(token, AUTH_CORE_SECRET);
+    const decoded = verify(token, AUTH_CORE_SECRET);
     return {
       valid: true,
       expired: false,

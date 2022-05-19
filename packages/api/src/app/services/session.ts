@@ -27,7 +27,7 @@ export async function updateSession(sessionId: string, data) {
 
 export async function tokenRefresh(refresh_token: string) {
   const { decoded } = verifyJwt(refresh_token);
-  const incoming_session: Session = decoded;
+  const incoming_session: Session = JSON.parse(decoded as string);
 
   const session = await db.session.findUnique({
     where: {
