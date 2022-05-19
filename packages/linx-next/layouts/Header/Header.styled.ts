@@ -6,7 +6,7 @@ export const Header = styled.header`
   align-items: center;
   justify-items: center;
   justify-content: space-between;
-  padding: 0 3rem;
+  padding: 0 5rem;
   height: 8rem;
   font-family: Inter;
 `;

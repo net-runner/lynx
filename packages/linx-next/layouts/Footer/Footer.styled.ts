@@ -11,5 +11,6 @@ export const Footer = styled.footer`
   font-size: 12px;
   & > div > a {
     font-weight: 500;
+    text-decoration: underline;
   }
 `;
