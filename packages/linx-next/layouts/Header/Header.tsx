@@ -2,6 +2,7 @@ import React from 'react';
 import LogoAppName from '../../components/LogoAppName';
 import Button from '../../components/Button';
 import * as S from './Header.styled';
+import { GithubIcon } from '../../assets/icons';
 
 const Header = () => {
   return (
@@ -12,7 +13,12 @@ const Header = () => {
         <S.HeaderTextLink href="/stats">Statistics</S.HeaderTextLink>
         <S.HeaderTextLink href="/top">Top Lynxers</S.HeaderTextLink>
       </S.Nav>
-      <Button>Sign up</Button>
+      <S.Nav>
+        <Button>Sign up</Button>
+        <a href="https://github.com/net-runner/lynx">
+          <GithubIcon />
+        </a>
+      </S.Nav>
     </S.Header>
   );
 };
