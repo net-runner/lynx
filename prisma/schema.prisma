@@ -55,8 +55,7 @@ model User {
   createdAt    DateTime    @default(dbgenerated("CURRENT_DATE")) @db.Date
   lastLogin    DateTime    @default(dbgenerated("CURRENT_DATE")) @db.Date
   authProvider Int         @default(0)
-  role         String      @db.Uuid
-  roleId       Role        @relation(fields: [role], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  roleId       UserRole[]
   links        Link[]
   sessions     Session[]
   linkGroups   LinkGroup[]
@@ -64,8 +63,16 @@ model User {
   @@unique([email], map: "unique_email")
 }
 
+model UserRole {
+  id     String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user   String @db.Uuid
+  role   String @db.Uuid
+  userId User   @relation(fields: [user], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  roleId Role   @relation(fields: [role], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
 model Role {
-  id    String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name  String @db.VarChar
-  users User[]
+  id    String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name  String     @db.VarChar
+  roles UserRole[]
 }

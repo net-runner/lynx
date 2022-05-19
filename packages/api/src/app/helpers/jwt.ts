@@ -1,6 +1,12 @@
-import { sign, SignOptions, verify } from 'jsonwebtoken';
-import log from './logger';
+import { JwtPayload, sign, SignOptions, verify } from 'jsonwebtoken';
 const { AUTH_CORE_SECRET } = process.env;
+
+declare module 'jsonwebtoken' {
+  export interface JwtPayload {
+    user: string;
+    session: string;
+  }
+}
 
 export function signJwt(object, options?: SignOptions) {
   return sign(object, AUTH_CORE_SECRET, options);
@@ -8,17 +14,16 @@ export function signJwt(object, options?: SignOptions) {
 
 export function verifyJwt(token: string) {
   try {
-    const decoded = verify(token, AUTH_CORE_SECRET);
+    const decoded = verify(token, AUTH_CORE_SECRET) as JwtPayload;
     return {
       valid: true,
       expired: false,
       decoded,
     };
   } catch (e) {
-    log.error(e);
     return {
       valid: false,
-      expired: e.message === 'Token expired',
+      expired: true,
       decoded: null,
     };
   }

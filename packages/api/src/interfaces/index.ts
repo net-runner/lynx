@@ -10,6 +10,6 @@ export interface defaultRouteMiddlewareInterface {
   (
     req: Request<DefaultRequestLocals>,
     res: Response<DefaultResponseLocals>,
-    next: MiddlewareNext
+    next?: MiddlewareNext
   );
 }

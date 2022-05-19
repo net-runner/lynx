@@ -31,12 +31,10 @@ app.get('/favicon.ico', (req, res) => {
 app.get('/healthcheck', (req, res) => {
   res.status(200).end();
 });
-
-if (env !== 'development') {
-  app.use(corsMiddleware);
-}
-app.use(cookieParser());
-app.use(deserializeUser);
+//Handle all of unsuported routes
+app.get('/*', (req, res) => {
+  res.status(404).send('Unsuported route');
+});
 
 const port = process.env.PORT || 80;
 
@@ -47,14 +45,23 @@ app.use('/link', linkRouter);
 app.use('/linkgroup', linkGroupRouter);
 app.use('/tag', tagRouter);
 
+if (env !== 'development') {
+  app.use(corsMiddleware);
+}
+app.use(cookieParser());
+
+//Correct way to do it
+app.use(async (req, res) => {
+  try {
+    await deserializeUser(req, res);
+  } catch (e) {
+    return e;
+  }
+});
+
 app
   .listen(port as number)
   .then(() => log.info('[START] LYNX API ONLINE: ' + port))
   .catch((error) =>
     log.error('FAILED TO START API: ' + port + ' Error ' + error)
   );
-
-//Handle all of unsuported routes
-app.get('/*', (req, res) => {
-  res.status(404).send('Unsuported route');
-});

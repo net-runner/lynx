@@ -2,7 +2,6 @@ import { CookieOptions } from 'hyper-express';
 
 const { FRONTEND_URL } = process.env;
 const env = process.env.NODE_ENV;
-const isDev = env === 'development';
 
 export const cookieOptions: CookieOptions = {
   maxAge: 900000,
@@ -11,4 +10,9 @@ export const cookieOptions: CookieOptions = {
   path: '/',
   sameSite: 'strict',
   secure: false,
+};
+
+export const refreshCookieOptions: CookieOptions = {
+  ...cookieOptions,
+  maxAge: 3.154e10,
 };

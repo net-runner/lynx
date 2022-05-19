@@ -19,11 +19,9 @@ export async function handleSignin(
   try {
     const body = await req.json();
     const { email, password } = body;
-    console.log(body);
     const user = await getUser(email);
-    console.log(user);
+
     if (!user) return res.status(403).end();
-    console.log('amogus');
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
@@ -39,7 +37,7 @@ export async function handleSignin(
     };
     pushDiscordWebhook(webhBody);
 
-    authorizeAndEnd(user, req, res);
+    authorizeAndEnd(user, req, res, true);
   } catch (e) {
     log.error({ err: e.message, desc: e.response.data.error_description });
     res.json({ err: e.message, desc: e.response.data.error_description });
