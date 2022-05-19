@@ -1,11 +1,12 @@
 <p align="center">
-  <img src="lynx-logo.svg" width="200px" align="center" alt="Lynx logo svg" />
+  <a href="https://lynxweb.vercel.app" style="text-decoration:none;">
+    <img src="lynx-logo.svg" width="200px" align="center" alt="Lynx logo svg" />
+  </a>
   <h1 align="center">Lynx</h1>
   <p align="center">
-    🦊 <a href="https://lynxweb.vercel.app">Demo</a> 🦊
-    <br/>
-    Open source links & bookmarks sharing, managing and discovering platform
+    🦊 Open source platform for sharing, managing and discovering links and bookmarks 🦊
   </p>
+
 </p>
 
 ## Tech Stack
@@ -17,8 +18,13 @@
 
 - Dark mode from the start
 - Link sharing, discovery, managing, observing link groups or users
+- Trending links, users and linkgroups
+- Easy import & export
 - Clean, modern design
 - Fast, and ready as PWA
+- Monorepo with all of the code including database structure
+
+## [Demo on Vercel](https://lynxweb.vercel.app)
 
 ## Authors
  🦊 [@net-runner](https://www.github.com/net-runner) & [@przemec](https://www.github.com/przemec) 🦊
