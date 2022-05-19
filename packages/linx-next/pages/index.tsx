@@ -1,14 +1,14 @@
+import AuthFlowLayout from '../layouts/AuthFlow.layout';
+
 const Index = () => (
-  <div className="wrapper">
-    <div className="container">
-      <div id="welcome">
-        <h1>
-          <span> Hello there, </span>
-          Welcome linx-next 👋
-        </h1>
-      </div>
+  <AuthFlowLayout>
+    <div id="welcome">
+      <h1>
+        <span> Hello there, </span>
+        Welcome linx-next 👋
+      </h1>
     </div>
-  </div>
+  </AuthFlowLayout>
 );
 
 export default Index;

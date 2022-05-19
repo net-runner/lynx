@@ -4,21 +4,36 @@
 
 @import 'tailwindcss/utilities';
 
+//Colors from figma
+$background: #16181E;
+$primary: #00B9AE;
+$white: #F9F9F9;
+$highlight: #21242D;
+
 html {
   -webkit-text-size-adjust: 100%;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
-    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   line-height: 1.5;
   tab-size: 4;
   scroll-behavior: smooth;
   font-size: 62.5%;
+  height: 100%;
+  width: 100%;
+  font-feature-settings: "kern";
+  text-rendering: optimizeLegibility;
+  color: $white;
 }
 
 body {
+  background-color: $background;
   font-family: inherit;
   line-height: inherit;
+  display: flex;
+  flex-direction: column;
   margin: 0;
+  height: 100%;
+  width: 100%;
   font-size: 1.6rem;
 }
 

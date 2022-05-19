@@ -40,6 +40,16 @@ export default class CustomDocument extends Document<{
             sizes="16x16"
             href="/favicon-16x16.png"
           />
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossOrigin="anonymous"
+          />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;500;700;800;900&family=Open+Sans:wght@800&display=swap"
+            rel="stylesheet"
+          />
           <link rel="manifest" href="/site.webmanifest" />
           <meta name="msapplication-config" content="/browserconfig.xml" />
           <meta name="msapplication-TileColor" content="00A8AD" />
