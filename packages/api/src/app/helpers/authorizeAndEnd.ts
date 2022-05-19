@@ -8,7 +8,6 @@ import {
 } from 'hyper-express';
 import { signJwt } from './jwt';
 import { cookieOptions } from './cookie';
-import log from './logger';
 
 //Helper function for getting and setting user tokens
 export async function authorizeAndEnd(
@@ -38,9 +37,6 @@ export async function authorizeAndEnd(
   res.cookie('access_token', access_token, 900000, cookieOptions);
 
   res.cookie('refresh_token', refresh_token, 31536000000, cookieOptions);
-
-  log.info(res);
-  log.info(access_token);
 
   //Redirect to webapp
 

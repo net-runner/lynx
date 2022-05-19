@@ -18,6 +18,7 @@ const app = new Server();
 
 // Create GET route to serve 'Hello World'
 app.get('/hello', (request, response) => {
+  log.info('HELLO');
   response.send('Hello World');
 });
 

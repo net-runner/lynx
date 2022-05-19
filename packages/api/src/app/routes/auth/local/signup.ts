@@ -1,15 +1,24 @@
-import { Router } from 'hyper-express';
 import * as bcrypt from 'bcrypt';
-import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
+import pushDiscordWebhook from '../../../helpers/pushDiscordWebhook';
 import {
   AuthProvider,
   findOrCreateUser,
   isEmailFree,
-} from '../../services/user';
-import { validateSignUp } from '../../helpers/userValidation';
+} from '../../../services/user';
+import { validateSignUp } from '../../../helpers/userValidation';
+import log from '../../../helpers/logger';
+import {
+  DefaultRequestLocals,
+  DefaultResponseLocals,
+  Request,
+  Response,
+} from 'hyper-express';
 
-const signupRouter = new Router();
-signupRouter.post('/', async (req, res) => {
+export async function handleSignup(
+  req: Request<DefaultRequestLocals>,
+  res: Response<DefaultResponseLocals>
+) {
+  console.log('SAINAP');
   try {
     const body = await req.json();
     const { name, email, password, repeat_password } = body;
@@ -18,7 +27,7 @@ signupRouter.post('/', async (req, res) => {
       email,
       password,
     };
-
+    log.info(name);
     const isUserValidated = await validateSignUp({
       ...lynxUser,
       repeat_password,
@@ -43,9 +52,7 @@ signupRouter.post('/', async (req, res) => {
     pushDiscordWebhook(webhBody);
     res.status(200).end();
   } catch (e) {
-    console.error({ err: e.message, desc: e.response.data.error_description });
+    log.error({ err: e.message, desc: e.response.data.error_description });
     res.json({ err: e.message, desc: e.response.data.error_description });
   }
-});
-
-export default signupRouter;
+}

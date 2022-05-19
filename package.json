@@ -25,6 +25,7 @@
     "@nrwl/web": "14.1.4",
     "@nrwl/workspace": "^14.1.4",
     "@testing-library/react": "13.1.1",
+    "@types/bcrypt": "^5.0.0",
     "@types/jest": "27.4.1",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "16.11.7",

@@ -55,9 +55,17 @@ model User {
   createdAt    DateTime    @default(dbgenerated("CURRENT_DATE")) @db.Date
   lastLogin    DateTime    @default(dbgenerated("CURRENT_DATE")) @db.Date
   authProvider Int         @default(0)
+  role         String      @db.Uuid
+  roleId       Role        @relation(fields: [role], references: [id], onDelete: NoAction, onUpdate: NoAction)
   links        Link[]
   sessions     Session[]
   linkGroups   LinkGroup[]
 
   @@unique([email], map: "unique_email")
+}
+
+model Role {
+  id    String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name  String @db.VarChar
+  users User[]
 }

@@ -2,19 +2,20 @@ import { Router } from 'hyper-express';
 import requireUser from '../../middlewares/auth/requireUser';
 import githubRouter from './github';
 import googleRouter from './google';
-import signupRouter from './signup';
+import { handleSignin } from './local/signin';
+import { handleSignup } from './local/signup';
 
 const authRouter = new Router();
-
-authRouter.post('/signin', async (req, res) => {
-  res.send('amogus');
-});
 
 authRouter.get('/authcheck', requireUser, async (req, res) => {
   res.send('You are authorized');
 });
 
-authRouter.use('/signup', signupRouter);
+//! CO SIĘ TU DZIEJE 0000.0000
+authRouter.post('/signin', handleSignin);
+authRouter.post('/signup', handleSignup);
+//! ????????????????????????????????????????
+
 authRouter.use('/signin/github', githubRouter);
 authRouter.use('/signin/google', googleRouter);
 

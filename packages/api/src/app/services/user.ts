@@ -63,13 +63,19 @@ export enum AuthProvider {
   Google,
 }
 export async function isEmailFree(email: string): Promise<boolean> {
-  const getUser: User | null = await db.user.findUnique({
+  const getUser = await db.user.findUnique({
     where: {
       email,
     },
   });
   return getUser === null ? true : false;
 }
+
+export async function getUser(email: string) {
+  const user = await db.user.findUnique({ where: { email } });
+  return user;
+}
+
 export async function findOrCreateUser(
   user: LynxUser,
   authProvider: AuthProvider

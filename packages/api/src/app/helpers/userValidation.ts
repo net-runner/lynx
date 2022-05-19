@@ -1,9 +1,16 @@
 import * as Joi from 'joi';
 import { LynxUser } from '../services/user.types';
+import log from './logger';
 
 const signUpSchema = Joi.object({
   name: Joi.string().alphanum().min(3).max(30).required(),
-  password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
+  password: Joi.string()
+    .pattern(
+      new RegExp(
+        '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$'
+      )
+    )
+    .required(),
   repeat_password: Joi.ref('password'),
   access_token: Joi.string(),
   email: Joi.string().email({
