@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import LogoSmall from '../LogoSmall';
+import LogoSmall from '../../assets/icons/LogoSmall';
 import { LAN } from './LogoAppName.styled';
 
 const LogoAppName = () => {

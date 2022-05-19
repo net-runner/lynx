@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Footer as F } from './Footer.styled';
+import * as S from './Footer.styled';
 
 const Footer = () => {
   const [isShown, setIsShown] = useState(false);
   const emote = isShown ? '🦊' : '❤';
   return (
-    <F
+    <S.Footer
       onMouseEnter={() => setIsShown(true)}
       onMouseLeave={() => setIsShown(false)}
     >
@@ -14,7 +14,7 @@ const Footer = () => {
         <a href="https://github.com/net-runner">@net-runner</a> &{' '}
         <a href="https://github.com/przemec">@przemec</a>
       </div>
-    </F>
+    </S.Footer>
   );
 };
 

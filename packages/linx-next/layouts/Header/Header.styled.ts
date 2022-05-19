@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import styled from 'styled-components';
 
-export const HeaderStyled = styled.header`
+export const Header = styled.header`
   text-align: center;
   align-items: center;
   justify-items: center;

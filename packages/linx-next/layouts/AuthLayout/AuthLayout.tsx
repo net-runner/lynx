@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import Footer from '../components/Footer/Footer';
-import Header from '../components/Header/Header';
+import Footer from '../Footer/Footer';
+import Header from '../Header';
 
 const Content = styled.div`
   display: flex;
@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   height: 100vh;
 `;
 
-const AuthFlowLayout = ({ children }) => {
+const AuthLayout = ({ children }) => {
   return (
     <Wrapper>
       <Header />
@@ -24,4 +24,4 @@ const AuthFlowLayout = ({ children }) => {
   );
 };
 
-export default AuthFlowLayout;
+export default AuthLayout;

@@ -1,9 +1,9 @@
-import AuthFlowLayout from '../layouts/AuthFlow.layout';
+import AuthLayout from '../layouts/AuthLayout';
 
 export default function Custom404() {
   return (
-    <AuthFlowLayout>
+    <AuthLayout>
       <h1>404 - Page Not Found</h1>
-    </AuthFlowLayout>
+    </AuthLayout>
   );
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SVGProps, memo } from 'react';
+import { SVGProps } from 'react';
 
 const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
   <svg
@@ -24,5 +24,4 @@ const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const Memo = memo(SvgComponent);
-export default Memo;
+export default SvgComponent;

@@ -1,9 +1,9 @@
-import AuthFlowLayout from '../layouts/AuthFlow.layout';
+import AuthLayout from '../layouts/AuthLayout';
 
 export default function Custom500() {
   return (
-    <AuthFlowLayout>
+    <AuthLayout>
       <h1>500 - Server-side error occurred</h1>
-    </AuthFlowLayout>
+    </AuthLayout>
   );
 }
