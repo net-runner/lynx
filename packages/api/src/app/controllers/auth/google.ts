@@ -12,15 +12,13 @@ import {
 } from '../../services/user';
 import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
 import { authorizeAndEnd } from '../../helpers/authorizeAndEnd';
+import { defaultRouteHandler } from '../../../interfaces';
 const { GOOGLE_APP_ID, API_URL } = process.env;
 
 const env = process.env.NODE_ENV;
 const isDev = env === 'development';
 
-export async function handleGoogleOauthRedirect(
-  req: Request<DefaultRequestLocals>,
-  res: Response<DefaultResponseLocals>
-) {
+const handleGoogleOauthRedirect: defaultRouteHandler = async (req, res) => {
   const url = 'https://accounts.google.com/o/oauth2/v2/auth';
   const body = {
     redirect_uri: `${
@@ -37,12 +35,9 @@ export async function handleGoogleOauthRedirect(
   };
   const qs = new URLSearchParams(body);
   res.redirect(`${url}?${qs}`);
-}
+};
 
-export async function handleGoogleOauthCallback(
-  req: Request<DefaultRequestLocals>,
-  res: Response<DefaultResponseLocals>
-) {
+const handleGoogleOauthCallback: defaultRouteHandler = async (req, res) => {
   const code = req.query.code as string;
   try {
     const tokenBundle = await getGoogleOAuthTokens(code);
@@ -73,4 +68,5 @@ export async function handleGoogleOauthCallback(
     console.error({ err: e.message, desc: e.response.data.error_description });
     res.json({ err: e.message, desc: e.response.data.error_description });
   }
-}
+};
+export { handleGoogleOauthRedirect, handleGoogleOauthCallback };

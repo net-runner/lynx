@@ -14,5 +14,8 @@ export interface defaultRouteMiddlewareInterface {
     next?: MiddlewareNext
   );
 }
+export interface defaultRouteHandler {
+  (req: Request<DefaultRequestLocals>, res: Response<DefaultResponseLocals>);
+}
 
 export { Link };

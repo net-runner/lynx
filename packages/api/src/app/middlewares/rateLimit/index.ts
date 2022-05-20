@@ -1,3 +1,4 @@
+import { defaultRouteMiddlewareInterface } from '../../../interfaces/index';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 const opts = {
   points: 6, // 6 points
@@ -6,7 +7,11 @@ const opts = {
 
 const rateLimiter = new RateLimiterMemory(opts);
 
-export default function rateLimiterMiddleware(req, res, next) {
+const rateLimiterMiddleware: defaultRouteMiddlewareInterface = (
+  req,
+  res,
+  next
+) => {
   rateLimiter
     .consume(req.ip)
     .then(() => {
@@ -15,4 +20,5 @@ export default function rateLimiterMiddleware(req, res, next) {
     .catch(() => {
       res.status(429).send('Too Many Requests');
     });
-}
+};
+export default rateLimiterMiddleware;

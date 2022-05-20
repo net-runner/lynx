@@ -1,11 +1,5 @@
 import * as bcrypt from 'bcrypt';
 import log from '../../helpers/logger';
-import {
-  DefaultRequestLocals,
-  DefaultResponseLocals,
-  Request,
-  Response,
-} from 'hyper-express';
 import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
 import {
   AuthProvider,
@@ -13,11 +7,9 @@ import {
   isEmailFree,
 } from '../../services/user';
 import { validateSignUp } from '../../helpers/dataValidation';
+import { defaultRouteHandler } from '../../../interfaces';
 
-export async function handleSignup(
-  req: Request<DefaultRequestLocals>,
-  res: Response<DefaultResponseLocals>
-) {
+const handleSignup: defaultRouteHandler = async (req, res) => {
   try {
     const body = await req.json();
     const { name, email, password, repeat_password } = body;
@@ -54,4 +46,5 @@ export async function handleSignup(
     log.error({ err: e.message, desc: e.response.data.error_description });
     res.json({ err: e.message, desc: e.response.data.error_description });
   }
-}
+};
+export default handleSignup;

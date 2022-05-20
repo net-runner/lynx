@@ -1,15 +1,10 @@
 import axios from 'axios';
-import {
-  DefaultRequestLocals,
-  DefaultResponseLocals,
-  Request,
-  Response,
-} from 'hyper-express';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthProvider, findOrCreateUser } from '../../services/user';
 import { GithubUser } from '../../services/user.types';
 import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
 import { authorizeAndEnd } from '../../helpers/authorizeAndEnd';
+import { defaultRouteHandler } from '../../../interfaces';
 
 const { GITHUB_APP_SECRET, GITHUB_APP_ID, FRONTEND_URL } = process.env;
 
@@ -17,10 +12,7 @@ const { GITHUB_APP_SECRET, GITHUB_APP_ID, FRONTEND_URL } = process.env;
 const stateDict = {};
 
 //Route for Oauth login with github
-export async function handleGithubOauthRedirect(
-  req: Request<DefaultRequestLocals>,
-  res: Response<DefaultResponseLocals>
-) {
+const handleGithubOauthRedirect: defaultRouteHandler = async (req, res) => {
   if (!GITHUB_APP_ID) {
     res.send('GitHub app id not specified');
   }
@@ -29,14 +21,11 @@ export async function handleGithubOauthRedirect(
   res.redirect(
     `https://github.com/login/oauth/authorize?client_id=${GITHUB_APP_ID}&state=${state}`
   );
-}
+};
 
 //Route for Oauth login callback
 //handle cancelation + token requesting
-export async function handleGithubOauthCallback(
-  req: Request<DefaultRequestLocals>,
-  res: Response<DefaultResponseLocals>
-) {
+const handleGithubOauthCallback: defaultRouteHandler = async (req, res) => {
   const { error, code, state } = req.query;
 
   //If github user cancels auth
@@ -90,13 +79,10 @@ export async function handleGithubOauthCallback(
   } catch (e) {
     res.json({ err: e.message });
   }
-}
+};
 
 //Handle Github hook events.
-export async function handleGithubHookEvents(
-  req: Request<DefaultRequestLocals>,
-  res: Response<DefaultResponseLocals>
-) {
+const handleGithubHookEvents: defaultRouteHandler = async (req, res) => {
   const body = await req.json();
   console.log(body);
   const { action } = body;
@@ -117,4 +103,9 @@ export async function handleGithubHookEvents(
     pushDiscordWebhook(webhBody);
   }
   res.end();
-}
+};
+export {
+  handleGithubHookEvents,
+  handleGithubOauthCallback,
+  handleGithubOauthRedirect,
+};

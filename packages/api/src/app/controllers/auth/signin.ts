@@ -1,20 +1,12 @@
 import * as bcrypt from 'bcrypt';
-import {
-  DefaultRequestLocals,
-  DefaultResponseLocals,
-  Request,
-  Response,
-} from 'hyper-express';
 import { getUser } from '../../services/user';
 import log from '../../helpers/logger';
 import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
 import { authorizeAndEnd } from '../../helpers/authorizeAndEnd';
+import { defaultRouteHandler } from '../../../interfaces';
 
 //Function for handling user signin using local strategy (email, password)
-export async function handleSignin(
-  req: Request<DefaultRequestLocals>,
-  res: Response<DefaultResponseLocals>
-) {
+const handleSignin: defaultRouteHandler = async (req, res) => {
   try {
     const body = await req.json();
     const { email, password } = body;
@@ -41,5 +33,5 @@ export async function handleSignin(
     log.error({ err: e.message, desc: e.response.data.error_description });
     res.json({ err: e.message, desc: e.response.data.error_description });
   }
-}
+};
 export default handleSignin;

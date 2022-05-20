@@ -41,7 +41,7 @@ export async function handleLinkAdd(
     pushDiscordWebhook(webhBody);
     res.status(200).end();
   } catch (e) {
-    log.error({ err: e.message, desc: e.response.data.error_description });
-    res.json({ err: e.message, desc: e.response.data.error_description });
+    log.error({ err: e.message, desc: e });
+    res.json({ err: e.message, desc: e });
   }
 }
