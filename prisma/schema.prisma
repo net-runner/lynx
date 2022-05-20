@@ -76,6 +76,8 @@ model Role {
   id    String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name  String     @db.VarChar
   roles UserRole[]
+
+  @@unique([name], map: "unique_name")
 }
 
 model Tag {
@@ -83,6 +85,8 @@ model Tag {
   name   String     @db.VarChar
   Groups GroupTag[]
   Links  LinkTag[]
+
+  @@unique([name], map: "unique_tag")
 }
 
 model GroupTag {
