@@ -12,7 +12,7 @@ import corsMiddleware from './app/middlewares/cors';
 import log from './app/helpers/logger';
 import * as cookieParser from 'cookie-parser';
 import deserializeUser from './app/middlewares/auth/deserializeUser';
-
+import rateLimiterMiddleware from './app/middlewares/rateLimit';
 const env = process.env.NODE_ENV;
 const app = new Server();
 
@@ -44,7 +44,7 @@ app.use('/usersgroup', userGroupRouter);
 app.use('/link', linkRouter);
 app.use('/linkgroup', linkGroupRouter);
 app.use('/tag', tagRouter);
-
+app.use(rateLimiterMiddleware);
 if (env !== 'development') {
   app.use(corsMiddleware);
 }
