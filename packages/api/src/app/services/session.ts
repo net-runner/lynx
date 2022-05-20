@@ -1,5 +1,4 @@
 import { signJwt, verifyJwt } from '../helpers/jwt';
-import log from '../helpers/logger';
 import db from '../lib/db';
 
 export async function createSession(userId: string, userAgent: string) {
@@ -26,9 +25,7 @@ export async function updateSession(sessionId: string, data) {
 }
 
 export async function tokenRefresh(refresh_token: string) {
-  log.info(refresh_token);
   const { decoded } = verifyJwt(refresh_token);
-  log.info(decoded);
 
   const session = await db.session.findUnique({
     where: {
@@ -43,7 +40,7 @@ export async function tokenRefresh(refresh_token: string) {
   if (!user) return false;
 
   const accessToken = signJwt(
-    { ...user, session: session.id },
+    { user: user.id, session: session.id },
     { expiresIn: '15m' }
   );
 

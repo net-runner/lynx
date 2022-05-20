@@ -5,6 +5,7 @@ import {
   DefaultRequestLocals,
   MiddlewareNext,
 } from 'hyper-express';
+import { JwtPayload } from 'jsonwebtoken';
 import { Link } from './data/link';
 
 export interface defaultRouteMiddlewareInterface {
@@ -16,6 +17,13 @@ export interface defaultRouteMiddlewareInterface {
 }
 export interface defaultRouteHandler {
   (req: Request<DefaultRequestLocals>, res: Response<DefaultResponseLocals>);
+}
+
+interface AuthorizedRouteLocals {
+  id: JwtPayload;
+}
+export interface authorizedRouteHandler {
+  (req: Request<DefaultRequestLocals>, res: Response<AuthorizedRouteLocals>);
 }
 
 export { Link };
