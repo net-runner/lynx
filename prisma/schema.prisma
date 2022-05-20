@@ -7,6 +7,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Review {
+  id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  score       Int
+  description String     @db.VarChar
+  creator     String     @db.Uuid
+  creatorId   User       @relation(fields: [creator], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  group       String?    @db.Uuid
+  link        String?    @db.Uuid
+  groupId     LinkGroup? @relation(fields: [group], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  linkId      Link?      @relation(fields: [link], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
 model LinkGroup {
   id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   owner        String?    @db.Uuid
@@ -20,6 +32,7 @@ model LinkGroup {
   privacyLevel String     @default(dbgenerated("0")) @db.VarChar
   userId       User?      @relation(fields: [owner], references: [id], onDelete: Cascade, onUpdate: NoAction)
   links        Link[]
+  reviews      Review[]
   tags         GroupTag[]
 }
 
@@ -34,6 +47,7 @@ model Link {
   userId       User?      @relation(fields: [owner], references: [id], onDelete: Cascade, onUpdate: NoAction)
   groupId      LinkGroup? @relation(fields: [group], references: [id], onDelete: Cascade, onUpdate: NoAction)
   tags         LinkTag[]
+  reviews      Review[]
 
   @@index([owner], map: "fki_links_owner_fkey")
 }
@@ -60,6 +74,7 @@ model User {
   links        Link[]
   sessions     Session[]
   linkGroups   LinkGroup[]
+  reviews      Review[]
 
   @@unique([email], map: "unique_email")
 }
