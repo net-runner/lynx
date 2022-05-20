@@ -2,8 +2,8 @@ import { Router } from 'hyper-express';
 import requireUser from '../../middlewares/auth/requireUser';
 import githubRouter from './github';
 import googleRouter from './google';
-import { handleSignin } from './local/signin';
-import { handleSignup } from './local/signup';
+import { handleSignin } from '../../controllers/auth/signin';
+import { handleSignup } from '../../controllers/auth/signup';
 
 const authRouter = new Router();
 
