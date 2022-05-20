@@ -1,10 +1,4 @@
 import {
-  DefaultRequestLocals,
-  DefaultResponseLocals,
-  Request,
-  Response,
-} from 'hyper-express';
-import {
   AuthProvider,
   findOrCreateUser,
   getGoogleOAuthTokens,
