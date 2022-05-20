@@ -12,7 +12,7 @@ import {
   findOrCreateUser,
   isEmailFree,
 } from '../../services/user';
-import { validateSignUp } from '../../helpers/userValidation';
+import { validateSignUp } from '../../helpers/dataValidation';
 
 export async function handleSignup(
   req: Request<DefaultRequestLocals>,

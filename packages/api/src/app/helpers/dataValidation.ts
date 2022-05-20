@@ -1,6 +1,6 @@
 import * as Joi from 'joi';
+import { Link } from '../../interfaces';
 import { LynxUser } from '../services/user.types';
-import log from './logger';
 
 const signUpSchema = Joi.object({
   name: Joi.string().alphanum().min(3).max(30).required(),
@@ -23,5 +23,19 @@ const signUpSchema = Joi.object({
 
 export const validateSignUp = async (user: LynxUser): Promise<boolean> => {
   const value = signUpSchema.validate(user);
+  return value.error ? false : true;
+};
+
+
+const linkSchema = Joi.object({
+  link: Joi.string().domain().required(),
+  description: Joi.string().required(),
+  privacyLevel: Joi.number().required(),
+  owner: Joi.string().guid(),
+  group: Joi.string().guid(),
+})
+
+export const validateLink = async (link: Link): Promise<boolean> => {
+  const value = linkSchema.validate(link);
   return value.error ? false : true;
 };

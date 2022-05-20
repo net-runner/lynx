@@ -5,6 +5,7 @@ import {
   DefaultRequestLocals,
   MiddlewareNext,
 } from 'hyper-express';
+import { Link } from './data/link';
 
 export interface defaultRouteMiddlewareInterface {
   (
@@ -13,3 +14,5 @@ export interface defaultRouteMiddlewareInterface {
     next?: MiddlewareNext
   );
 }
+
+export { Link };
