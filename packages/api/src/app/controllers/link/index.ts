@@ -7,7 +7,7 @@ import {
 } from 'hyper-express';
 import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
 import { validateLink } from '../../helpers/dataValidation';
-import { addLink } from '../../services/link';
+import { addLinkToDb } from '../../services/link';
 
 export async function handleLinkAdd(
   req: Request<DefaultRequestLocals>,
@@ -28,7 +28,7 @@ export async function handleLinkAdd(
     const isLinkValidated = await validateLink(lynxLink);
     if (!isLinkValidated) return res.status(403).end();
 
-    await addLink(lynxLink);
+    await addLinkToDb(lynxLink);
 
     const webhBody = {
       embeds: [
