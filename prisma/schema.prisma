@@ -8,24 +8,24 @@ datasource db {
 }
 
 model LinkGroup {
-  id           String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  owner        String? @db.Uuid
-  name         String  @db.VarChar
-  description  String  @db.VarChar
-  picture      String  @db.VarChar
-  stars        Int     @default(0)
-  watcherCount Int     @default(0)
-  linkedCount  Int     @default(0)
-  linksAmmount Int     @default(0)
-  privacyLevel String  @default(dbgenerated("0")) @db.VarChar
-  userId       User?   @relation(fields: [owner], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  owner        String?    @db.Uuid
+  name         String     @db.VarChar
+  description  String     @db.VarChar
+  picture      String     @db.VarChar
+  stars        Int        @default(0)
+  watcherCount Int        @default(0)
+  linkedCount  Int        @default(0)
+  linksAmmount Int        @default(0)
+  privacyLevel String     @default(dbgenerated("0")) @db.VarChar
+  userId       User?      @relation(fields: [owner], references: [id], onDelete: Cascade, onUpdate: NoAction)
   links        Link[]
+  tags         GroupTag[]
 }
 
 model Link {
   id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   link         String     @db.VarChar
-  tags         String[]   @db.Uuid
   privacyLevel String     @default(dbgenerated("0")) @db.VarChar
   owner        String?    @db.Uuid
   stars        Int        @default(0)
@@ -33,6 +33,7 @@ model Link {
   group        String?    @db.Uuid
   userId       User?      @relation(fields: [owner], references: [id], onDelete: Cascade, onUpdate: NoAction)
   groupId      LinkGroup? @relation(fields: [group], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tags         LinkTag[]
 
   @@index([owner], map: "fki_links_owner_fkey")
 }
@@ -75,4 +76,27 @@ model Role {
   id    String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name  String     @db.VarChar
   roles UserRole[]
+}
+
+model Tag {
+  id     String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name   String     @db.VarChar
+  Groups GroupTag[]
+  Links  LinkTag[]
+}
+
+model GroupTag {
+  id      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  group   String    @db.Uuid
+  tag     String    @db.Uuid
+  groupId LinkGroup @relation(fields: [group], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tagId   Tag       @relation(fields: [tag], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model LinkTag {
+  id      String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  link    String @db.Uuid
+  tag     String @db.Uuid
+  groupId Link   @relation(fields: [link], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tagId   Tag    @relation(fields: [tag], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
