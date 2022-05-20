@@ -1,6 +1,6 @@
 import db from '../lib/db';
 
-export async function addLink(link) {
+export async function createLink(link) {
   try {
     const { link: linkHref, description, owner, group, privacyLevel } = link;
     const newLink = await db.link.create({

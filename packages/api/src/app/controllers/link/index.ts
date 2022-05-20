@@ -1,25 +1,18 @@
 import log from '../../helpers/logger';
-import {
-  DefaultRequestLocals,
-  DefaultResponseLocals,
-  Request,
-  Response,
-} from 'hyper-express';
 import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
 import { validateLink } from '../../helpers/dataValidation';
-import { addLink } from '../../services/link';
+import { createLink } from '../../services/link';
+import { authorizedRouteHandler } from '../../../interfaces';
 
-export async function handleLinkAdd(
-  req: Request<DefaultRequestLocals>,
-  res: Response<DefaultResponseLocals>
-) {
+const handleLinkAdd: authorizedRouteHandler = async (req, res) => {
   try {
     const body = await req.json();
-    const { link, privacyLevel, owner, description, group } = body;
+    const { link, privacyLevel, description, group } = body;
+    const user = res.locals.id.user;
     const lynxLink = {
       link,
       privacyLevel,
-      owner,
+      owner: user,
       description,
       group,
     };
@@ -28,13 +21,13 @@ export async function handleLinkAdd(
     const isLinkValidated = await validateLink(lynxLink);
     if (!isLinkValidated) return res.status(403).end();
 
-    await addLink(lynxLink);
+    await createLink(lynxLink);
 
     const webhBody = {
       embeds: [
         {
-          title: `new link added: ${lynxLink.link}`,
-          description: `-`,
+          title: `New link added: ${lynxLink.link}`,
+          description: `from user ${user}`,
         },
       ],
     };
@@ -44,4 +37,5 @@ export async function handleLinkAdd(
     log.error({ err: e.message, desc: e });
     res.json({ err: e.message, desc: e });
   }
-}
+};
+export { handleLinkAdd };
