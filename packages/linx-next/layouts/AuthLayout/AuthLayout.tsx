@@ -1,3 +1,4 @@
+import SpecialBackground from '../../components/SpecialBackground';
 import React from 'react';
 import styled from 'styled-components';
 import Footer from '../Footer/Footer';
@@ -20,6 +21,7 @@ const AuthLayout = ({ children }) => {
       <Header />
       <Content>{children}</Content>
       <Footer />
+      <SpecialBackground />
     </Wrapper>
   );
 };
