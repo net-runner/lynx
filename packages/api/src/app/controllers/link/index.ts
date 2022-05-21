@@ -10,7 +10,6 @@ import {
   authorizedRouteHandler,
   defaultRouteHandler,
 } from '../../../interfaces';
-import { filterObjectKeys } from '../../helpers/utilsJS';
 
 export const handleLinkAdd: authorizedRouteHandler = async (req, res) => {
   try {
@@ -58,16 +57,7 @@ export const handleGetLink: defaultRouteHandler = async (req, res) => {
     };
     pushDiscordWebhook(discordWebhookBody);
 
-    const linkResponse = JSON.stringify(
-      filterObjectKeys(linkFromDb, [
-        'link',
-        'privacyLevel',
-        'owner',
-        'group',
-        'description',
-        'stars',
-      ])
-    );
+    const linkResponse = JSON.stringify(linkFromDb);
     res.status(200).send(linkResponse);
   } catch (e) {
     log.error({ err: e.message, desc: e });
@@ -78,9 +68,11 @@ export const handleGetLink: defaultRouteHandler = async (req, res) => {
 export const handleGetLinks: defaultRouteHandler = async (req, res) => {
   try {
     const body = await req.json();
-    const { limit, page } = body;
+    const { limit } = body;
+    let { page } = body;
 
     if (limit > 50) return res.status(400).send('Limit exceeded');
+    if (page === undefined) page = 0;
     if (typeof limit !== 'number' || typeof page !== 'number')
       return res.status(400).send('Limit and page have to be numbers');
 
@@ -93,16 +85,7 @@ export const handleGetLinks: defaultRouteHandler = async (req, res) => {
     pushDiscordWebhook(discordWebhookBody);
 
     const linksResponse = JSON.stringify(
-      linksFromDb.map((linkFromDb) =>
-        filterObjectKeys(linkFromDb, [
-          'link',
-          'privacyLevel',
-          'owner',
-          'group',
-          'description',
-          'stars',
-        ])
-      )
+      linksFromDb.map((linkFromDb) => linkFromDb)
     );
     res.status(200).send(linksResponse);
   } catch (e) {
