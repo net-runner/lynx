@@ -9,6 +9,7 @@ linkRouter.post('/edit/:id', requireUser, null);
 linkRouter.post('/del/:id', requireUser, null);
 
 //For getting links no auth required
+//implement pagination for /
 linkRouter.get('/', null);
 linkRouter.get('/:id', null);
 

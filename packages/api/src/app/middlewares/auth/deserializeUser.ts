@@ -19,7 +19,7 @@ const deserializeUser: defaultRouteMiddlewareInterface = async (req, res) => {
     log.info(decoded);
     log.info(expired);
     if (decoded) {
-      res.locals.user = decoded;
+      res.locals.id = decoded;
       return;
     }
 
@@ -38,7 +38,7 @@ const deserializeUser: defaultRouteMiddlewareInterface = async (req, res) => {
       }
 
       const result = verifyJwt(newAccessToken as string);
-      res.locals.user = result.decoded;
+      res.locals.id = result.decoded;
       return;
     }
   } catch (e) {
