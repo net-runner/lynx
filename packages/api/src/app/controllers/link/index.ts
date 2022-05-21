@@ -80,6 +80,8 @@ export const handleGetLinks: defaultRouteHandler = async (req, res) => {
     const body = await req.json();
     const { limit, page } = body;
 
+    if (limit > 50) return res.status(400).end();
+
     const linksFromDb = await getLinksFromDatabase(limit, page);
     if (!linksFromDb) return res.status(403).end();
 
