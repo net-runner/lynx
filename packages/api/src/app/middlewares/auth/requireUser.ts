@@ -1,11 +1,9 @@
-import { defaultRouteMiddlewareInterface } from '../../../interfaces/index';
+import { defaultRouteMiddlewareInterface } from '../../../interfaces';
 
 const requireUser: defaultRouteMiddlewareInterface = (req, res, next) => {
   const user = res.locals.id;
 
-  if (!user) {
-    return res.status(403).end();
-  }
+  if (!user) return res.status(404).end();
 
   return next();
 };

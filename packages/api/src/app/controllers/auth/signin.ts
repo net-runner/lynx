@@ -10,12 +10,11 @@ const handleSignin: defaultRouteHandler = async (req, res) => {
   try {
     const body = await req.json();
     const { email, password } = body;
-    const user = await getUser(email);
 
-    if (!user) return res.status(403).end();
+    const user = await getUser(email);
+    if (!user) return res.status(404).end();
 
     const passwordMatch = await bcrypt.compare(password, user.password);
-
     if (!passwordMatch) return res.status(403).end();
 
     const discordWebhookBody = {

@@ -19,11 +19,12 @@ const handleSignup: defaultRouteHandler = async (req, res) => {
       password,
     };
     log.info(name);
+
     const isUserValidated = await validateSignUp({
       ...lynxUser,
       repeat_password,
     });
-    if (!isUserValidated) return res.status(403).end();
+    if (!isUserValidated) return res.status(400).end();
 
     const isEmailRegistered = await isEmailFree(email);
     if (!isEmailRegistered) return res.status(403).end();

@@ -33,7 +33,7 @@ app.get('/healthcheck', (req, res) => {
 });
 //Handle all of unsuported routes
 app.get('/*', (req, res) => {
-  res.status(404).send('Unsuported route');
+  res.status(404).send('Unsupported route');
 });
 
 const port = process.env.PORT || 80;

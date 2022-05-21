@@ -27,7 +27,7 @@ export const handleLinkAdd: authorizedRouteHandler = async (req, res) => {
     log.info(link);
 
     const isLinkValidated = await validateLink(lynxLink);
-    if (!isLinkValidated) return res.status(403).end();
+    if (!isLinkValidated) return res.status(400).end();
 
     await createLink(lynxLink);
 
@@ -50,7 +50,7 @@ export const handleGetLink: defaultRouteHandler = async (req, res) => {
     log.info(id);
 
     const linkFromDb = await getLinkFromDatabase(id);
-    if (!linkFromDb) return res.status(403).end();
+    if (!linkFromDb) return res.status(404).end();
 
     const discordWebhookBody = {
       title: `GET link from db: ${linkFromDb.link}`,
@@ -80,10 +80,11 @@ export const handleGetLinks: defaultRouteHandler = async (req, res) => {
     const body = await req.json();
     const { limit, page } = body;
 
-    if (limit > 50) return res.status(400).end();
+    if (limit > 50) return res.status(400).send('Limit exceeded');
+    if (typeof limit !== 'number' || typeof page !== 'number')
+      return res.status(400).send('Limit and page have to be numbers');
 
     const linksFromDb = await getLinksFromDatabase(limit, page);
-    if (!linksFromDb) return res.status(403).end();
 
     const discordWebhookBody = {
       title: `GET links array from db, limit: ${limit}, page: ${page}`,
