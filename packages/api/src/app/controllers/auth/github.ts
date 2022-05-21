@@ -2,7 +2,7 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthProvider, findOrCreateUser } from '../../services/user';
 import { GithubUser } from '../../services/user.types';
-import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
+import { pushDiscordWebhook } from '../../helpers/pushDiscordWebhook';
 import { authorizeAndEnd } from '../../helpers/authorizeAndEnd';
 import { defaultRouteHandler } from '../../../interfaces';
 
@@ -64,15 +64,11 @@ const handleGithubOauthCallback: defaultRouteHandler = async (req, res) => {
     console.log(tokenBundle);
     console.log(githubUser);
 
-    const webhBody = {
-      embeds: [
-        {
-          title: `Github new user: ${githubUser.login}`,
-          description: `user authorization accepted`,
-        },
-      ],
+    const discordWebhookBody = {
+      title: `Github new user: ${githubUser.login}`,
+      description: `user authorization accepted`,
     };
-    pushDiscordWebhook(webhBody);
+    pushDiscordWebhook(discordWebhookBody);
     const user = await findOrCreateUser(githubUser, AuthProvider.GitHub);
 
     authorizeAndEnd(user, req, res);
@@ -91,16 +87,11 @@ const handleGithubHookEvents: defaultRouteHandler = async (req, res) => {
     //TODO Drop user data?
     //https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#github_app_authorization=
 
-    const webhBody = {
-      embeds: [
-        {
-          title: `Github revoked for ${body.sender.login}`,
-          description: `user authorization removed`,
-        },
-      ],
+    const discordWebhookBody = {
+      title: `Github revoked for ${body.sender.login}`,
+      description: `user authorization removed`,
     };
-
-    pushDiscordWebhook(webhBody);
+    pushDiscordWebhook(discordWebhookBody);
   }
   res.end();
 };

@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import log from '../../helpers/logger';
-import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
+import { pushDiscordWebhook } from '../../helpers/pushDiscordWebhook';
 import {
   AuthProvider,
   findOrCreateUser,
@@ -32,15 +32,11 @@ const handleSignup: defaultRouteHandler = async (req, res) => {
       lynxUser.password = hash;
     });
     await findOrCreateUser(lynxUser, AuthProvider.Local);
-    const webhBody = {
-      embeds: [
-        {
-          title: `Lynx new user: ${lynxUser.name}`,
-          description: `user authorization accepted`,
-        },
-      ],
+    const discordWebhookBody = {
+      title: `Lynx new user: ${lynxUser.name}`,
+      description: `user authorization accepted`,
     };
-    pushDiscordWebhook(webhBody);
+    pushDiscordWebhook(discordWebhookBody);
     res.status(200).end();
   } catch (e) {
     log.error({ err: e.message, desc: e.response.data.error_description });

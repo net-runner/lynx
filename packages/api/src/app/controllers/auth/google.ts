@@ -4,7 +4,7 @@ import {
   getGoogleOAuthTokens,
   getGoogleUser,
 } from '../../services/user';
-import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
+import { pushDiscordWebhook } from '../../helpers/pushDiscordWebhook';
 import { authorizeAndEnd } from '../../helpers/authorizeAndEnd';
 import { defaultRouteHandler } from '../../../interfaces';
 const { GOOGLE_APP_ID, API_URL } = process.env;
@@ -45,15 +45,11 @@ const handleGoogleOauthCallback: defaultRouteHandler = async (req, res) => {
     );
 
     console.log(googleUser);
-    const webhBody = {
-      embeds: [
-        {
-          title: `Google new user: ${googleUser.email}`,
-          description: `user authorization accepted`,
-        },
-      ],
+    const discordWebhookBody = {
+      title: `Google new user: ${googleUser.email}`,
+      description: `user authorization accepted`,
     };
-    pushDiscordWebhook(webhBody);
+    pushDiscordWebhook(discordWebhookBody);
     //TODO add user to database, forward token data to frontend
     const user = await findOrCreateUser(googleUser, AuthProvider.Google);
 

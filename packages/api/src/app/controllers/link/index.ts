@@ -1,5 +1,5 @@
 import log from '../../helpers/logger';
-import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
+import { pushDiscordWebhook } from '../../helpers/pushDiscordWebhook';
 import { validateLink } from '../../helpers/dataValidation';
 import {
   createLink,
@@ -31,15 +31,11 @@ export const handleLinkAdd: authorizedRouteHandler = async (req, res) => {
 
     await createLink(lynxLink);
 
-    const webhBody = {
-      embeds: [
-        {
-          title: `New link added: ${lynxLink.link}`,
-          description: `from user ${user}`,
-        },
-      ],
+    const discordWebhookBody = {
+      title: `New link added: ${lynxLink.link}`,
+      description: `from user ${user}`,
     };
-    pushDiscordWebhook(webhBody);
+    pushDiscordWebhook(discordWebhookBody);
     res.status(200).end();
   } catch (e) {
     log.error({ err: e.message, desc: e });
@@ -56,15 +52,12 @@ export const handleGetLink: defaultRouteHandler = async (req, res) => {
     const linkFromDb = await getLinkFromDatabase(id);
     if (!linkFromDb) return res.status(403).end();
 
-    const webhBody = {
-      embeds: [
-        {
-          title: `GET link from db: ${linkFromDb.link}`,
-          description: `link id: ${id}`,
-        },
-      ],
+    const discordWebhookBody = {
+      title: `GET link from db: ${linkFromDb.link}`,
+      description: `link id: ${id}`,
     };
-    pushDiscordWebhook(webhBody);
+    pushDiscordWebhook(discordWebhookBody);
+
     const linkResponse = JSON.stringify(
       filterObjectKeys(linkFromDb, [
         'link',
@@ -90,15 +83,11 @@ export const handleGetLinks: defaultRouteHandler = async (req, res) => {
     const linksFromDb = await getLinksFromDatabase(limit, page);
     if (!linksFromDb) return res.status(403).end();
 
-    const webhBody = {
-      embeds: [
-        {
-          title: `GET links array from db, limit: ${limit}, page: ${page}`,
-          description: `---`,
-        },
-      ],
+    const discordWebhookBody = {
+      title: `GET links array from db, limit: ${limit}, page: ${page}`,
+      description: `---`,
     };
-    pushDiscordWebhook(webhBody);
+    pushDiscordWebhook(discordWebhookBody);
 
     const linksResponse = JSON.stringify(
       linksFromDb.map((linkFromDb) =>

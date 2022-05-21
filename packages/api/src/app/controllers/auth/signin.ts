@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import { getUser } from '../../services/user';
 import log from '../../helpers/logger';
-import pushDiscordWebhook from '../../helpers/pushDiscordWebhook';
+import { pushDiscordWebhook } from '../../helpers/pushDiscordWebhook';
 import { authorizeAndEnd } from '../../helpers/authorizeAndEnd';
 import { defaultRouteHandler } from '../../../interfaces';
 
@@ -18,15 +18,11 @@ const handleSignin: defaultRouteHandler = async (req, res) => {
 
     if (!passwordMatch) return res.status(403).end();
 
-    const webhBody = {
-      embeds: [
-        {
-          title: `Lynx user logged in: ${body.email}`,
-          description: `--`,
-        },
-      ],
+    const discordWebhookBody = {
+      title: `Lynx user logged in: ${body.email}`,
+      description: `--`,
     };
-    pushDiscordWebhook(webhBody);
+    pushDiscordWebhook(discordWebhookBody);
 
     authorizeAndEnd(user, req, res, true);
   } catch (e) {
