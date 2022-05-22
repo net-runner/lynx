@@ -1,4 +1,5 @@
 import GithubIcon from './GithubIcon';
+import GithubOutlineIcon from './GithubOutlineIcon';
 import LinkIcon from './LinkIcon';
 import GoogleIcon from './GoogleIcon';
 import LogoSmall from './LogoSmall';
@@ -7,6 +8,7 @@ import LynxLogoDetailNoCircle from './LynxLogoDetailNoCircle';
 
 export {
   GithubIcon,
+  GithubOutlineIcon,
   LinkIcon,
   GoogleIcon,
   LogoSmall,

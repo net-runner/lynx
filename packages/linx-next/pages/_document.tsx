@@ -55,7 +55,7 @@ export default class CustomDocument extends Document<{
             crossOrigin="anonymous"
           />
           <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;500;700;800;900&family=Lato:wght@900&family=Open+Sans:wght@800&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;500;700;800;900&family=Lato:wght@900&family=Open+Sans:wght@800&family=Poppins:wght@500&display=swap"
             rel="stylesheet"
           />
           <link rel="manifest" href="/site.webmanifest" />

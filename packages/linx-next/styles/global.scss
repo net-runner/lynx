@@ -35,6 +35,12 @@ html {
   text-align: center;
 }
 
+.center {
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
 .flex-1 {
   display: flex;
   flex: 1;
@@ -43,10 +49,7 @@ html {
 .column {
   flex-direction: column;
   align-items: center;
-
-  &:nth-child(2n) {
-    margin-left: 40px;
-  }
+  padding: 15px;
 }
 
 body {
@@ -94,6 +97,7 @@ body {
 
 .auth-container {
   background-color: $highlight;
+  display: flex;
   position: relative;
   margin: 0 auto;
   border-radius: 33px;
@@ -101,6 +105,28 @@ body {
   min-width: 380px;
   margin-top: 60px;
   margin-bottom: 70px;
+
+  & button {
+    width: 300px;
+    height: 40px;
+    margin-top: 20px;
+    display: flex;
+    align-self: flex-end;
+
+  }
+
+  & input {
+    margin-top: 10px;
+    width: 300px;
+  }
+
+  & form label {
+    margin-bottom: 10px;
+  }
+
+  & form {
+    height: 100%;
+  }
 }
 
 *,

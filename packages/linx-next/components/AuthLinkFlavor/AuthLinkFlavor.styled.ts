@@ -12,7 +12,7 @@ export const Container = styled.div`
     top: 0;
   }
   &.down {
-    right: 20px;
+    right: 10px;
     bottom: 0;
   }
 `;
