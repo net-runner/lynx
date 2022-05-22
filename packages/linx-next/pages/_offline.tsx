@@ -2,12 +2,20 @@
 
 import { NextSeo } from 'next-seo';
 import { ReactElement } from 'react';
+import { LynxLogoDetail, NoConnectionIcon } from '../assets/icons';
 import { BigInformationSection } from '../components/Text/Text.styled';
 import AuthLayout from '../layouts/AuthLayout/AuthLayout';
 
 const Offline = () => {
   return (
-    <div className="error-route-container">
+    <div className="error-route-container column">
+      <div className="rel" style={{ marginBottom: 22 }}>
+        <LynxLogoDetail style={{ width: 200, height: 200 }} />
+        <NoConnectionIcon
+          style={{ position: 'absolute', bottom: -10, right: -10 }}
+        />
+      </div>
+
       <BigInformationSection>
         Page not cached or Lynx is offline. Reconnect and refresh the app.
       </BigInformationSection>
