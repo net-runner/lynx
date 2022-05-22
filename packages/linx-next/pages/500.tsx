@@ -1,11 +1,17 @@
 import { NextSeo } from 'next-seo';
 import { ReactElement } from 'react';
+import { BigInformationSection } from '../components/Text/Text.styled';
 import AuthLayout from '../layouts/AuthLayout';
 
 const Custom500 = () => {
   return (
-    <div className="error-route-container">
-      <h1>500 - Server-side error occurred</h1>
+    <div className="error-route-container column">
+      <div className="error-number row">
+        <p>5</p>
+        <p>0</p>
+        <p>0</p>
+      </div>
+      <BigInformationSection>Server-side error occurred</BigInformationSection>
     </div>
   );
 };

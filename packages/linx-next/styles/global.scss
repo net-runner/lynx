@@ -52,6 +52,7 @@ html {
   padding: 15px;
 }
 
+
 body {
   background-color: $background;
   font-family: inherit;
@@ -91,8 +92,18 @@ body {
 
 .error-route-container {
   margin: 0 auto;
-  margin-top: 200px;
+  margin-top: 160px;
   display: flex;
+}
+
+.error-number {
+  font-size: 150px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+
+  & p:nth-child(2) {
+    margin: 25px;
+  }
 }
 
 .auth-container {
