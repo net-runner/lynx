@@ -63,8 +63,7 @@ class LinkController {
       };
       pushDiscordWebhook(discordWebhookBody);
 
-      const linkResponse = JSON.stringify(linkFromDb);
-      res.status(200).send(linkResponse);
+      res.status(200).json(linkFromDb);
     } catch (e) {
       log.error({ err: e.message, desc: e });
       res.json({ err: e.message, desc: e });
@@ -89,10 +88,7 @@ class LinkController {
       };
       pushDiscordWebhook(discordWebhookBody);
 
-      const linksResponse = JSON.stringify(
-        linksFromDb.map((linkFromDb) => linkFromDb)
-      );
-      res.status(200).send(linksResponse);
+      res.status(200).json(linksFromDb);
     } catch (e) {
       log.error({ err: e.message, desc: e });
       res.json({ err: e.message, desc: e });
