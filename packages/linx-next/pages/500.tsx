@@ -1,11 +1,21 @@
+import { NextSeo } from 'next-seo';
+import { ReactElement } from 'react';
 import AuthLayout from '../layouts/AuthLayout';
 
-export default function Custom500() {
+const Custom500 = () => {
   return (
-    <AuthLayout>
+    <>
+      <NextSeo
+        title="Serverside error"
+        description="Server error occured refresh the page."
+      />
       <div className="place-self-center">
         <h1>500 - Server-side error occurred</h1>
       </div>
-    </AuthLayout>
+    </>
   );
-}
+};
+Custom500.getLayout = (page: ReactElement) => {
+  return <AuthLayout>{page}</AuthLayout>;
+};
+export default Custom500;

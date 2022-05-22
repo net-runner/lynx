@@ -1,12 +1,14 @@
 import AuthLayout from '../layouts/AuthLayout';
-import Head from 'next/head';
+import { ReactElement } from 'react';
+import { NextSeo } from 'next-seo';
 
-export default function Custom404() {
+const Custom404 = () => {
   return (
     <>
-      <Head>
-        <title>Lynx - 404 page not found</title>
-      </Head>
+      <NextSeo
+        title="Page not found"
+        description="Resource not found on the server."
+      />
       <AuthLayout>
         <div className="mx-auto">
           <h1>404 - Page Not Found</h1>
@@ -14,4 +16,9 @@ export default function Custom404() {
       </AuthLayout>
     </>
   );
-}
+};
+
+Custom404.getLayout = (page: ReactElement) => {
+  return <AuthLayout>{page}</AuthLayout>;
+};
+export default Custom404;

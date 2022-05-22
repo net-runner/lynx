@@ -15,10 +15,16 @@ const Wrapper = styled.div`
   height: 100vh;
 `;
 
-const AuthLayout = ({ children }) => {
+const AuthLayout = ({
+  type,
+  children,
+}: {
+  type?: 'signin' | 'signup';
+  children;
+}) => {
   return (
     <Wrapper>
-      <Header />
+      <Header type={type} />
       <Content>{children}</Content>
       <Footer />
       <SpecialBackground />

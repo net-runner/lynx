@@ -1,20 +1,18 @@
-import Head from 'next/head';
-import React from 'react';
+import { NextSeo } from 'next-seo';
+import React, { ReactElement } from 'react';
 import AuthLayout from '../layouts/AuthLayout';
 
-const signin = () => {
+const signup = () => {
   return (
     <>
-      <Head>
-        <title>Lynx - signin to account</title>
-      </Head>
-      <AuthLayout>
-        <div className="mx-auto">
-          <h1>Signin</h1>
-        </div>
-      </AuthLayout>
+      <NextSeo title="SignUp" description="Create new Lynx account." />
+      <div className="mx-auto">
+        <h1>SignUp</h1>
+      </div>
     </>
   );
 };
-
-export default signin;
+signup.getLayout = (page: ReactElement) => {
+  return <AuthLayout>{page}</AuthLayout>;
+};
+export default signup;

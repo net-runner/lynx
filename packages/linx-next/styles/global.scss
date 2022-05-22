@@ -56,6 +56,17 @@ body {
   }
 }
 
+.auth-container {
+  background-color: $highlight;
+  position: relative;
+  margin: 0 auto;
+  border-radius: 33px;
+  padding: 40px;
+  min-width: 380px;
+  margin-top: 60px;
+  margin-bottom: 70px;
+}
+
 *,
 *::before,
 *::after {

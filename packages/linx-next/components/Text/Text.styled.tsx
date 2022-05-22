@@ -17,3 +17,11 @@ export const BigInformationSection = styled.p`
   text-align: center;
   margin: 0 1rem;
 `;
+
+export const MediumTopic = styled.p`
+  font-family: 'Segoe UI';
+  margin-top: 35px;
+  font-size: 2.5rem;
+  text-align: center;
+  font-weight: bold;
+`;
