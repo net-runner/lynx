@@ -13,9 +13,9 @@ const Header = ({ type }: { type?: 'signin' | 'signup' }) => {
     <S.Header>
       <S.Nav>
         <LogoAppName />
-        <S.HeaderTextLink href="/explore">Explore</S.HeaderTextLink>
-        <S.HeaderTextLink href="/stats">Statistics</S.HeaderTextLink>
-        <S.HeaderTextLink href="/top">Top Lynxers</S.HeaderTextLink>
+        <S.HeaderTextLink href="explore">Explore</S.HeaderTextLink>
+        <S.HeaderTextLink href="stats">Statistics</S.HeaderTextLink>
+        <S.HeaderTextLink href="top">Top Lynxers</S.HeaderTextLink>
       </S.Nav>
       <S.Nav>
         {type === 'signin' ? (

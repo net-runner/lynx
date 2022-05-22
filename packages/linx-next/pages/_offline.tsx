@@ -2,21 +2,28 @@
 
 import { NextSeo } from 'next-seo';
 import { ReactElement } from 'react';
+import { BigInformationSection } from '../components/Text/Text.styled';
 import AuthLayout from '../layouts/AuthLayout/AuthLayout';
 
 const Offline = () => {
   return (
-    <>
-      <NextSeo
-        title="Lynx is offline"
-        description="Resource not cached or application is offline."
-      />
-      <h1>No connection or app is offline.</h1>
-    </>
+    <div className="error-route-container">
+      <BigInformationSection>
+        Page not cached or Lynx is offline. Reconnect and refresh the app.
+      </BigInformationSection>
+    </div>
   );
 };
 
 Offline.getLayout = (page: ReactElement) => {
-  return <AuthLayout>{page}</AuthLayout>;
+  return (
+    <AuthLayout>
+      <NextSeo
+        title="Lynx is offline"
+        description="Resource not cached or application is offline."
+      />
+      {page}
+    </AuthLayout>
+  );
 };
 export default Offline;

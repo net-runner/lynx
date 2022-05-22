@@ -1,15 +1,9 @@
-@import 'tailwindcss/components';
-
-@import 'tailwindcss/base';
-
-@import 'tailwindcss/utilities';
-
 @import './breakpoints.scss';
 
 //Colors from figma
 $background: #16181E;
 $primary: #00B9AE;
-$white: #F9F9F9;
+$white: #f9f9f9;
 $highlight: #21242D;
 
 html {
@@ -25,6 +19,34 @@ html {
   font-feature-settings: "kern";
   text-rendering: optimizeLegibility;
   color: $white;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+
+
+}
+
+.rel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.flex-1 {
+  display: flex;
+  flex: 1;
+}
+
+.column {
+  flex-direction: column;
+  align-items: center;
+
+  &:nth-child(2n) {
+    margin-left: 40px;
+  }
 }
 
 body {
@@ -43,6 +65,10 @@ body {
 .landing-container {
   margin: 140px 20vw;
 
+}
+
+.signup {
+  padding-right: 0px !important;
 }
 
 .landing-buttons-container {

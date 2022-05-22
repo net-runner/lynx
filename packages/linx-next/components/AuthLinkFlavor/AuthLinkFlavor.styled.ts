@@ -11,6 +11,10 @@ export const Container = styled.div`
     left: 20px;
     top: 0;
   }
+  &.down {
+    right: 20px;
+    bottom: 0;
+  }
 `;
 export const SpecialLinkIcon = styled(LinkIcon)`
   width: 55px;

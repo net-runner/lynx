@@ -21,7 +21,14 @@ export const BigInformationSection = styled.p`
 export const MediumTopic = styled.p`
   font-family: 'Segoe UI';
   margin-top: 35px;
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   text-align: center;
   font-weight: bold;
+`;
+
+export const InterMediumInfo = styled.p`
+  font-size: 1.8rem;
+  font-family: Inter;
+  text-align: center;
+  font-weight: 400;
 `;

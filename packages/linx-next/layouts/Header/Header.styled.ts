@@ -29,4 +29,11 @@ export const Nav = styled.nav`
       margin-left: 20px;
     }
   }
+  & button {
+    height: 30px;
+  }
+  & svg {
+    display: flex;
+    align-self: center;
+  }
 `;
