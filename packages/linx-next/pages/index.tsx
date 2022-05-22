@@ -20,7 +20,7 @@ const Index = () => {
         finding new exciting sites with a click of a buton.
       </BigInformationSection>
       <div className="landing-buttons-container">
-        <Button onClick={() => handleClick('/login')}>Manage bookmarks</Button>
+        <Button onClick={() => handleClick('/signin')}>Manage bookmarks</Button>
         <Button onClick={() => handleClick('/explore')}>Explore</Button>
       </div>
     </div>

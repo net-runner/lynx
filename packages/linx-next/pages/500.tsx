@@ -9,7 +9,7 @@ const Custom500 = () => {
         title="Serverside error"
         description="Server error occured refresh the page."
       />
-      <div className="place-self-center">
+      <div className="error-route-container">
         <h1>500 - Server-side error occurred</h1>
       </div>
     </>

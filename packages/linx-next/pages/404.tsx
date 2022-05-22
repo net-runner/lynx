@@ -9,11 +9,10 @@ const Custom404 = () => {
         title="Page not found"
         description="Resource not found on the server."
       />
-      <AuthLayout>
-        <div className="mx-auto">
-          <h1>404 - Page Not Found</h1>
-        </div>
-      </AuthLayout>
+
+      <div className="error-route-container">
+        <h1>404 - Page Not Found</h1>
+      </div>
     </>
   );
 };

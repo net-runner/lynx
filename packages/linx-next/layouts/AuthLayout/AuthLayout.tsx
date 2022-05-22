@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Footer from '../Footer/Footer';
 import Header from '../Header';
+import ServiceRouteLinks from '../../components/ServiceRouteLinks';
 
 const Content = styled.div`
   display: flex;
@@ -27,6 +28,7 @@ const AuthLayout = ({
       <Header type={type} />
       <Content>{children}</Content>
       <Footer />
+      <ServiceRouteLinks />
       <SpecialBackground />
     </Wrapper>
   );

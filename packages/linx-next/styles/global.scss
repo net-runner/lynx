@@ -54,6 +54,16 @@ body {
   &>button {
     height: 45px;
   }
+
+  &>button:nth-child(2n) {
+    margin-left: 80px;
+  }
+}
+
+.error-route-container {
+  margin-top: 200px;
+  margin: 0 auto;
+  display: flex;
 }
 
 .auth-container {

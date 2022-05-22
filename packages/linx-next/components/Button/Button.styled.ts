@@ -10,4 +10,6 @@ export const Button = styled.button`
   color: #000;
   font-weight: bold;
   font-size: 1.4rem;
+  line-break: none;
+  white-space: nowrap;
 `;
