@@ -163,4 +163,4 @@ class LinkController {
   };
 }
 
-export default new LinkController();
+export default LinkController;

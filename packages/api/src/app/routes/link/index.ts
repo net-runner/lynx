@@ -1,17 +1,18 @@
 import { Router } from 'hyper-express';
-import LinkController from '../../controllers/link';
+import { LinkController } from '../../controllers';
 import requireUser from '../../middlewares/auth/requireUser';
 
 const linkRouter = new Router();
+const linkController = new LinkController();
 
-linkRouter.post('/add', requireUser, LinkController.add);
-linkRouter.post('/edit/:id', requireUser, LinkController.edit);
-linkRouter.post('/del/:id', requireUser, LinkController.delete);
+linkRouter.post('/add', requireUser, linkController.add);
+linkRouter.post('/edit/:id', requireUser, linkController.edit);
+linkRouter.post('/del/:id', requireUser, linkController.delete);
 
 //For getting links no auth required
-//implement pagination for /
+//TODO implement pagination for /
 linkRouter.get('/', null);
-linkRouter.get('/:id', LinkController.getSingle);
-linkRouter.get('/:limit/:page', LinkController.getMany);
+linkRouter.get('/:id', linkController.getSingle);
+linkRouter.get('/:limit/:page', linkController.getMany);
 
 export default linkRouter;
