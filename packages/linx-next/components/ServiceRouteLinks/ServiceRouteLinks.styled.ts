@@ -11,6 +11,6 @@ export const Container = styled.div`
   font-size: 15px;
   & > a {
     margin-right: 5px;
-    opacity: 0.3;
+    opacity: 0.2;
   }
 `;
