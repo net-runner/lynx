@@ -11,92 +11,89 @@ const { GITHUB_APP_SECRET, GITHUB_APP_ID, FRONTEND_URL } = process.env;
 //Dictionary for request state checks
 const stateDict = {};
 
-//Route for Oauth login with github
-const handleGithubOauthRedirect: defaultRouteHandler = async (req, res) => {
-  if (!GITHUB_APP_ID) {
-    res.send('GitHub app id not specified');
-  }
-  const state = uuidv4();
-  stateDict[state] = new Date().getMilliseconds() + 5 * 60 * 1000;
-  res.redirect(
-    `https://github.com/login/oauth/authorize?client_id=${GITHUB_APP_ID}&state=${state}`
-  );
-};
-
-//Route for Oauth login callback
-//handle cancelation + token requesting
-const handleGithubOauthCallback: defaultRouteHandler = async (req, res) => {
-  const { error, code, state } = req.query;
-
-  //If github user cancels auth
-  if (error) {
-    //redirect to app
-    res.redirect(FRONTEND_URL);
-  }
-
-  //Check state parameter in case of cross-forgery attempt
-  if (!stateDict[state as string]) {
-    res.send('State diff, possible cross-forgery attempt');
-  }
-  //Delete unused memory
-  delete stateDict[state as string];
-
-  const body = {
-    client_id: GITHUB_APP_ID,
-    client_secret: GITHUB_APP_SECRET,
-    code,
+class GithubAuthController {
+  //Route for Oauth login with github
+  public oauthRedirect: defaultRouteHandler = async (req, res) => {
+    if (!GITHUB_APP_ID) {
+      res.send('GitHub app id not specified');
+    }
+    const state = uuidv4();
+    stateDict[state] = new Date().getMilliseconds() + 5 * 60 * 1000;
+    res.redirect(
+      `https://github.com/login/oauth/authorize?client_id=${GITHUB_APP_ID}&state=${state}`
+    );
   };
-  const opts = { headers: { accept: 'application/json' } };
+  //Route for Oauth login callback
+  //handle cancelation + token requesting
+  public oauthCallback: defaultRouteHandler = async (req, res) => {
+    const { error, code, state } = req.query;
 
-  try {
-    //https://docs.github.com/en/developers/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps
+    //If github user cancels auth
+    if (error) {
+      //redirect to app
+      res.redirect(FRONTEND_URL);
+    }
 
-    const tokenBundle = await axios
-      .post('https://github.com/login/oauth/access_token', body, opts)
-      .then((_res) => _res.data);
+    //Check state parameter in case of cross-forgery attempt
+    if (!stateDict[state as string]) {
+      res.send('State diff, possible cross-forgery attempt');
+    }
+    //Delete unused memory
+    delete stateDict[state as string];
 
-    const githubUser = (await axios
-      .get('https://api.github.com/user', {
-        headers: { Authorization: `token ${tokenBundle.access_token}` },
-      })
-      .then((_res) => _res.data)) as GithubUser;
-
-    console.log(tokenBundle);
-    console.log(githubUser);
-
-    const discordWebhookBody = {
-      title: `Github new user: ${githubUser.login}`,
-      description: `user authorization accepted`,
+    const body = {
+      client_id: GITHUB_APP_ID,
+      client_secret: GITHUB_APP_SECRET,
+      code,
     };
-    pushDiscordWebhook(discordWebhookBody);
-    const user = await findOrCreateUser(githubUser, AuthProvider.GitHub);
+    const opts = { headers: { accept: 'application/json' } };
 
-    authorizeAndEnd(user, req, res);
-  } catch (e) {
-    res.json({ err: e.message });
-  }
-};
+    try {
+      //https://docs.github.com/en/developers/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps
 
-//Handle Github hook events.
-const handleGithubHookEvents: defaultRouteHandler = async (req, res) => {
-  const body = await req.json();
-  console.log(body);
-  const { action } = body;
-  if (action === 'revoked') {
-    //TODO implement app revoke
-    //TODO Drop user data?
-    //https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#github_app_authorization=
+      const tokenBundle = await axios
+        .post('https://github.com/login/oauth/access_token', body, opts)
+        .then((_res) => _res.data);
 
-    const discordWebhookBody = {
-      title: `Github revoked for ${body.sender.login}`,
-      description: `user authorization removed`,
-    };
-    pushDiscordWebhook(discordWebhookBody);
-  }
-  res.end();
-};
-export {
-  handleGithubHookEvents,
-  handleGithubOauthCallback,
-  handleGithubOauthRedirect,
-};
+      const githubUser = (await axios
+        .get('https://api.github.com/user', {
+          headers: { Authorization: `token ${tokenBundle.access_token}` },
+        })
+        .then((_res) => _res.data)) as GithubUser;
+
+      console.log(tokenBundle);
+      console.log(githubUser);
+
+      const discordWebhookBody = {
+        title: `Github new user: ${githubUser.login}`,
+        description: `user authorization accepted`,
+      };
+      pushDiscordWebhook(discordWebhookBody);
+      const user = await findOrCreateUser(githubUser, AuthProvider.GitHub);
+
+      authorizeAndEnd(user, req, res);
+    } catch (e) {
+      res.json({ err: e.message });
+    }
+  };
+  //Handle Github hook events.
+  public hookEvents: defaultRouteHandler = async (req, res) => {
+    const body = await req.json();
+    console.log(body);
+    const { action } = body;
+    if (action === 'revoked') {
+      //TODO implement app revoke
+      //TODO Drop user data?
+      //https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#github_app_authorization=
+
+      const discordWebhookBody = {
+        title: `Github revoked for ${body.sender.login}`,
+        description: `user authorization removed`,
+      };
+      pushDiscordWebhook(discordWebhookBody);
+    }
+    res.end();
+  };
+}
+
+export default GithubAuthController;

@@ -1,14 +1,11 @@
 import { Router } from 'hyper-express';
-import {
-  handleGithubHookEvents,
-  handleGithubOauthCallback,
-  handleGithubOauthRedirect,
-} from '../../controllers/auth/github';
+import { GithubAuthController } from '../../controllers';
 
 const githubRouter = new Router();
+const githubController = new GithubAuthController();
 
-githubRouter.get('/', handleGithubOauthRedirect);
-githubRouter.get('/callback', handleGithubOauthCallback);
-githubRouter.post('/hook', handleGithubHookEvents);
+githubRouter.get('/', githubController.oauthRedirect);
+githubRouter.get('/callback', githubController.oauthCallback);
+githubRouter.post('/hook', githubController.hookEvents);
 
 export default githubRouter;
