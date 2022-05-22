@@ -5,8 +5,8 @@ import requireUser from '../../middlewares/auth/requireUser';
 const linkRouter = new Router();
 
 linkRouter.post('/add', requireUser, LinkController.add);
-linkRouter.post('/edit/:id', requireUser, null);
-linkRouter.post('/del/:id', requireUser, null);
+linkRouter.post('/edit/:id', requireUser, LinkController.edit);
+linkRouter.post('/del/:id', requireUser, LinkController.delete);
 
 //For getting links no auth required
 //implement pagination for /

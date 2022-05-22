@@ -6,7 +6,11 @@ import {
   MiddlewareNext,
 } from 'hyper-express';
 import { JwtPayload } from 'jsonwebtoken';
-import { Link } from './data/link';
+
+export enum ControllerMethodTypes {
+  ADD,
+  EDIT,
+}
 
 export interface defaultRouteMiddlewareInterface {
   (
@@ -26,4 +30,3 @@ export interface authorizedRouteHandler {
   (req: Request<DefaultRequestLocals>, res: Response<AuthorizedRouteLocals>);
 }
 
-export { Link };

@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { Link } from '../../interfaces';
+import { Link } from '@prisma/client';
 import { LynxUser } from '../services/user.types';
 
 const signUpSchema = Joi.object({
@@ -23,19 +23,35 @@ const signUpSchema = Joi.object({
 
 export const validateSignUp = async (user: LynxUser): Promise<boolean> => {
   const value = signUpSchema.validate(user);
-  return value.error ? false : true;
+  return !value.error;
 };
 
-
-const linkSchema = Joi.object({
+const linkAddSchema = Joi.object({
+  id: Joi.string().guid(),
   link: Joi.string().domain().required(),
   description: Joi.string().required(),
   privacyLevel: Joi.number().required(),
   owner: Joi.string().guid(),
   group: Joi.string().guid(),
-})
+  stars: Joi.number(),
+});
 
-export const validateLink = async (link: Link): Promise<boolean> => {
-  const value = linkSchema.validate(link);
-  return value.error ? false : true;
+export const validateLinkAdd = async (link: Link): Promise<boolean> => {
+  const value = linkAddSchema.validate(link);
+  return !value.error;
+};
+
+const linkEditSchema = Joi.object({
+  id: Joi.string().guid(),
+  link: Joi.string().domain(),
+  description: Joi.string(),
+  privacyLevel: Joi.number(),
+  owner: Joi.string().guid(),
+  group: Joi.string().guid(),
+  stars: Joi.number(),
+});
+
+export const validateLinkEdit = async (link: Link): Promise<boolean> => {
+  const value = linkEditSchema.validate(link);
+  return !value.error;
 };

@@ -1,20 +1,50 @@
 import db from '../lib/db';
+import {
+  hideObjectKeysWithoutValues,
+  hideSelectedObjectKeys,
+} from '../helpers/utilsJS';
 
 export async function createLink(link) {
   try {
-    const { link: linkHref, description, owner, group, privacyLevel } = link;
+    link = hideSelectedObjectKeys(link, ['id', 'stars']);
     return await db.link.create({
       data: {
-        link: linkHref,
-        description,
-        owner,
-        group,
-        privacyLevel,
+        ...link,
         stars: 0,
       },
     });
   } catch (e) {
     throw new Error(e);
+  }
+}
+
+export async function editLinkInDatabase(updatedLink, linkId) {
+  try {
+    updatedLink = hideSelectedObjectKeys(updatedLink, ['owner', 'id']);
+    updatedLink = hideObjectKeysWithoutValues(updatedLink);
+    const linkFromDb = await db.link.update({
+      data: updatedLink,
+      where: {
+        id: linkId,
+      },
+    });
+    if (!linkFromDb) return null;
+    return linkFromDb;
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+
+export async function deleteLinkFromDatabase(linkId) {
+  try {
+    await db.link.delete({
+      where: {
+        id: linkId,
+      },
+    });
+    return true;
+  } catch {
+    return false;
   }
 }
 
