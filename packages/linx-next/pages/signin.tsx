@@ -14,13 +14,14 @@ import {
 import AuthLayout from '../layouts/AuthLayout';
 import AuthInput from '../components/AuthInput';
 import Link from 'next/link';
+import { signIn } from 'next-auth/react';
 
 type Inputs = {
   email: string;
   password: string;
 };
 
-const Signin = () => {
+const SigninPage = () => {
   const {
     register,
     handleSubmit,
@@ -42,7 +43,14 @@ const Signin = () => {
     };
   }, [handleSubmit]);
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    signIn('credentials', {
+      email: data.email,
+      password: data.password,
+      callbackUrl: `/home`,
+    });
+    console.log(data);
+  };
 
   return (
     <div className="auth-container column">
@@ -60,6 +68,7 @@ const Signin = () => {
         {/* {errors.email && <span>Email is required</span>} */}
         <label>Password</label>
         <AuthInput
+          type={'password'}
           {...register('password', { required: true })}
           placeholder="Enter your password"
         />
@@ -85,7 +94,7 @@ const Signin = () => {
   );
 };
 
-Signin.getLayout = (page: ReactElement) => {
+SigninPage.getLayout = (page: ReactElement) => {
   return (
     <AuthLayout type="signin">
       <NextSeo title="Signin" description="Sign in to your account." />
@@ -93,4 +102,4 @@ Signin.getLayout = (page: ReactElement) => {
     </AuthLayout>
   );
 };
-export default Signin;
+export default SigninPage;
