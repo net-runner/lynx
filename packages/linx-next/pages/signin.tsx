@@ -15,12 +15,12 @@ import AuthLayout from '../layouts/AuthLayout';
 import AuthInput from '../components/AuthInput';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
+import axios from 'axios';
 
 type Inputs = {
   email: string;
   password: string;
 };
-
 const SigninPage = () => {
   const {
     register,
@@ -43,12 +43,8 @@ const SigninPage = () => {
     };
   }, [handleSubmit]);
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    signIn('credentials', {
-      email: data.email,
-      password: data.password,
-      callbackUrl: `/home`,
-    });
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    await axios.post('api/auth/signin', data);
     console.log(data);
   };
 

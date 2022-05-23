@@ -60,8 +60,8 @@ export default class CustomDocument extends Document<{
           />
           <link rel="manifest" href="/site.webmanifest" />
           <meta name="msapplication-config" content="/browserconfig.xml" />
-          <meta name="msapplication-TileColor" content="00A8AD" />
-          <meta name="theme-color" content="00A8AD" />
+          <meta name="msapplication-TileColor" content="#00A8AD" />
+          <meta name="theme-color" content="#00A8AD" />
           <meta name="author" content="@net-runner & @przemec" />
           <meta
             name="keywords"
