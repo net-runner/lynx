@@ -1,5 +1,6 @@
 import { User } from '@prisma/client';
 import axios from 'axios';
+import { getFromCache, setExCache } from '../helpers/redis';
 import db from '../lib/db';
 import { GoogleUser, LynxUser } from './user.types';
 
@@ -63,17 +64,42 @@ export enum AuthProvider {
   Google,
 }
 export async function isEmailFree(email: string): Promise<boolean> {
-  const getUser = await db.user.findUnique({
-    where: {
-      email,
-    },
-  });
-  return getUser === null ? true : false;
+  const cachedUser = await getFromCache(email);
+
+  if (cachedUser) {
+    return cachedUser;
+  } else {
+    const getUser = await db.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    setExCache(email, 3600, JSON.stringify(getUser));
+    return getUser === null ? true : false;
+  }
 }
 
 export async function getUser(email: string) {
-  const user = await db.user.findUnique({ where: { email } });
-  return user;
+  const cachedUser = await getFromCache(email);
+
+  if (cachedUser) {
+    return cachedUser;
+  } else {
+    const user = await db.user.findUnique({ where: { email } });
+    setExCache(email, 3600, JSON.stringify(user));
+    return user;
+  }
+}
+export async function getUserById(userId: string) {
+  const cachedUser = await getFromCache(userId);
+
+  if (cachedUser) {
+    return cachedUser;
+  } else {
+    const user = await db.user.findUnique({ where: { id: userId } });
+    setExCache(userId, 3600, JSON.stringify(user));
+    return user;
+  }
 }
 
 export async function findOrCreateUser(
@@ -81,12 +107,8 @@ export async function findOrCreateUser(
   authProvider: AuthProvider
 ) {
   try {
-    const getUser: User | null = await db.user.findFirst({
-      where: {
-        email: user.email,
-      },
-    });
-    if (!getUser) {
+    const oldUser: User | null = await getUser(user.email);
+    if (!oldUser) {
       const newUser = await db.user.create({
         data: {
           email: user.email,
@@ -97,7 +119,7 @@ export async function findOrCreateUser(
       });
       return newUser;
     }
-    return getUser;
+    return oldUser;
   } catch (e) {
     throw new Error(e);
   }

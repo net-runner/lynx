@@ -1,4 +1,5 @@
 import { signJwt, verifyJwt } from '../helpers/jwt';
+import { getFromCache, setExCache } from '../helpers/redis';
 import db from '../lib/db';
 
 export async function createSession(userId: string, userAgent: string) {
@@ -8,11 +9,22 @@ export async function createSession(userId: string, userAgent: string) {
       userAgent,
     },
   });
-
+  setExCache(session.id, 900, JSON.stringify(session));
   return session;
 }
-export async function findSession(userId: string) {
-  return db.session.findFirst({ where: { user: userId } });
+export async function findSession(sessionId: string) {
+  const cachedResponse = await getFromCache(sessionId);
+  if (cachedResponse) {
+    return cachedResponse;
+  } else {
+    const session = await db.session.findUnique({
+      where: {
+        id: sessionId,
+      },
+    });
+    setExCache(sessionId, 900, JSON.stringify(session));
+    return session;
+  }
 }
 
 export async function updateSession(sessionId: string, data) {
@@ -27,11 +39,7 @@ export async function updateSession(sessionId: string, data) {
 export async function tokenRefresh(refresh_token: string) {
   const { decoded } = verifyJwt(refresh_token);
 
-  const session = await db.session.findUnique({
-    where: {
-      id: decoded.session,
-    },
-  });
+  const session = await findSession(decoded.session);
 
   if (!session || !session.valid) return false;
 
