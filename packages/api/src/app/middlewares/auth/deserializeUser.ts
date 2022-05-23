@@ -1,5 +1,5 @@
 import { defaultRouteMiddlewareInterface } from '../../../interfaces/index';
-import { refreshCookieOptions } from '../../helpers/cookie';
+import { cookieOptions, refreshCookieOptions } from '../../helpers/cookie';
 import { verifyJwt } from '../../helpers/jwt';
 import log from '../../helpers/logger';
 import { tokenRefresh } from '../../services/session';
@@ -29,12 +29,7 @@ const deserializeUser: defaultRouteMiddlewareInterface = async (req, res) => {
       log.info(newAccessToken);
       if (newAccessToken) {
         res.setHeader('x-access-token', newAccessToken as string);
-        res.cookie(
-          'access_token',
-          newAccessToken,
-          900000,
-          refreshCookieOptions
-        );
+        res.cookie('access_token', newAccessToken, 900000, cookieOptions);
       }
 
       const result = verifyJwt(newAccessToken as string);
