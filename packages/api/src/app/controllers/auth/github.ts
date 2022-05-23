@@ -5,6 +5,7 @@ import { GithubUser } from '../../services/user.types';
 import { pushDiscordWebhook } from '../../helpers/pushDiscordWebhook';
 import { authorizeAndEnd } from '../../helpers/authorizeAndEnd';
 import { defaultRouteHandler } from '../../../interfaces';
+import log from '../../helpers/logger';
 
 const { GITHUB_APP_SECRET, GITHUB_APP_ID, FRONTEND_URL } = process.env;
 
@@ -20,7 +21,7 @@ class GithubAuthController {
     const state = uuidv4();
     stateDict[state] = new Date().getMilliseconds() + 5 * 60 * 1000;
     res.redirect(
-      `https://github.com/login/oauth/authorize?client_id=${GITHUB_APP_ID}&state=${state}`
+      `https://github.com/login/oauth/authorize?client_id=${GITHUB_APP_ID}&state=${state}&scope=read:user,user:email`
     );
   };
   //Route for Oauth login callback
@@ -61,16 +62,23 @@ class GithubAuthController {
         })
         .then((_res) => _res.data)) as GithubUser;
 
-      console.log(tokenBundle);
-      console.log(githubUser);
+      log.info(tokenBundle);
+      log.info(githubUser);
+      const githubUserEmail = (await axios
+        .get('https://api.github.com/user/email/visibility', {
+          headers: { Authorization: `token ${tokenBundle.access_token}` },
+        })
+        .then((_res) => _res.data[0].email)) as string;
+
+      githubUser.email = githubUserEmail;
+
+      const user = await findOrCreateUser(githubUser, AuthProvider.GitHub);
 
       const discordWebhookBody = {
         title: `Github new user: ${githubUser.login}`,
-        description: `user authorization accepted`,
+        description: `user authorization accepted for ${githubUserEmail}`,
       };
       pushDiscordWebhook(discordWebhookBody);
-      const user = await findOrCreateUser(githubUser, AuthProvider.GitHub);
-
       authorizeAndEnd(user, req, res);
     } catch (e) {
       res.json({ err: e.message });
