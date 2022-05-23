@@ -8,7 +8,7 @@ const handleMe: authorizedRouteHandler = async (req, res) => {
   const user = await getUserById(res.locals.id.user);
   const wuser = hideSelectedObjectKeys(user, ['id', 'password']);
 
-  res.send(JSON.stringify(wuser));
+  res.json(wuser);
 };
 
 export default handleMe;

@@ -117,8 +117,10 @@ export async function findOrCreateUser(
           name: user.name,
         },
       });
+      setExCache(newUser.id, 3600, JSON.stringify(user));
       return newUser;
     }
+    setExCache(oldUser.id, 3600, JSON.stringify(user));
     return oldUser;
   } catch (e) {
     throw new Error(e);
