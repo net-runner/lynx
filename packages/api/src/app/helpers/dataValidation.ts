@@ -27,16 +27,7 @@ export const validateSignUp = async (user: LynxUser): Promise<boolean> => {
   return !value.error;
 };
 
-const linkAddSchema = Joi.object({
-  id: Joi.string().guid(),
-  link: Joi.string().domain().required(),
-  description: Joi.string().required(),
-  privacyLevel: Joi.number().required(),
-  owner: Joi.string().guid(),
-  group: Joi.string().guid(),
-  stars: Joi.number(),
-});
-const linkEditSchema = Joi.object({
+const linkSchema = Joi.object({
   id: Joi.string().guid(),
   link: Joi.string().domain(),
   description: Joi.string(),
@@ -45,6 +36,10 @@ const linkEditSchema = Joi.object({
   group: Joi.string().guid(),
   stars: Joi.number(),
 });
+const linkAddSchema = linkSchema.fork(
+  ['link', 'description', 'privacyLevel'],
+  (key) => key.required()
+);
 
 export const validateLink = async (
   link: Link,
@@ -54,23 +49,11 @@ export const validateLink = async (
   if (actionType === ControllerMethodTypes.ADD)
     value = linkAddSchema.validate(link);
   if (actionType === ControllerMethodTypes.EDIT)
-    value = linkEditSchema.validate(link);
+    value = linkSchema.validate(link);
   return !value.error;
 };
 
-const linkGroupAddSchema = Joi.object({
-  id: Joi.string().guid(),
-  owner: Joi.string().guid().required(),
-  name: Joi.string().required(),
-  description: Joi.string().required(),
-  privacyLevel: Joi.number(),
-  picture: Joi.string(),
-  stars: Joi.number(),
-  linkedCount: Joi.number(),
-  watcherCount: Joi.number(),
-  linksAmount: Joi.number(),
-});
-const linkGroupEditSchema = Joi.object({
+const linkGroupSchema = Joi.object({
   id: Joi.string().guid(),
   owner: Joi.string().guid(),
   name: Joi.string(),
@@ -82,6 +65,10 @@ const linkGroupEditSchema = Joi.object({
   watcherCount: Joi.number(),
   linksAmount: Joi.number(),
 });
+const linkGroupAddSchema = linkGroupSchema.fork(
+  ['owner', 'name', 'description'],
+  (key) => key.required()
+);
 
 export const validateLinkGroup = async (
   linkGroup: LinkGroup,
@@ -91,6 +78,6 @@ export const validateLinkGroup = async (
   if (actionType === ControllerMethodTypes.ADD)
     value = await linkGroupAddSchema.validate(linkGroup);
   if (actionType === ControllerMethodTypes.EDIT)
-    value = await linkGroupEditSchema.validate(linkGroup);
+    value = await linkGroupSchema.validate(linkGroup);
   return !value.error;
 };
