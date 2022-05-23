@@ -17,6 +17,7 @@ import {
   defaultRouteHandler,
 } from '../../../interfaces';
 import { Request } from 'hyper-express';
+import redisClient from '../../lib/redis';
 
 class LinkController {
   protected validateAndDestructureBody = async (
@@ -123,6 +124,10 @@ class LinkController {
       const linkFromDb = await getLinkFromDatabase(id);
       if (!linkFromDb) return res.status(404).end();
 
+      //Save record to redis
+      const key = req.originalUrl;
+      redisClient.setex(key, 3600, JSON.stringify(linkFromDb));
+
       const discordWebhookBody = {
         title: `GET link from db: ${linkFromDb.link}`,
         description: `link id: ${id}`,
@@ -147,6 +152,10 @@ class LinkController {
         return res.status(400).send('Limit and page have to be numbers');
 
       const linksFromDb = await getLinksFromDatabase(limit, page);
+
+      //Save db req to redis
+      const key = req.originalUrl;
+      redisClient.setex(key, 3600, JSON.stringify(linksFromDb));
 
       const discordWebhookBody = {
         title: `GET links array from db, limit: ${limit}, page: ${page}`,

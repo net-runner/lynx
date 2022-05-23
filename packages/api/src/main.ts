@@ -49,15 +49,7 @@ if (env !== 'development') {
   app.use(corsMiddleware);
 }
 app.use(cookieParser());
-
-//Correct way to do it
-app.use(async (req, res) => {
-  try {
-    await deserializeUser(req, res);
-  } catch (e) {
-    return e;
-  }
-});
+app.use(deserializeUser);
 
 app
   .listen(port as number)
