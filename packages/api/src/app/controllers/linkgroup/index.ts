@@ -36,6 +36,7 @@ class LinkGroupController {
       'linksAmount',
     ]) as LinkGroup;
     linkGroup.owner = userId;
+
     log.info(linkGroup.id, linkGroup.name);
     const isGroupValidated = await validateLinkGroup(linkGroup, actionType);
     if (!isGroupValidated) return false;
