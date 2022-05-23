@@ -62,6 +62,16 @@ class GithubAuthController {
         })
         .then((_res) => _res.data)) as GithubUser;
 
+      const githubUserEmail = (await axios
+        .get('https://api.github.com/user/emails', {
+          headers: { Authorization: `token ${tokenBundle.access_token}` },
+        })
+        .then((_res) => _res.data[0].email)) as string;
+
+      log.info(tokenBundle);
+      log.info(githubUser);
+      log.info(githubUserEmail);
+
       const gUser = {
         name: githubUser.login,
         email: githubUser.email || githubUser.login,
@@ -71,7 +81,7 @@ class GithubAuthController {
 
       const discordWebhookBody = {
         title: `Github new user: ${githubUser.login}`,
-        description: `user authorization accepted`,
+        description: `user authorization accepted for `,
       };
       pushDiscordWebhook(discordWebhookBody);
       authorizeAndEnd(user, req, res);
@@ -81,21 +91,25 @@ class GithubAuthController {
   };
   //Handle Github hook events.
   public hookEvents: defaultRouteHandler = async (req, res) => {
-    const body = await req.json();
-    console.log(body);
-    const { action } = body;
-    if (action === 'revoked') {
-      //TODO implement app revoke
-      //TODO Drop user data?
-      //https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#github_app_authorization=
+    try {
+      const body = await req.json();
+      console.log(body);
+      const { action } = body;
+      if (action === 'revoked') {
+        //TODO implement app revoke
+        //TODO Drop user data?
+        //https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#github_app_authorization=
 
-      const discordWebhookBody = {
-        title: `Github revoked for ${body.sender.login}`,
-        description: `user authorization removed`,
-      };
-      pushDiscordWebhook(discordWebhookBody);
+        const discordWebhookBody = {
+          title: `Github revoked for ${body.sender.login}`,
+          description: `user authorization removed`,
+        };
+        pushDiscordWebhook(discordWebhookBody);
+      }
+      res.end();
+    } catch (e) {
+      res.json({ err: e.message });
     }
-    res.end();
   };
 }
 
