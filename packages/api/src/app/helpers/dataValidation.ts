@@ -1,6 +1,7 @@
 import * as Joi from 'joi';
-import { Link } from '@prisma/client';
+import { Link, LinkGroup } from '@prisma/client';
 import { LynxUser } from '../services/user.types';
+import { ControllerMethodTypes } from '../../interfaces';
 
 const signUpSchema = Joi.object({
   name: Joi.string().alphanum().min(3).max(30).required(),
@@ -53,5 +54,42 @@ const linkEditSchema = Joi.object({
 
 export const validateLinkEdit = async (link: Link): Promise<boolean> => {
   const value = linkEditSchema.validate(link);
+  return !value.error;
+};
+
+const linkGroupAddSchema = Joi.object({
+  id: Joi.string().guid(),
+  owner: Joi.string().guid().required(),
+  name: Joi.string().required(),
+  description: Joi.string().required(),
+  privacyLevel: Joi.number(),
+  picture: Joi.string(),
+  stars: Joi.number(),
+  linkedCount: Joi.number(),
+  watcherCount: Joi.number(),
+  linksAmount: Joi.number(),
+});
+const linkGroupEditSchema = Joi.object({
+  id: Joi.string().guid(),
+  owner: Joi.string().guid(),
+  name: Joi.string(),
+  description: Joi.string(),
+  privacyLevel: Joi.number(),
+  picture: Joi.string(),
+  stars: Joi.number(),
+  linkedCount: Joi.number(),
+  watcherCount: Joi.number(),
+  linksAmount: Joi.number(),
+});
+
+export const validateLinkGroup = async (
+  linkGroup: LinkGroup,
+  actionType: ControllerMethodTypes
+): Promise<boolean> => {
+  let value;
+  if (actionType === ControllerMethodTypes.ADD)
+    value = await linkGroupAddSchema.validate(linkGroup);
+  if (actionType === ControllerMethodTypes.EDIT)
+    value = await linkGroupEditSchema.validate(linkGroup);
   return !value.error;
 };
