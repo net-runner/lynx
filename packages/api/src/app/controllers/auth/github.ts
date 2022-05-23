@@ -62,12 +62,12 @@ class GithubAuthController {
         })
         .then((_res) => _res.data)) as GithubUser;
 
-      log.info(tokenBundle);
-      log.info(githubUser);
+      const gUser = {
+        name: githubUser.login,
+        email: githubUser.email || githubUser.login,
+      };
 
-      githubUser.email = githubUser.name;
-
-      const user = await findOrCreateUser(githubUser, AuthProvider.GitHub);
+      const user = await findOrCreateUser(gUser, AuthProvider.GitHub);
 
       const discordWebhookBody = {
         title: `Github new user: ${githubUser.login}`,
