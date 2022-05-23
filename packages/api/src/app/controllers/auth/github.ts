@@ -62,14 +62,13 @@ class GithubAuthController {
         })
         .then((_res) => _res.data)) as GithubUser;
 
+      log.info(tokenBundle);
+      log.info(githubUser);
       const githubUserEmail = (await axios
-        .get('https://api.github.com/user/email', {
+        .get('https://api.github.com/user/email/visibility', {
           headers: { Authorization: `token ${tokenBundle.access_token}` },
         })
         .then((_res) => _res.data[0].email)) as string;
-
-      log.info(tokenBundle);
-      log.info(githubUser);
 
       githubUser.email = githubUserEmail;
 
