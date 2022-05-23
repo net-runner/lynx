@@ -1,9 +1,6 @@
 import log from '../../helpers/logger';
 import { pushDiscordWebhook } from '../../helpers/pushDiscordWebhook';
-import {
-  validateLinkAdd,
-  validateLinkEdit,
-} from '../../helpers/dataValidation';
+import { validateLink } from '../../helpers/dataValidation';
 import {
   createLink,
   deleteLinkFromDatabase,
@@ -18,6 +15,8 @@ import {
 } from '../../../interfaces';
 import { Request } from 'hyper-express';
 import redisClient from '../../lib/redis';
+import { showSelectedObjectKeys } from '../../helpers/utilsJS';
+import { Link } from '@prisma/client';
 
 class LinkController {
   protected validateAndDestructureBody = async (
@@ -26,22 +25,19 @@ class LinkController {
     actionType: ControllerMethodTypes
   ) => {
     const body = await req.json();
-    const { id, link, privacyLevel, description, group, stars } = body;
-    const lynxLink = {
-      id,
-      link,
-      privacyLevel,
-      owner: userId,
-      description,
-      group,
-      stars,
-    };
-    log.info(id, link);
-    let isLinkValidated;
-    if (actionType === ControllerMethodTypes.ADD)
-      isLinkValidated = await validateLinkAdd(lynxLink);
-    if (actionType === ControllerMethodTypes.EDIT)
-      isLinkValidated = await validateLinkEdit(lynxLink);
+    const lynxLink = showSelectedObjectKeys(body, [
+      'id',
+      'link',
+      'privacyLevel',
+      'owner',
+      'description',
+      'group',
+      'stars',
+    ]) as Link;
+    lynxLink.owner = userId;
+
+    log.info(lynxLink.id, lynxLink.link);
+    const isLinkValidated = await validateLink(lynxLink, actionType);
     if (!isLinkValidated) return false;
     return lynxLink;
   };

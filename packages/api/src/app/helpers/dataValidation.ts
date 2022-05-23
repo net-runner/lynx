@@ -36,12 +36,6 @@ const linkAddSchema = Joi.object({
   group: Joi.string().guid(),
   stars: Joi.number(),
 });
-
-export const validateLinkAdd = async (link: Link): Promise<boolean> => {
-  const value = linkAddSchema.validate(link);
-  return !value.error;
-};
-
 const linkEditSchema = Joi.object({
   id: Joi.string().guid(),
   link: Joi.string().domain(),
@@ -52,8 +46,15 @@ const linkEditSchema = Joi.object({
   stars: Joi.number(),
 });
 
-export const validateLinkEdit = async (link: Link): Promise<boolean> => {
-  const value = linkEditSchema.validate(link);
+export const validateLink = async (
+  link: Link,
+  actionType: ControllerMethodTypes
+): Promise<boolean> => {
+  let value;
+  if (actionType === ControllerMethodTypes.ADD)
+    value = linkAddSchema.validate(link);
+  if (actionType === ControllerMethodTypes.EDIT)
+    value = linkEditSchema.validate(link);
   return !value.error;
 };
 
