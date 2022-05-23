@@ -1,24 +1,9 @@
-import {
-  DefaultRequestLocals,
-  MiddlewareNext,
-  Request,
-  Response,
-} from 'hyper-express';
+import { defaultRouteMiddlewareInterface } from '../../../interfaces/index';
 
 import log from '../../helpers/logger';
 import redisClient from '../../lib/redis';
 
-interface CacheLocals {
-  originalSend: Response['send'];
-}
-interface CacheMiddleWareInterface {
-  (
-    req: Request<DefaultRequestLocals>,
-    res: Response<CacheLocals>,
-    next: MiddlewareNext
-  );
-}
-const cache: CacheMiddleWareInterface = async (req, res) => {
+const cache: defaultRouteMiddlewareInterface = async (req, res) => {
   const key = req.originalUrl;
 
   if (req.method !== 'GET') {
