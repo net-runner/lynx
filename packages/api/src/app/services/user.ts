@@ -79,7 +79,7 @@ export async function isEmailFree(email: string): Promise<boolean> {
   }
 }
 
-export async function getUser(email: string) {
+export async function getUser(email: string): Promise<User> {
   const cachedUser = await getFromCache(email);
 
   if (cachedUser) {
@@ -90,7 +90,7 @@ export async function getUser(email: string) {
     return user;
   }
 }
-export async function getUserById(userId: string) {
+export async function getUserById(userId: string): Promise<User> {
   const cachedUser = await getFromCache(userId);
 
   if (cachedUser) {
@@ -105,7 +105,7 @@ export async function getUserById(userId: string) {
 export async function findOrCreateUser(
   user: LynxUser,
   authProvider: AuthProvider
-) {
+): Promise<User> {
   try {
     const oldUser: User | null = await getUser(user.email);
     if (!oldUser) {
