@@ -7,7 +7,8 @@ const isProduction = env === 'production';
 const corsMiddleware: defaultRouteMiddlewareInterface = (req, res, next) => {
   res.header(
     'Access-Control-Allow-Origin',
-    `${isProduction ? FRONTEND_URL : '*'}`
+    // `${isProduction ? FRONTEND_URL : '*'}`
+    `*`
   );
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header(
