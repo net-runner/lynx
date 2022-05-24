@@ -14,7 +14,6 @@ import {
 import AuthLayout from '../layouts/AuthLayout';
 import AuthInput from '../components/AuthInput';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
 import axios from 'axios';
 
 type Inputs = {
@@ -44,7 +43,10 @@ const SigninPage = () => {
   }, [handleSubmit]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await axios.post('api/auth/signin', data);
+    const ax = await axios.post('api/auth/signin', data, {
+      withCredentials: true,
+    });
+    console.log(ax);
     console.log(data);
   };
 
