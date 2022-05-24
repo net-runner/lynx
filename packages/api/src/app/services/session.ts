@@ -1,15 +1,23 @@
 import { signJwt, verifyJwt } from '../helpers/jwt';
 import { getFromCache, setExCache } from '../helpers/redis';
 import db from '../lib/db';
+import { AuthProvider, getUserById } from './user';
 
-export async function createSession(userId: string, userAgent: string) {
+export async function createSession(
+  userId: string,
+  userAgent: string,
+  ip: string,
+  authProvider: AuthProvider
+) {
   const session = await db.session.create({
     data: {
       user: userId,
       userAgent,
+      ip,
+      authProvider,
     },
   });
-  setExCache(session.id, 900, JSON.stringify(session));
+  setExCache(session.id, 9000, JSON.stringify(session));
   return session;
 }
 export async function findSession(sessionId: string) {
@@ -22,7 +30,7 @@ export async function findSession(sessionId: string) {
         id: sessionId,
       },
     });
-    setExCache(sessionId, 900, JSON.stringify(session));
+    setExCache(sessionId, 9000, JSON.stringify(session));
     return session;
   }
 }
@@ -43,7 +51,7 @@ export async function tokenRefresh(refresh_token: string) {
 
   if (!session || !session.valid) return false;
 
-  const user = await db.user.findUnique({ where: { id: session.user } });
+  const user = await getUserById(session.user);
 
   if (!user) return false;
 

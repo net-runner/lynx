@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt';
-import { getUser } from '../../services/user';
+import { AuthProvider, getUser } from '../../services/user';
 import log from '../../helpers/logger';
 import { pushDiscordWebhook } from '../../helpers/pushDiscordWebhook';
 import { authorizeAndEnd } from '../../helpers/authorizeAndEnd';
@@ -23,7 +23,7 @@ const handleSignin: defaultRouteHandler = async (req, res) => {
     };
     pushDiscordWebhook(discordWebhookBody);
 
-    authorizeAndEnd(user, req, res, true);
+    authorizeAndEnd(user, req, res, AuthProvider.Local, true);
   } catch (e) {
     log.error({ err: e.message, desc: e.response.data.error_description });
     res.json({ err: e.message, desc: e.response.data.error_description });

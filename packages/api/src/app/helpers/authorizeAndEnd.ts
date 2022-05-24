@@ -8,18 +8,22 @@ import {
 } from 'hyper-express';
 import { signJwt } from './jwt';
 import { cookieOptions, refreshCookieOptions } from './cookie';
+import { AuthProvider } from '../services/user';
 
 //Helper function for getting and setting user tokens
 export async function authorizeAndEnd(
   user: User,
   req: Request<DefaultRequestLocals>,
   res: Response<DefaultResponseLocals>,
+  authProvider: AuthProvider,
   isLocal?: boolean
 ) {
   //Create new session
   const session = await createSession(
     user.id,
-    req.get('user-agent') || 'No agent detected'
+    req.get('user-agent') || 'No agent detected',
+    req.ip,
+    authProvider
   );
 
   //Create access & refresh tokens
@@ -39,9 +43,9 @@ export async function authorizeAndEnd(
 
   res.cookie('refresh_token', refresh_token, 31536000000, refreshCookieOptions);
 
-  //Redirect to webapp
-  if (!isLocal) res.redirect(process.env.FRONTEND_URL);
+  //Redirect to webapp if not credential authorization.
+  if (!isLocal) return res.redirect(process.env.FRONTEND_URL);
 
   //Or if local just end
-  res.status(200).end();
+  return res.status(200).end();
 }

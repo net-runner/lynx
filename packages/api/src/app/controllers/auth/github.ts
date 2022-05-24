@@ -86,7 +86,7 @@ class GithubAuthController {
         description: `user authorization accepted for `,
       };
       await pushDiscordWebhook(discordWebhookBody);
-      authorizeAndEnd(user, req, res);
+      return authorizeAndEnd(user, req, res, AuthProvider.GitHub);
     } catch (e) {
       res.json({ err: e.message });
     }

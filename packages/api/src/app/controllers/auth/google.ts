@@ -53,7 +53,7 @@ class GoogleAuthController {
       //TODO add user to database, forward token data to frontend
       const user = await findOrCreateUser(googleUser, AuthProvider.Google);
 
-      authorizeAndEnd(user, req, res);
+      authorizeAndEnd(user, req, res, AuthProvider.Google);
     } catch (e) {
       console.error({
         err: e.message,

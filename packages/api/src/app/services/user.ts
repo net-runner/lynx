@@ -1,5 +1,6 @@
 import { User } from '@prisma/client';
 import axios from 'axios';
+import log from '../helpers/logger';
 import { getFromCache, setExCache } from '../helpers/redis';
 import db from '../lib/db';
 import { GoogleUser, LynxUser } from './user.types';
@@ -30,7 +31,7 @@ export async function getGoogleOAuthTokens(code: string): Promise<TokenBundle> {
     }auth/signin/google/callback`,
     grant_type: 'authorization_code',
   };
-  console.log(body);
+  log.info(body);
   try {
     return axios.post(url, body, opts).then((res) => res.data);
   } catch (e) {
@@ -54,7 +55,7 @@ export async function getGoogleUser(
       })
       .then((res) => res.data);
   } catch (e) {
-    console.error(e.response.data.error_description);
+    log.error(e.response.data.error_description);
     throw new Error(e);
   }
 }
