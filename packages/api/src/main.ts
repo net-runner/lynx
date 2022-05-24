@@ -13,7 +13,9 @@ import log from './app/helpers/logger';
 import * as cookieParser from 'cookie-parser';
 import deserializeUser from './app/middlewares/auth/deserializeUser';
 import rateLimiterMiddleware from './app/middlewares/rateLimit';
-const env = process.env.NODE_ENV;
+import * as cors from 'cors';
+const { FRONTEND_URL, NODE_ENV } = process.env;
+const isProduction = NODE_ENV === 'production';
 const app = new Server();
 
 // Create GET route to serve 'Hello World'
@@ -38,18 +40,17 @@ app.get('/*', (req, res) => {
 
 const port = process.env.PORT || 80;
 
+app.use(cors({ credentials: true, origin: isProduction ? FRONTEND_URL : '*' }));
+app.use(cookieParser());
+app.use(deserializeUser);
+app.use(rateLimiterMiddleware);
+
 app.use('/auth', authRouter);
 app.use('/users', userRouter);
 app.use('/usersgroup', userGroupRouter);
 app.use('/link', linkRouter);
 app.use('/linkgroup', linkGroupRouter);
 app.use('/tag', tagRouter);
-app.use(rateLimiterMiddleware);
-if (env !== 'development') {
-  app.use(corsMiddleware);
-}
-app.use(cookieParser());
-app.use(deserializeUser);
 
 app
   .listen(port as number)
