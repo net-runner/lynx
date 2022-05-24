@@ -77,6 +77,7 @@ class LinkController {
       if (!lynxLink) return res.status(400).end();
 
       const editedLink = await editLinkInDatabase(lynxLink, lynxLink.id);
+
       if (!editedLink) return res.status(500).end();
 
       const discordWebhookBody = {

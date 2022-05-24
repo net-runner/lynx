@@ -9,4 +9,6 @@ const setExCache = async (
   value: string
 ) => await redisClient.setex(key, duration_seconds, value);
 
-export { getFromCache, setExCache };
+const deleteFromCache = async (key: string) => await redisClient.del(key);
+
+export { getFromCache, setExCache, deleteFromCache };

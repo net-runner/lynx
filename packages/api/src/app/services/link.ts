@@ -3,16 +3,20 @@ import {
   hideObjectKeysWithoutValues,
   hideSelectedObjectKeys,
 } from '../helpers/utilsJS';
+import { deleteFromCache, setExCache } from '../helpers/redis';
 
 export async function createLink(link) {
   try {
     link = hideSelectedObjectKeys(link, ['id', 'stars']);
-    return await db.link.create({
+    const newLink = await db.link.create({
       data: {
         ...link,
         stars: 0,
       },
     });
+    //Cache after create
+    setExCache(newLink.id, 3600, JSON.stringify(newLink));
+    return newLink;
   } catch (e) {
     throw new Error(e);
   }
@@ -28,6 +32,8 @@ export async function editLinkInDatabase(updatedLink, linkId) {
         id: linkId,
       },
     });
+    //Cache after edit
+    setExCache(linkFromDb.id, 3600, JSON.stringify(linkFromDb));
     if (!linkFromDb) return null;
     return linkFromDb;
   } catch (e) {
@@ -42,6 +48,7 @@ export async function deleteLinkFromDatabase(linkId) {
         id: linkId,
       },
     });
+    deleteFromCache(linkId);
     return true;
   } catch {
     return false;

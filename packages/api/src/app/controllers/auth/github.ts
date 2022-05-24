@@ -62,28 +62,30 @@ class GithubAuthController {
         })
         .then((_res) => _res.data)) as GithubUser;
 
-      const githubUserEmail = (await axios
-        .get('https://api.github.com/user/emails', {
-          headers: { Authorization: `token ${tokenBundle.access_token}` },
-        })
-        .then((_res) => _res.data[0].email)) as string;
-
-      log.info(tokenBundle);
-      log.info(githubUser);
-      log.info(githubUserEmail);
+      if (!githubUser.email) {
+        const githubUserEmail = (await axios
+          .get('https://api.github.com/user/emails', {
+            headers: { Authorization: `token ${tokenBundle.access_token}` },
+          })
+          .then((_res) => _res.data[0].email)) as string;
+        githubUser.email = githubUserEmail;
+      }
 
       const gUser = {
         name: githubUser.login,
         email: githubUser.email || githubUser.login,
       };
 
+      log.info(tokenBundle);
+      log.info(gUser);
+
       const user = await findOrCreateUser(gUser, AuthProvider.GitHub);
 
       const discordWebhookBody = {
-        title: `Github new user: ${githubUser.login}`,
+        title: `Github new user: ${user.name}`,
         description: `user authorization accepted for `,
       };
-      pushDiscordWebhook(discordWebhookBody);
+      await pushDiscordWebhook(discordWebhookBody);
       authorizeAndEnd(user, req, res);
     } catch (e) {
       res.json({ err: e.message });
