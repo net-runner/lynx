@@ -2,6 +2,10 @@
 const withNx = require('@nrwl/next/plugins/with-nx');
 const withPWA = require('next-pwa')
 
+const env = process.env.NODE_ENV
+const isProdction = env === "production";
+const API_URL = isProdction ? process.env.API_URL : "http://localhost:80/"
+
 /**
  * @type {import('@nrwl/next/plugins/with-nx').WithNxOptions}
  **/
@@ -13,7 +17,7 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: process.env.API_URL + ':path*'
+        destination: API_URL + ':path*'
       }
     ]
   },
@@ -21,12 +25,12 @@ const nextConfig = {
     return [
       {
         source: '/signin/google',
-        destination: process.env.API_URL + 'auth/signin/google',
+        destination: API_URL + 'auth/signin/google',
         permanent: true,
       },
       {
         source: '/signin/github',
-        destination: process.env.API_URL + 'auth/signin/github',
+        destination: API_URL + 'auth/signin/github',
         permanent: true,
       }
     ]
@@ -47,7 +51,7 @@ const nextConfig = {
     dest: "public",
     register: true,
     skipWaiting: true,
-    disable: process.env.NODE_ENV === 'development'
+    disable: !isProdction
   },
 };
 

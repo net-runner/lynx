@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node dist/packages/api/main",
-    "heroku:push": "git push heroku dev-api:main",
+    "heroku:push": "git push heroku development:main",
     "heroku-postbuild": "npx prisma generate && nx build api --prod",
     "prisma:generate": "npx prisma generate",
     "prisma:studio": "npx prisma studio",
