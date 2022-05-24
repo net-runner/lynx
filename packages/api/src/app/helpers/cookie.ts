@@ -8,7 +8,7 @@ const isProduction = env === 'production';
 export const cookieOptions: CookieOptions = {
   maxAge: 900000,
   httpOnly: true,
-  domain: FRONTEND_URL,
+  domain: isProduction ? FRONTEND_URL : 'http://localhost:4200',
   path: '/',
   sameSite: isProduction ? 'strict' : 'lax',
   secure: isProduction,
