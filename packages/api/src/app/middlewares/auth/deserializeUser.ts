@@ -1,5 +1,5 @@
 import { defaultRouteMiddlewareInterface } from '../../../interfaces/index';
-import { cookieOptions, refreshCookieOptions } from '../../helpers/cookie';
+import { cookieOptions } from '../../helpers/cookie';
 import { verifyJwt } from '../../helpers/jwt';
 import log from '../../helpers/logger';
 import { tokenRefresh } from '../../services/session';
@@ -16,19 +16,17 @@ const deserializeUser: defaultRouteMiddlewareInterface = async (req, res) => {
     }
 
     const { decoded, expired } = verifyJwt(accessToken);
-    log.info(decoded);
-    log.info(expired);
     if (decoded) {
       res.locals.id = decoded;
       return;
     }
 
     if (expired && refreshToken) {
-      log.info('AKSES');
       const newAccessToken = await tokenRefresh(refreshToken);
-      log.info(newAccessToken);
+      log.info('[AUTH] Minted new acces token ' + newAccessToken);
       if (newAccessToken) {
         res.setHeader('x-access-token', newAccessToken as string);
+        res.setHeader('Authorization', ('Bearer ' + newAccessToken) as string);
         res.cookie('access_token', newAccessToken, 900000, cookieOptions);
       }
 

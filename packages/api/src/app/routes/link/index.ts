@@ -5,7 +5,9 @@ import cache from '../../middlewares/cache';
 
 const linkRouter = new Router();
 const linkController = new LinkController();
-
+linkRouter.get('/healthcheck', (req, res) => {
+  res.status(200).end();
+});
 linkRouter.post('/add', requireUser, linkController.add);
 linkRouter.post('/edit/:id', requireUser, linkController.edit);
 linkRouter.post('/del/:id', requireUser, linkController.delete);

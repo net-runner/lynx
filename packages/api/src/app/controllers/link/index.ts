@@ -14,10 +14,9 @@ import {
   defaultRouteHandler,
 } from '../../../interfaces';
 import { Request } from 'hyper-express';
-import redisClient from '../../lib/redis';
 import { showSelectedObjectKeys } from '../../helpers/utilsJS';
 import { Link } from '@prisma/client';
-
+import { setExCache } from '../../helpers/redis';
 class LinkController {
   protected validateAndDestructureBody = async (
     req: Request,
@@ -123,7 +122,7 @@ class LinkController {
 
       //Save record to redis
       const key = req.originalUrl;
-      redisClient.setex(key, 3600, JSON.stringify(linkFromDb));
+      await setExCache(key, 3600, JSON.stringify(linkFromDb));
 
       const discordWebhookBody = {
         title: `GET link from db: ${linkFromDb.link}`,
@@ -152,7 +151,7 @@ class LinkController {
 
       //Save db req to redis
       const key = req.originalUrl;
-      redisClient.setex(key, 3600, JSON.stringify(linksFromDb));
+      await setExCache(key, 3600, JSON.stringify(linksFromDb));
 
       const discordWebhookBody = {
         title: `GET links array from db, limit: ${limit}, page: ${page}`,

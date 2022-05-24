@@ -75,7 +75,7 @@ export async function isEmailFree(email: string): Promise<boolean> {
         email,
       },
     });
-    setExCache(email, 3600, JSON.stringify(getUser));
+    await setExCache(email, 3600, JSON.stringify(getUser));
     return getUser === null ? true : false;
   }
 }
@@ -87,18 +87,20 @@ export async function getUser(email: string): Promise<User> {
     return cachedUser;
   } else {
     const user = await db.user.findUnique({ where: { email } });
-    setExCache(email, 3600, JSON.stringify(user));
+    await setExCache(email, 3600, JSON.stringify(user));
     return user;
   }
 }
 export async function getUserById(userId: string): Promise<User> {
+  log.info('USR-id: ' + userId);
   const cachedUser = await getFromCache(userId);
 
   if (cachedUser) {
     return cachedUser;
   } else {
     const user = await db.user.findUnique({ where: { id: userId } });
-    setExCache(userId, 3600, JSON.stringify(user));
+    await setExCache(userId, 3600, JSON.stringify(user));
+    log.info(JSON.stringify(user));
     return user;
   }
 }
@@ -118,10 +120,10 @@ export async function findOrCreateUser(
           name: user.name,
         },
       });
-      setExCache(newUser.id, 3600, JSON.stringify(user));
+      await setExCache(newUser.id, 3600, JSON.stringify(user));
       return newUser;
     }
-    setExCache(oldUser.id, 3600, JSON.stringify(user));
+    await setExCache(oldUser.id, 3600, JSON.stringify(user));
     return oldUser;
   } catch (e) {
     throw new Error(e);

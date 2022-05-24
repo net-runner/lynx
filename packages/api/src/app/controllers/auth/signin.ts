@@ -23,7 +23,7 @@ const handleSignin: defaultRouteHandler = async (req, res) => {
     };
     pushDiscordWebhook(discordWebhookBody);
 
-    authorizeAndEnd(user, req, res, AuthProvider.Local, true);
+    return authorizeAndEnd(user, req, res, AuthProvider.Local, true);
   } catch (e) {
     log.error({ err: e.message, desc: e.response.data.error_description });
     res.json({ err: e.message, desc: e.response.data.error_description });
