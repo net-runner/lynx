@@ -83,7 +83,7 @@ class GithubAuthController {
 
       const discordWebhookBody = {
         title: `Github new user: ${user.name}`,
-        description: `user authorization accepted `,
+        description: `user authorization accepted`,
       };
       await pushDiscordWebhook(discordWebhookBody);
       return authorizeAndEnd(user, req, res, AuthProvider.GitHub);
