@@ -18,9 +18,10 @@ export const signIn = async ({ email, password }) => {
 
 export const getUser = async () => {
   try {
-    const res = await axios.get(`/api/auth/me`, { withCredentials: true });
-
-    return res.data.user;
+    const user = await axios
+      .get(`/api/auth/me`, { withCredentials: true })
+      .then((r) => r.data);
+    return user;
   } catch (error) {
     console.log(error);
     throw error;
