@@ -18,7 +18,7 @@ export async function createSession(
       authProvider,
     },
   });
-  await setExCache(session.id, 9000, JSON.stringify(session));
+  setExCache(session.id, 9000, JSON.stringify(session));
   return session;
 }
 export async function findSession(sessionId: string) {
@@ -31,7 +31,7 @@ export async function findSession(sessionId: string) {
         id: sessionId,
       },
     });
-    await setExCache(sessionId, 9000, JSON.stringify(session));
+    setExCache(sessionId, 9000, JSON.stringify(session));
     return session;
   }
 }

@@ -15,7 +15,7 @@ export async function createLink(link) {
       },
     });
     //Cache after create
-    await setExCache(newLink.id, 3600, JSON.stringify(newLink));
+    setExCache(newLink.id, 3600, JSON.stringify(newLink));
     return newLink;
   } catch (e) {
     throw new Error(e);
@@ -33,7 +33,7 @@ export async function editLinkInDatabase(updatedLink, linkId) {
       },
     });
     //Cache after edit
-    await setExCache(linkFromDb.id, 3600, JSON.stringify(linkFromDb));
+    setExCache(linkFromDb.id, 3600, JSON.stringify(linkFromDb));
     if (!linkFromDb) return null;
     return linkFromDb;
   } catch (e) {

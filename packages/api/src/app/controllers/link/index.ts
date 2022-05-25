@@ -122,7 +122,7 @@ class LinkController {
 
       //Save record to redis
       const key = req.originalUrl;
-      await setExCache(key, 3600, JSON.stringify(linkFromDb));
+      setExCache(key, 3600, JSON.stringify(linkFromDb));
 
       const discordWebhookBody = {
         title: `GET link from db: ${linkFromDb.link}`,
@@ -151,7 +151,7 @@ class LinkController {
 
       //Save db req to redis
       const key = req.originalUrl;
-      await setExCache(key, 3600, JSON.stringify(linksFromDb));
+      setExCache(key, 3600, JSON.stringify(linksFromDb));
 
       const discordWebhookBody = {
         title: `GET links array from db, limit: ${limit}, page: ${page}`,
