@@ -8,11 +8,11 @@ export const Container = styled.div`
   position: absolute;
   border-radius: 1rem;
   &.up {
-    left: 20px;
-    top: 0;
+    left: 3rem;
+    top: 0.4rem;
   }
   &.down {
-    right: 10px;
+    right: 1rem;
     bottom: 0;
   }
 `;

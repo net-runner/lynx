@@ -2,26 +2,21 @@ import styled from 'styled-components';
 import { LinkIcon } from '../../assets/icons';
 
 export const SpecialBackgroundContainer = styled.div`
-  position: absolute;
+  position: fixed;
   display: flex;
   flex-direction: row;
-  z-index: -1;
-  padding: 160px 40px;
-  height: 100%;
+  top: 15vh;
   width: 100%;
-  background-color: #16181e;
 `;
+
 export const SpecialBackgroundColumn = styled.div`
   display: flex;
-  min-width: 400px;
   flex: 1;
   height: 100%;
   flex-direction: column;
-  background-color: #16181e;
   position: relative;
   &:nth-child(2) {
     align-items: flex-end;
-    z-index: -3;
   }
   & > svg {
     position: absolute;
@@ -32,9 +27,11 @@ export const SpecialLinkIcon = styled(LinkIcon)`
   width: 80px;
   height: 80px;
   transform: rotate(0);
-  transition: 0.3s ease-out;
+  transition: 3s ease-in-out;
   &:hover {
-    transform: rotate(-45deg);
-    transition: 0.3s ease-out;
+    transition: 0.3s ease-in-out;
+    transform: rotate(
+      ${() => Math.floor(Math.random() * 360) + 180}deg
+    ) !important;
   }
 `;

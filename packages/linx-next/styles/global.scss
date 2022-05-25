@@ -24,8 +24,6 @@ html {
 .row {
   display: flex;
   flex-direction: row;
-
-
 }
 
 .rel {
@@ -72,7 +70,7 @@ body {
 }
 
 .signup {
-  padding-right: 0px !important;
+  padding-right: 0 !important;
 }
 
 .landing-buttons-container {
@@ -103,40 +101,6 @@ body {
 
   & p:nth-child(2) {
     margin: 25px;
-  }
-}
-
-.auth-container {
-  background-color: $highlight;
-  display: flex;
-  position: relative;
-  margin: 0 auto;
-  border-radius: 33px;
-  padding: 40px;
-  min-width: 380px;
-  margin-top: 60px;
-  margin-bottom: 70px;
-
-  & button {
-    width: 300px;
-    height: 40px;
-    margin-top: 20px;
-    display: flex;
-    align-self: flex-end;
-
-  }
-
-  & input {
-    margin-top: 10px;
-    width: 300px;
-  }
-
-  & form label {
-    margin-bottom: 10px;
-  }
-
-  & form {
-    height: 100%;
   }
 }
 

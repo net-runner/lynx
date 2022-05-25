@@ -2,20 +2,22 @@ import Link from 'next/link';
 import styled from 'styled-components';
 
 export const Header = styled.header`
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-items: center;
   justify-content: space-between;
+  background-color: ${({ theme }) => theme.background};
   padding: 0 5rem;
   height: 8rem;
-  font-family: Inter;
+  font-family: Inter, serif;
 `;
 
 export const HeaderTextLink = styled(Link)`
   text-decoration: none;
-  font-size: 20;
-  font-family: Inter;
-  font-weight: regular;
+  font-size: 2rem;
+  font-family: Inter, serif;
+  font-weight: normal;
 `;
 
 export const Nav = styled.nav`
