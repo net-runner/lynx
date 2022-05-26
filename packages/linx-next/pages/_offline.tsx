@@ -18,4 +18,5 @@ Offline.getLayout = (page: ReactElement) => {
     </AuthLayout>
   );
 };
+
 export default Offline;

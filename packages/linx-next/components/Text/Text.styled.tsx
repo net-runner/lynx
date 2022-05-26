@@ -26,13 +26,6 @@ export const MediumTopic = styled.p`
   font-weight: bold;
 `;
 
-export const InterMediumInfo = styled.p`
-  font-size: 1.8rem;
-  font-family: Inter, serif;
-  text-align: center;
-  font-weight: 400;
-`;
-
 export const SmallAuthText = styled.p`
   font-size: 1.2rem;
   font-family: 'Poppins', sans-serif;

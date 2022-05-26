@@ -56,4 +56,5 @@ const ErrorPanel: React.FC<ErrorPageProps> = ({ type }) => {
       return <></>;
   }
 };
+
 export default ErrorPanel;
