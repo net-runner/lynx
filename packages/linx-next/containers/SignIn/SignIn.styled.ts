@@ -28,3 +28,30 @@ export const Wrapper = styled.div`
     margin-bottom: 10px;
   }
 `;
+
+export const Title = styled.h1`
+  margin: 1rem 0 2rem;
+  font-family: 'Segoe UI', serif;
+  font-size: 2.8rem;
+  text-align: center;
+  font-weight: bold;
+`;
+
+export const Input = styled.input`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30rem;
+  height: 4rem;
+  margin-bottom: 2rem;
+  padding: 0.5rem 1rem;
+  border-color: rgba(249, 249, 249, 0.25);
+  border-width: 0.1rem;
+  border-radius: 1rem;
+  background: transparent;
+  color: #f9f9f9;
+  font-weight: bold;
+  font-size: 1.4rem;
+  font-family: 'Poppins', sans-serif;
+  white-space: nowrap;
+`;

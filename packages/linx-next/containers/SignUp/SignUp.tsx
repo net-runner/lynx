@@ -4,13 +4,11 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import AuthLinkFlavor from '../../components/AuthLinkFlavor';
 import {
   AuthImportantText,
-  MediumTopic,
   SmallAuthText,
 } from '../../components/Text/Text.styled';
-import AuthInput from '../../components/AuthInput';
 import Button from '../../components/Button';
 import Link from 'next/link';
-import { LynxLogoDetailNoCircle } from '../../assets/icons';
+import { LynxLogoDetailNoCircleSmallBox } from '../../assets/icons';
 import GithubLoginButton from '../../components/GithubLoginButton';
 import GoogleLoginButton from '../../components/GoogleLoginButton';
 
@@ -48,28 +46,26 @@ const SignUp: React.FC = () => {
     <S.Wrapper>
       <S.Column>
         <AuthLinkFlavor type="up" />
-        <MediumTopic style={{ marginBottom: '25px' }}>
-          Welcome, join us!
-        </MediumTopic>
+        <S.Title>Welcome, join us!</S.Title>
         <form onSubmit={handleSubmit(onSubmit)}>
           <label>Name</label>
-          <AuthInput
+          <S.Input
             {...register('name', { required: true })}
             placeholder="Enter your name"
           />
           <label>Email</label>
-          <AuthInput
+          <S.Input
             {...register('email', { required: true })}
             placeholder="Enter your email"
           />
           {/* {errors.email && <span>Email is required</span>} */}
           <label>Password</label>
-          <AuthInput
+          <S.Input
             {...register('password', { required: true })}
             placeholder="Enter your password"
           />
           <label>Repeat password</label>
-          <AuthInput
+          <S.Input
             {...register('repeatPassword', { required: true })}
             placeholder="Re enter your password"
           />
@@ -92,15 +88,15 @@ const SignUp: React.FC = () => {
       </S.Column>
       <S.Column>
         <AuthLinkFlavor type="down" />
-        <div className="rel column">
-          <LynxLogoDetailNoCircle
-            style={{ width: 300, height: 300 }}
+        <S.LogoContainer>
+          <LynxLogoDetailNoCircleSmallBox
+            style={{ marginBottom: '2rem' }}
             strokeWidth={2}
           />
           <S.Info>Share, watch, explore the web with Lynx</S.Info>
           <GithubLoginButton />
           <GoogleLoginButton />
-        </div>
+        </S.LogoContainer>
       </S.Column>
     </S.Wrapper>
   );

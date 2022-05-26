@@ -18,14 +18,6 @@ export const BigInformationSection = styled.p`
   margin: 0 1rem;
 `;
 
-export const MediumTopic = styled.p`
-  font-family: 'Segoe UI', serif;
-  margin-top: 1rem;
-  font-size: 2.8rem;
-  text-align: center;
-  font-weight: bold;
-`;
-
 export const SmallAuthText = styled.p`
   font-size: 1.2rem;
   font-family: 'Poppins', sans-serif;

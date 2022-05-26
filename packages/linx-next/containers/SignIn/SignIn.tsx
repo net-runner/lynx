@@ -1,15 +1,12 @@
 import React, { useEffect } from 'react';
 import * as S from './SignIn.styled';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import axios from 'axios';
 import AuthLinkFlavor from '../../components/AuthLinkFlavor';
 import { LynxLogoDetail } from '../../assets/icons';
 import {
   AuthImportantText,
-  MediumTopic,
   SmallAuthText,
 } from '../../components/Text/Text.styled';
-import AuthInput from '../../components/AuthInput';
 import Button from '../../components/Button';
 import GithubLoginButton from '../../components/GithubLoginButton';
 import GoogleLoginButton from '../../components/GoogleLoginButton';
@@ -54,18 +51,18 @@ const SignIn = () => {
     <S.Wrapper>
       <AuthLinkFlavor type="up" />
       <LynxLogoDetail style={{ position: 'absolute', top: -25, right: -25 }} />
-      <MediumTopic style={{ marginBottom: '25px' }}>
+      <S.Title>
         Hi, welcome back!
-      </MediumTopic>
+      </S.Title>
       <form onSubmit={handleSubmit(onSubmit)}>
         <label>Email</label>
-        <AuthInput
+        <S.Input
           {...register('email', { required: true })}
           placeholder="Enter your email"
         />
         {/* {errors.email && <span>Email is required</span>} */}
         <label>Password</label>
-        <AuthInput
+        <S.Input
           type={'password'}
           {...register('password', { required: true })}
           placeholder="Enter your password"
