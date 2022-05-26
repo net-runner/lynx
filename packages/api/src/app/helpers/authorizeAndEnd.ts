@@ -39,9 +39,14 @@ export async function authorizeAndEnd(
   );
 
   //Set user cookies
-  res.cookie('access_token', access_token, 900000, cookieOptions);
+  res.cookie('access_token', access_token, 15 * 60, cookieOptions);
 
-  res.cookie('refresh_token', refresh_token, 31536000000, refreshCookieOptions);
+  res.cookie(
+    'refresh_token',
+    refresh_token,
+    365 * 24 * 60 * 60,
+    refreshCookieOptions
+  );
 
   //Redirect to webapp if not credential authorization.
   if (!isLocal) return res.redirect(process.env.FRONTEND_URL);

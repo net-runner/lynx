@@ -6,14 +6,14 @@ const env = process.env.NODE_ENV;
 const isProduction = env === 'production';
 
 export const cookieOptions: CookieOptions = {
-  maxAge: 900000,
+  maxAge: 15 * 60,
   httpOnly: false,
   domain: isProduction ? COOKIE_DOMAIN : 'localhost',
   path: '/',
-  sameSite: isProduction ? 'strict' : 'lax',
+  sameSite: 'lax',
   secure: isProduction,
 };
 export const refreshCookieOptions: CookieOptions = {
   ...cookieOptions,
-  maxAge: 31536000000,
+  maxAge: 365 * 24 * 60 * 60,
 };
