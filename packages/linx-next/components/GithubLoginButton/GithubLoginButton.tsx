@@ -6,7 +6,7 @@ const GithubLoginButton = () => (
   <SocialButton
     text="Sign in with GitHub"
     icon={<GithubOutlineIcon />}
-    linkToAuth={'signin/github'}
+    linkToAuth={'api/auth/signin/github'}
   />
 );
 

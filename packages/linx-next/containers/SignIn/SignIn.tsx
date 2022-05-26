@@ -14,6 +14,7 @@ import Button from '../../components/Button';
 import GithubLoginButton from '../../components/GithubLoginButton';
 import GoogleLoginButton from '../../components/GoogleLoginButton';
 import Link from 'next/link';
+import { useUser } from '../../context/user.context';
 
 type Inputs = {
   email: string;
@@ -28,6 +29,7 @@ const SignIn = () => {
     formState: { errors },
   } = useForm<Inputs>();
 
+  const { login } = useUser();
   //Enter key press handler => submit form
   useEffect(() => {
     const listener = (event) => {
@@ -43,9 +45,7 @@ const SignIn = () => {
   }, [handleSubmit]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const ax = await axios.post('api/auth/signin', data, {
-      withCredentials: true,
-    });
+    const ax = login(data);
     console.log(ax);
     console.log(data);
   };

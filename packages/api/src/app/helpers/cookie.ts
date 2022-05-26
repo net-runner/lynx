@@ -7,7 +7,7 @@ const isProduction = env === 'production';
 
 export const cookieOptions: CookieOptions = {
   maxAge: 15 * 60,
-  httpOnly: false,
+  httpOnly: true,
   domain: isProduction ? COOKIE_DOMAIN : 'localhost',
   path: '/',
   sameSite: 'lax',

@@ -7,7 +7,7 @@ import {
 import { pushDiscordWebhook } from '../../helpers/pushDiscordWebhook';
 import { authorizeAndEnd } from '../../helpers/authorizeAndEnd';
 import { defaultRouteHandler } from '../../../interfaces';
-const { GOOGLE_APP_ID, API_URL } = process.env;
+const { GOOGLE_APP_ID, API_URL, FRONTEND_URL } = process.env;
 
 const env = process.env.NODE_ENV;
 const isDev = env === 'development';
@@ -17,8 +17,8 @@ class GoogleAuthController {
     const url = 'https://accounts.google.com/o/oauth2/v2/auth';
     const body = {
       redirect_uri: `${
-        isDev ? 'http://localhost/' : API_URL
-      }auth/signin/google/callback`,
+        isDev ? 'http://localhost:4200/' : FRONTEND_URL
+      }api/auth/signin/google/callback`,
       client_id: GOOGLE_APP_ID,
       access_type: 'offline',
       response_type: 'code',

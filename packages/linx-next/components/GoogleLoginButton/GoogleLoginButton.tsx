@@ -6,7 +6,7 @@ const GoogleLoginButton = () => (
   <SocialButton
     text="Sign in with Google"
     icon={<GoogleIcon />}
-    linkToAuth={'signin/google'}
+    linkToAuth={'api/auth/signin/google'}
   />
 );
 

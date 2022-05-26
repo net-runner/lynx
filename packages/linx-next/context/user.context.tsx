@@ -6,16 +6,18 @@ import {
   ReactNode,
   useEffect,
 } from 'react';
-import { getUser } from '../helpers/user';
+import { getUser, signIn } from '../helpers/user';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import { User } from '@prisma/client';
+import axios from 'axios';
 
 export interface UserContext {
   user?: User;
   authenticate: (newToken: string) => Promise<void>;
   logout: ({ redirectLocation: string }) => void;
   setRedirect: (url: string) => void;
+  login: ({ email, password }: { email: string; password: string }) => void;
   isLoading: boolean;
   isAuthenticated: boolean;
   token: string;
@@ -43,36 +45,44 @@ export const UserProvider: FC<Props> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const isAuthenticated = !!user;
 
+  const login = async ({ email, password }) => {
+    await signIn({ email, password });
+    authenticate();
+  };
+
   const logout = ({ redirectLocation }) => {
-    Cookies.remove('access_token');
-    Cookies.remove('refresh_token');
     setUser(null);
     setIsLoading(false);
     console.log('Redirecting');
     router.push(redirectLocation || '/login');
   };
 
-  const authenticate = async (token) => {
+  const authenticate = async () => {
     setIsLoading(true);
     // authenticateAPI(token);
     try {
       const newUser = await getUser();
       setUser(newUser);
       // Cookies.set('access_token', token);
+      router.push(redirect || '/home');
     } catch (error) {
       console.log({ error });
       // unauthenticateAPI();
       setUser(null);
-      Cookies.remove('access_token');
-      Cookies.remove('refresh_token');
     }
     setIsLoading(false);
   };
-
+  const areCookiesPresent = async () => {
+    const hasAuthCookies = await axios
+      .get('api/auth', { withCredentials: true })
+      .then((res) => res.data.hasAuthCookies);
+    console.log(hasAuthCookies);
+    if (hasAuthCookies) {
+      authenticate();
+    }
+  };
   useEffect(() => {
-    const token = Cookies.get('access_token');
-    if (!token) return;
-    authenticate(token);
+    areCookiesPresent();
   }, []);
 
   //For debug only
@@ -96,6 +106,7 @@ export const UserProvider: FC<Props> = ({ children }) => {
         authenticate,
         logout,
         setRedirect,
+        login,
         isLoading,
         isAuthenticated,
         token: Cookies.get('refresh_token'),

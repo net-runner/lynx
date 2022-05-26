@@ -1,10 +1,11 @@
 import { AppProps } from 'next/app';
-import { NextPage } from 'next/types';
+import { NextPage, NextPageContext } from 'next/types';
 import { ReactElement, ReactNode } from 'react';
 import { ThemeProvider } from 'styled-components';
 import AuthGate from '../auth/AuthGate';
 import { UserProvider } from '../context/user.context';
 import '../styles/global.scss';
+import Cookies from 'cookies';
 
 type NextPageWithLayout = NextPage & {
   //Gets per page computed layout
@@ -15,6 +16,7 @@ type NextPageWithLayout = NextPage & {
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
+  hasAuthCookies: boolean;
 };
 const theme = {
   white: '#F9F9F9',
@@ -22,7 +24,11 @@ const theme = {
   highlight: '#21242D',
   background: '#16181E',
 };
-function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
+function CustomApp({
+  Component,
+  pageProps,
+  hasAuthCookies,
+}: AppPropsWithLayout) {
   const getLayout = Component.getLayout || ((page) => page);
 
   return (
@@ -39,5 +45,4 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
     </UserProvider>
   );
 }
-
 export default CustomApp;

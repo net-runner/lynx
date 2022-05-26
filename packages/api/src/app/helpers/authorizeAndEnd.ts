@@ -10,6 +10,10 @@ import { signJwt } from './jwt';
 import { cookieOptions, refreshCookieOptions } from './cookie';
 import { AuthProvider } from '../services/user';
 
+const env = process.env.NODE_ENV;
+
+const isProduction = env === 'production';
+
 //Helper function for getting and setting user tokens
 export async function authorizeAndEnd(
   user: User,
@@ -49,7 +53,14 @@ export async function authorizeAndEnd(
   );
 
   //Redirect to webapp if not credential authorization.
-  if (!isLocal) return res.redirect(process.env.FRONTEND_URL);
+  if (!isLocal)
+    return res
+      .status(302)
+      .redirect(
+        isProduction
+          ? process.env.FRONTEND_URL + 'home'
+          : 'http://localhost:4200/home'
+      );
 
   //Or if local just end
   return res.status(200).end();

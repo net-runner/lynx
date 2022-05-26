@@ -11,8 +11,9 @@ export const signIn = async ({ email, password }) => {
       { withCredentials: true }
     );
     console.log(res.data);
+    return res;
   } catch (error) {
-    console.log('E' + error);
+    console.log('E ' + error);
   }
 };
 
