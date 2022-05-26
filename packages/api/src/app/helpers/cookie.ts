@@ -1,6 +1,6 @@
 import { CookieOptions } from 'hyper-express';
 
-const { FRONTEND_URL } = process.env;
+const { COOKIE_DOMAIN } = process.env;
 const env = process.env.NODE_ENV;
 
 const isProduction = env === 'production';
@@ -8,7 +8,7 @@ const isProduction = env === 'production';
 export const cookieOptions: CookieOptions = {
   maxAge: 900000,
   httpOnly: false,
-  domain: isProduction ? FRONTEND_URL : 'localhost',
+  domain: isProduction ? COOKIE_DOMAIN : 'localhost',
   path: '/',
   sameSite: isProduction ? 'strict' : 'lax',
   secure: isProduction,
