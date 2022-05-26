@@ -74,9 +74,9 @@ const SignUp: React.FC = () => {
         </form>
         <div
           className="row center"
-          style={{ marginBottom: '-15px', marginTop: '30px' }}
+          style={{ marginBottom: '-1.5rem', marginTop: '3rem' }}
         >
-          <SmallAuthText style={{ marginRight: '10px' }}>
+          <SmallAuthText style={{ marginRight: '1rem' }}>
             Have an account?
           </SmallAuthText>
           <Link href={'signin'} passHref>

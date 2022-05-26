@@ -24,8 +24,8 @@ export const SpecialBackgroundColumn = styled.div`
 `;
 
 export const SpecialLinkIcon = styled(LinkIcon)`
-  width: 80px;
-  height: 80px;
+  width: 8rem;
+  height: 8rem;
   transform: rotate(0);
   transition: 3s ease-in-out;
   &:hover {

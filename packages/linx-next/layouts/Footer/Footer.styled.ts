@@ -9,7 +9,7 @@ export const Footer = styled.footer`
   text-align: center;
   font-size: 1.2rem;
   font-family: Inter, serif;
-  background-color: ${({ theme }) => theme.highlight};
+  background-color: ${({ theme }) => theme.backgroundSecondary};
   & > div > a {
     font-weight: 500;
     text-decoration: underline;

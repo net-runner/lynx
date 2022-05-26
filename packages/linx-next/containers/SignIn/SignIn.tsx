@@ -74,9 +74,9 @@ const SignIn = () => {
       <GoogleLoginButton />
       <div
         className="row center"
-        style={{ marginBottom: '-15px', marginTop: '30px' }}
+        style={{ marginBottom: '-1.5rem', marginTop: '3rem' }}
       >
-        <SmallAuthText style={{ marginRight: '10px' }}>
+        <SmallAuthText style={{ marginRight: '1rem' }}>
           Don’t have an account?
         </SmallAuthText>
         <Link href={'signup'} passHref>

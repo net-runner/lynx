@@ -6,7 +6,7 @@ export const LandingHeader = styled.h1`
   text-align: center;
   line-height: 100%;
   font-size: 11rem;
-  margin-bottom: 60px;
+  margin-bottom: 6rem;
 `;
 
 export const BigInformationSection = styled.p`

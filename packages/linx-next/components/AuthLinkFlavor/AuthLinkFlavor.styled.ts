@@ -17,8 +17,8 @@ export const Container = styled.div`
   }
 `;
 export const SpecialLinkIcon = styled(LinkIcon)`
-  width: 55px;
-  height: 55px;
+  width: 5.5rem;
+  height: 5.5rem;
   transform: rotate(-45deg);
-  margin-right: 10px;
+  margin-right: 1rem;
 `;

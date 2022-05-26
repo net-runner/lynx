@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   margin: 1rem auto 3rem;
   padding: 4rem 0;
   border-radius: 3.3rem;
-  background-color: ${({ theme }) => theme.highlight};
+  background-color: ${({ theme }) => theme.backgroundSecondary};
 
   & button {
     width: 30rem;

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const LAN = styled.div`
-  height: 30px;
+  height: 3rem;
   display: flex;
   align-items: center;
   flex-direction: row;

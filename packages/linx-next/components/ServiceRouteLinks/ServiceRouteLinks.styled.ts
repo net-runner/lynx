@@ -6,11 +6,11 @@ export const Container = styled.div`
   justify-content: flex-start;
   position: fixed;
   border-radius: 1rem;
-  bottom: 30px;
-  left: 5px;
-  font-size: 15px;
+  bottom: 3rem;
+  left: 0.5rem;
+  font-size: 1.5rem;
   & > a {
-    margin-right: 5px;
+    margin-right: 0.5rem;
     opacity: 0.2;
   }
 `;

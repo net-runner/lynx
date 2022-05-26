@@ -21,8 +21,8 @@ type AppPropsWithLayout = AppProps & {
 const theme = {
   white: '#F9F9F9',
   primary: '#00B9AE',
-  highlight: '#21242D',
   background: '#16181E',
+  backgroundSecondary: '#21242D',
 };
 function CustomApp({
   Component,

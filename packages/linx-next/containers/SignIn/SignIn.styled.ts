@@ -11,21 +11,21 @@ export const Wrapper = styled.div`
   margin: 0 auto;
   padding: 5rem 0 3rem;
   border-radius: 3.3rem;
-  background-color: ${({ theme }) => theme.highlight};
+  background-color: ${({ theme }) => theme.backgroundSecondary};
 
   & button {
-    width: 300px;
-    height: 40px;
-    margin-top: 20px;
+    width: 30rem;
+    height: 4rem;
+    margin-top: 2rem;
   }
 
   & input {
-    margin-top: 10px;
-    width: 300px;
+    margin-top: 1rem;
+    width: 30rem;
   }
 
   & form label {
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
   }
 `;
 

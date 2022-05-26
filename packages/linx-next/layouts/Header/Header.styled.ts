@@ -28,11 +28,11 @@ export const Nav = styled.nav`
   justify-content: space-between;
   a {
     &:not(:first-child) {
-      margin-left: 20px;
+      margin-left: 2rem;
     }
   }
   & button {
-    height: 30px;
+    height: 3rem;
   }
   & svg {
     display: flex;
