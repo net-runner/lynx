@@ -4,7 +4,8 @@ import LinkIcon from './LinkIcon';
 import GoogleIcon from './GoogleIcon';
 import LogoSmall from './LogoSmall';
 import LynxLogoDetail from './LynxLogoDetail';
-import LynxLogoDetailNoCircle from './LynxLogoDetailNoCircle';
+import LynxLogoDetailNoCircle from './LynxLogoDetailNoCircleSmallBox';
+import LynxLogoDetailNoCircleSmallBox from './LynxLogoDetailNoCircleSmallBox';
 import NoConnectionIcon from './NoConnectionIcon';
 
 export {
@@ -16,4 +17,5 @@ export {
   LynxLogoDetail,
   LynxLogoDetailNoCircle,
   NoConnectionIcon,
+  LynxLogoDetailNoCircleSmallBox,
 };
