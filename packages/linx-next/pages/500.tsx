@@ -1,20 +1,10 @@
-import { NextSeo } from 'next-seo';
-import { ReactElement } from 'react';
-import { BigInformationSection } from '../components/Text/Text.styled';
 import AuthLayout from '../layouts/AuthLayout';
+import { ReactElement } from 'react';
+import { NextSeo } from 'next-seo';
+import ErrorPanel from '../components/ErrorPanel';
 
-const Custom500 = () => {
-  return (
-    <div className="error-route-container column">
-      <div className="error-number row">
-        <p>5</p>
-        <p>0</p>
-        <p>0</p>
-      </div>
-      <BigInformationSection>Server-side error occurred</BigInformationSection>
-    </div>
-  );
-};
+const Custom500 = () => <ErrorPanel type={'500'} />;
+
 Custom500.getLayout = (page: ReactElement) => {
   return (
     <AuthLayout>
@@ -26,4 +16,5 @@ Custom500.getLayout = (page: ReactElement) => {
     </AuthLayout>
   );
 };
+
 export default Custom500;
