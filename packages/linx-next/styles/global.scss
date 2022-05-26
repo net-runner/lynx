@@ -26,13 +26,6 @@ html {
   flex-direction: row;
 }
 
-.rel {
-  position: relative;
-  display: flex;
-  align-items: center;
-  text-align: center;
-}
-
 .center {
   align-items: center;
   text-align: center;
@@ -85,22 +78,6 @@ body {
 
   &>button:nth-child(2n) {
     margin-left: 80px;
-  }
-}
-
-.error-route-container {
-  margin: 0 auto;
-  margin-top: 160px;
-  display: flex;
-}
-
-.error-number {
-  font-size: 150px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: bold;
-
-  & p:nth-child(2) {
-    margin: 25px;
   }
 }
 
