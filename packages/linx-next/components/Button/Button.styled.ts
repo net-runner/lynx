@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 
 export const Button = styled.button`
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #00b9ae;
+  background: ${({ theme }) => theme.primary};
   padding: 0.5rem 3rem;
   border-radius: 1rem;
   color: #000;
   font-weight: bold;
   font-size: 1.4rem;
-  line-break: none;
-  font-family: 'Lato' sans-serif;
+  font-family: 'Lato', sans-serif;
   white-space: nowrap;
 `;
