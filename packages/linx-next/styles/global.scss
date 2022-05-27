@@ -1,0 +1,94 @@
+@import './breakpoints.scss';
+
+//Colors from figma
+$background: #16181E;
+$primary: #00B9AE;
+$white: #f9f9f9;
+$highlight: #21242D;
+
+html {
+  -webkit-text-size-adjust: 100%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  line-height: 1.5;
+  tab-size: 4;
+  scroll-behavior: smooth;
+  font-size: 62.5%;
+  height: 100%;
+  width: 100%;
+  font-feature-settings: "kern";
+  text-rendering: optimizeLegibility;
+  color: $white;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.center {
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.flex-1 {
+  display: flex;
+  flex: 1;
+}
+
+.column {
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+
+body {
+  background-color: $background;
+  font-family: inherit;
+  line-height: inherit;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  font-size: 1.6rem;
+}
+
+//Remember to take it of on media
+.landing-container {
+  margin: 14rem 20vw;
+
+}
+
+.landing-buttons-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 4rem 22.5rem;
+
+  &>button {
+    height: 4.5rem;
+  }
+
+  &>button:nth-child(2n) {
+    margin-left: 8rem;
+  }
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  border-color: currentColor;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}

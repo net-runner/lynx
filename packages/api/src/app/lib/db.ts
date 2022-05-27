@@ -1,28 +1,5 @@
-import { Pool } from 'pg';
-const { DEV_MODE } = process.env;
+import { PrismaClient } from '@prisma/client';
 
-class Database {
-  pool: Pool;
-  constructor() {
-    this.connect();
-  }
-  connect() {
-    this.pool = new Pool({
-      connectionString: process.env.DATABASE_URL,
-      ssl: DEV_MODE ? false : { rejectUnauthorized: false },
-    });
+const db = new PrismaClient();
 
-    this.pool.on('error', (err) => {
-      console.error('Unexpected error on idle client "DATABASE" class: ', err);
-      process.exit(-1);
-    });
-  }
-  async query(queryString) {
-    const client = await this.pool.connect();
-    const data = await client.query(queryString);
-    client.release();
-    return data;
-  }
-}
-
-module.exports = new Database();
+export default db;

@@ -1,17 +1,60 @@
 import { Server } from 'hyper-express';
 import 'dotenv';
-const webserver = new Server();
+import {
+  authRouter,
+  linkGroupRouter,
+  linkRouter,
+  tagRouter,
+  userGroupRouter,
+  userRouter,
+} from './app/routes';
+import corsMiddleware from './app/middlewares/cors';
+import log from './app/helpers/logger';
+import * as cookieParser from 'cookie-parser';
+import deserializeUser from './app/middlewares/auth/deserializeUser';
+import rateLimiterMiddleware from './app/middlewares/rateLimit';
+import * as cors from 'cors';
+const { FRONTEND_URL, NODE_ENV } = process.env;
+const isProduction = NODE_ENV === 'production';
+const app = new Server();
 
 // Create GET route to serve 'Hello World'
-webserver.get('/', (request, response) => {
+app.get('/hello', (request, response) => {
+  log.info('HELLO');
   response.send('Hello World');
 });
 
-// Activate webserver by calling .listen(port, callback);
+//If user requests server favicon
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(__dirname + '/assets/favicon.ico');
+});
+
+//Heatlhcheck route for checking if service is online
+app.get('/healthcheck', (req, res) => {
+  res.status(200).end();
+});
+//Handle all of unsuported routes
+app.get('/*', (req, res) => {
+  res.status(404).send('Unsupported route');
+});
 
 const port = process.env.PORT || 80;
 
-webserver
+app.use(cors({ credentials: true, origin: isProduction ? FRONTEND_URL : '*' }));
+app.use(cookieParser());
+app.use(deserializeUser);
+app.use(rateLimiterMiddleware);
+
+app.use('/auth', authRouter);
+app.use('/users', userRouter);
+app.use('/usersgroup', userGroupRouter);
+app.use('/link', linkRouter);
+app.use('/linkgroup', linkGroupRouter);
+app.use('/tag', tagRouter);
+
+app
   .listen(port as number)
-  .then((socket) => console.log('Webserver started on port: ' + port))
-  .catch((error) => console.log('Failed to start webserver on port: ' + port));
+  .then(() => log.info('[START] LYNX API ONLINE: ' + port))
+  .catch((error) =>
+    log.error('FAILED TO START API: ' + port + ' Error ' + error)
+  );
