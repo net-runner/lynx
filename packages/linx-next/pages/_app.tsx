@@ -6,6 +6,7 @@ import AuthGate from '../auth/AuthGate';
 import { UserProvider } from '../context/user.context';
 import '../styles/global.scss';
 import Cookies from 'cookies';
+import axios from 'axios';
 
 type NextPageWithLayout = NextPage & {
   //Gets per page computed layout
@@ -24,13 +25,8 @@ const theme = {
   background: '#16181E',
   backgroundSecondary: '#21242D',
 };
-function CustomApp({
-  Component,
-  pageProps,
-  hasAuthCookies,
-}: AppPropsWithLayout) {
+function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout || ((page) => page);
-
   return (
     <UserProvider>
       <ThemeProvider theme={theme}>
@@ -45,4 +41,5 @@ function CustomApp({
     </UserProvider>
   );
 }
+
 export default CustomApp;

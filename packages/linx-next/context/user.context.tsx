@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import { User } from '@prisma/client';
 import axios from 'axios';
+import useSWR from 'swr';
 
 export interface UserContext {
   user?: User;
@@ -37,6 +38,7 @@ export const useUser = () => {
 interface Props {
   children: ReactNode;
 }
+const fetcher = (x) => fetch(x).then((res) => res.json());
 
 export const UserProvider: FC<Props> = ({ children }) => {
   const [user, setUser] = useState<User>(null);
@@ -44,6 +46,14 @@ export const UserProvider: FC<Props> = ({ children }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const isAuthenticated = !!user;
+
+  const { data } = useSWR('/api/auth', fetcher);
+
+  useEffect(() => {
+    if (data?.hasAuthCookies) {
+      authenticate();
+    }
+  }, [data]);
 
   const login = async ({ email, password }) => {
     await signIn({ email, password });
@@ -72,18 +82,6 @@ export const UserProvider: FC<Props> = ({ children }) => {
     }
     setIsLoading(false);
   };
-  const areCookiesPresent = async () => {
-    const hasAuthCookies = await axios
-      .get('api/auth', { withCredentials: true })
-      .then((res) => res.data.hasAuthCookies);
-    console.log(hasAuthCookies);
-    if (hasAuthCookies) {
-      authenticate();
-    }
-  };
-  useEffect(() => {
-    areCookiesPresent();
-  }, []);
 
   //For debug only
   useEffect(() => {

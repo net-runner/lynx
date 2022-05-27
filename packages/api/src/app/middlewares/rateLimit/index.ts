@@ -1,7 +1,8 @@
 import { defaultRouteMiddlewareInterface } from '../../../interfaces/index';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
+import log from '../../helpers/logger';
 const opts = {
-  points: 6, // 6 points
+  points: 12, // 12 points
   duration: 1, // Per second
 };
 
@@ -18,6 +19,7 @@ const rateLimiterMiddleware: defaultRouteMiddlewareInterface = (
       next();
     })
     .catch(() => {
+      log.error('Too many Requests from: ' + req.ips);
       res.status(429).send('Too Many Requests');
     });
 };
