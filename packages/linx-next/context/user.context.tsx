@@ -75,7 +75,7 @@ export const UserProvider: FC<Props> = ({ children }) => {
       const newUser = await getUser();
       setUser(newUser);
       // Cookies.set('access_token', token);
-      router.push(redirect || '/home');
+      router.push(redirect || '/explore');
     } catch (error) {
       console.log({ error });
       // unauthenticateAPI();
