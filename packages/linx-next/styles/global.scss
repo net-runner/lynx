@@ -21,29 +21,6 @@ html {
   color: $white;
 }
 
-.row {
-  display: flex;
-  flex-direction: row;
-}
-
-.center {
-  align-items: center;
-  text-align: center;
-  justify-content: center;
-}
-
-.flex-1 {
-  display: flex;
-  flex: 1;
-}
-
-.column {
-  flex-direction: column;
-  align-items: center;
-  padding: 1.5rem;
-}
-
-
 body {
   background-color: $background;
   font-family: inherit;
@@ -54,27 +31,6 @@ body {
   height: 100%;
   width: 100%;
   font-size: 1.6rem;
-}
-
-//Remember to take it of on media
-.landing-container {
-  z-index: 2;
-  margin: 3rem 20vw;
-}
-
-.landing-buttons-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin: 4rem 22.5rem;
-
-  &>button {
-    height: 4.5rem;
-  }
-
-  &>button:nth-child(2n) {
-    margin-left: 8rem;
-  }
 }
 
 *,
@@ -91,4 +47,15 @@ body {
 a {
   color: inherit;
   text-decoration: inherit;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.center {
+  align-items: center;
+  text-align: center;
+  justify-content: center;
 }

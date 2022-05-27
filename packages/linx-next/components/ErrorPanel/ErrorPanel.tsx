@@ -1,6 +1,5 @@
 import React from 'react';
 import * as S from './ErrorPanel.styled';
-import { BigInformationSection } from '../Text/Text.styled';
 import { LynxLogoDetail, NoConnectionIcon } from '../../assets/icons';
 
 interface ErrorPageProps {
@@ -17,9 +16,9 @@ const ErrorPanel: React.FC<ErrorPageProps> = ({ type }) => {
             <p>0</p>
             <p>4</p>
           </S.ErrorNumbers>
-          <BigInformationSection>
+          <S.Info>
             No page found with that address.
-          </BigInformationSection>
+          </S.Info>
         </S.Wrapper>
       );
     case '500':
@@ -30,9 +29,9 @@ const ErrorPanel: React.FC<ErrorPageProps> = ({ type }) => {
             <p>0</p>
             <p>0</p>
           </S.ErrorNumbers>
-          <BigInformationSection>
+          <S.Info>
             Server-side error occurred.
-          </BigInformationSection>
+          </S.Info>
         </S.Wrapper>
       );
     case 'offline':
@@ -45,11 +44,11 @@ const ErrorPanel: React.FC<ErrorPageProps> = ({ type }) => {
             />
           </S.LogoContainer>
 
-          <BigInformationSection>
+          <S.Info>
             Page not cached or Lynx is offline.
             <br />
             Reconnect and refresh the app.
-          </BigInformationSection>
+          </S.Info>
         </S.Wrapper>
       );
     default:
