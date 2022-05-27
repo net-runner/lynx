@@ -156,7 +156,10 @@ class LinkGroupController {
       pushDiscordWebhook(discordWebhookBody);
 
       const linksResponse = linksFromDb.map((linkFromDb) => linkFromDb);
-      res.status(200).json(linksResponse);
+      res.status(200).json({
+        currentPage: page,
+        groups: linksResponse
+      });
     } catch (e) {
       log.error({ err: e.message, desc: e });
       res.json({ err: e.message, desc: e });
