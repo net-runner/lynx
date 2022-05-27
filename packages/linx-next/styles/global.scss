@@ -44,6 +44,11 @@ body {
   border-color: currentColor;
 }
 
+::selection {
+  background: $primary;
+  color: $white;
+}
+
 a {
   color: inherit;
   text-decoration: inherit;
