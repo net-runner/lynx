@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Footer from '../Footer/Footer';
 import Header from '../Header';
 
 const Content = styled.div`
@@ -21,7 +20,6 @@ const MainLayout = ({ children }: { children }) => (
   <Wrapper>
     <Header />
     <Content>{children}</Content>
-    <Footer />
   </Wrapper>
 );
 
