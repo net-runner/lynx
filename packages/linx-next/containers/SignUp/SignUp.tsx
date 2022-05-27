@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { LynxLogoDetailNoCircleSmallBox } from '../../assets/icons';
 import GithubLoginButton from '../../components/GithubLoginButton';
 import GoogleLoginButton from '../../components/GoogleLoginButton';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 type Inputs = {
   email: string;
@@ -28,18 +29,9 @@ const SignUp: React.FC = () => {
   } = useForm<Inputs>();
 
   //Enter key press handler => submit form
-  useEffect(() => {
-    const listener = (event) => {
-      if (event.code === 'Enter' || event.code === 'NumpadEnter') {
-        event.preventDefault();
-        handleSubmit(onSubmit)();
-      }
-    };
-    document.addEventListener('keydown', listener);
-    return () => {
-      document.removeEventListener('keydown', listener);
-    };
-  }, [handleSubmit]);
+  useHotkeys('enter, numpadenter', () => {
+    handleSubmit(onSubmit)();
+  });
 
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
   return (

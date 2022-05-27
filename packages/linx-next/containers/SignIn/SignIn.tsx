@@ -32,17 +32,6 @@ const SignIn = () => {
   useHotkeys('enter, numpadenter', () => {
     handleSubmit(onSubmit)();
   });
-  useEffect(() => {
-    const listener = (event) => {
-      if (event.code === 'Enter' || event.code === 'NumpadEnter') {
-        event.preventDefault();
-      }
-    };
-    document.addEventListener('keydown', listener);
-    return () => {
-      document.removeEventListener('keydown', listener);
-    };
-  }, [handleSubmit]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const ax = login(data);
