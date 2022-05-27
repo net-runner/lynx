@@ -14,6 +14,8 @@ const SpecialBackground = () => {
             left: '3vw',
             top: '1vh',
             transform: `rotate(30deg)`,
+            width: '8rem',
+            height: '8rem',
           }}
         />
         <SpecialLinkIcon
@@ -78,6 +80,8 @@ const SpecialBackground = () => {
             right: '3vw',
             top: '1vh',
             transform: `rotate(70deg)`,
+            width: '8rem',
+            height: '8rem',
           }}
         />
         <SpecialLinkIcon
