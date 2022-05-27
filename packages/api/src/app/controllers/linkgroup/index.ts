@@ -138,12 +138,11 @@ class LinkGroupController {
   };
   public getMany: defaultRouteHandler = async (req, res) => {
     try {
-      const body = await req.json();
-      const { limit } = body;
-      let { page } = body;
+      const url = req.url.split("/")
+      const limit = parseInt(url[2]);
+      const page =  parseInt(url[3]) || 0;
 
       if (limit > 50) return res.status(400).send('Limit exceeded');
-      if (page === undefined) page = 0;
       if (typeof limit !== 'number' || typeof page !== 'number')
         return res.status(400).send('Limit and page have to be numbers');
 
@@ -158,7 +157,7 @@ class LinkGroupController {
       const linksResponse = linksFromDb.map((linkFromDb) => linkFromDb);
       res.status(200).json({
         currentPage: page,
-        groups: linksResponse
+        groups: linksResponse,
       });
     } catch (e) {
       log.error({ err: e.message, desc: e });
