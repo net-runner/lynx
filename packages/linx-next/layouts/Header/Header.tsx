@@ -11,12 +11,16 @@ const Header = ({ type }: { type?: 'signin' | 'signup' }) => {
   const handleClick = (href: string) => {
     router.push(href);
   };
-  const AuthButtons = () =>
-    type === 'signin' ? (
-      <Button onClick={() => handleClick('signup')}>Sign up</Button>
-    ) : (
-      <Button onClick={() => handleClick('signin')}>Sign in</Button>
-    );
+  const AuthButtons = () => {
+    switch (type) {
+      case 'signin':
+        return <Button onClick={() => handleClick('signup')}>Sign up</Button>;
+      case 'signup':
+        return <Button onClick={() => handleClick('signin')}>Sign in</Button>;
+      default:
+        return <></>;
+    }
+  };
   return (
     <S.Header>
       <S.Nav>
