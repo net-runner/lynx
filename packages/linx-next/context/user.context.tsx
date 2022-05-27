@@ -6,7 +6,7 @@ import {
   ReactNode,
   useEffect,
 } from 'react';
-import { doLogout, getUser, signIn } from '../helpers/user';
+import { doLogout, getUser, signIn } from '../api/user';
 import { useRouter } from 'next/router';
 import { User } from '@prisma/client';
 import useSWR from 'swr';

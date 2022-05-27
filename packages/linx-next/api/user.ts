@@ -16,6 +16,7 @@ export const signIn = async ({ email, password }) => {
     console.log('E ' + error);
   }
 };
+
 export const doLogout = async () => {
   try {
     await axios
@@ -26,6 +27,7 @@ export const doLogout = async () => {
     throw error;
   }
 };
+
 export const getUser = async () => {
   try {
     const user = await axios
