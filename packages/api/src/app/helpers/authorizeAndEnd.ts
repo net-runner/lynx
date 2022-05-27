@@ -43,7 +43,7 @@ export async function authorizeAndEnd(
   );
 
   //Set user cookies
-  res.cookie('access_token', access_token, 15 * 60, cookieOptions);
+  res.cookie('access_token', access_token, 365 * 24 * 60 * 60, cookieOptions);
 
   res.cookie(
     'refresh_token',

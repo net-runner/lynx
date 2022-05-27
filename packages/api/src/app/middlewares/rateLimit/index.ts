@@ -2,7 +2,7 @@ import { defaultRouteMiddlewareInterface } from '../../../interfaces/index';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 import log from '../../helpers/logger';
 const opts = {
-  points: 12, // 12 points
+  points: 24, // 12 points
   duration: 1, // Per second
 };
 

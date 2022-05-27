@@ -16,7 +16,16 @@ export const signIn = async ({ email, password }) => {
     console.log('E ' + error);
   }
 };
-
+export const doLogout = async () => {
+  try {
+    await axios
+      .get(`/api/auth/logout`, { withCredentials: true })
+      .then((r) => r.data);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
 export const getUser = async () => {
   try {
     const user = await axios

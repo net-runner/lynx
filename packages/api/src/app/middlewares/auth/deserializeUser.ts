@@ -27,7 +27,12 @@ const deserializeUser: defaultRouteMiddlewareInterface = async (req, res) => {
       if (newAccessToken) {
         res.setHeader('x-access-token', newAccessToken as string);
         res.setHeader('Authorization', ('Bearer ' + newAccessToken) as string);
-        res.cookie('access_token', newAccessToken, 900000, cookieOptions);
+        res.cookie(
+          'access_token',
+          newAccessToken,
+          365 * 24 * 60 * 60,
+          cookieOptions
+        );
       }
 
       const result = verifyJwt(newAccessToken as string);

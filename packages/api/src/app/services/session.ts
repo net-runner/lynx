@@ -21,6 +21,15 @@ export async function createSession(
   setExCache(session.id, 9000, JSON.stringify(session));
   return session;
 }
+
+export async function removeSession(sessionId: string) {
+  await db.session.delete({ where: { id: sessionId } });
+}
+
+export async function removeAllSessions(userId: string) {
+  await db.session.deleteMany({ where: { user: userId } });
+}
+
 export async function findSession(sessionId: string) {
   const cachedResponse = await getFromCache(sessionId);
   if (cachedResponse) {

@@ -5,17 +5,13 @@ import {
   BigInformationSection,
   LandingHeader,
 } from '../components/Text/Text.styled';
-import Home from '../containers/Home/home';
-import { useUser } from '../context/user.context';
 import AuthLayout from '../layouts/AuthLayout/AuthLayout';
 
 const Index = () => {
   const router = useRouter();
-  const { isAuthenticated } = useUser();
   const handleClick = (href: string) => {
     router.push(href);
   };
-  if (isAuthenticated) return <Home />;
   return (
     <div className="landing-container">
       <LandingHeader>Manage your links with style</LandingHeader>

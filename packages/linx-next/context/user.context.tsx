@@ -6,11 +6,9 @@ import {
   ReactNode,
   useEffect,
 } from 'react';
-import { getUser, signIn } from '../helpers/user';
+import { doLogout, getUser, signIn } from '../helpers/user';
 import { useRouter } from 'next/router';
-import Cookies from 'js-cookie';
 import { User } from '@prisma/client';
-import axios from 'axios';
 import useSWR from 'swr';
 
 export interface UserContext {
@@ -21,7 +19,6 @@ export interface UserContext {
   login: ({ email, password }: { email: string; password: string }) => void;
   isLoading: boolean;
   isAuthenticated: boolean;
-  token: string;
 }
 
 export const UserContext = createContext<UserContext>(null);
@@ -47,24 +44,28 @@ export const UserProvider: FC<Props> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const isAuthenticated = !!user;
 
-  const { data } = useSWR('/api/auth', fetcher);
-
+  const { data: cookies } = useSWR('/api/auth', fetcher);
+  const { data: userr } = useSWR(
+    cookies?.hasAuthCookies && '/api/auth/me',
+    getUser
+  );
   useEffect(() => {
-    if (data?.hasAuthCookies) {
-      authenticate();
+    if (!user && userr) {
+      setUser(userr);
     }
-  }, [data]);
+  }, [user, userr]);
 
   const login = async ({ email, password }) => {
     await signIn({ email, password });
     authenticate();
   };
 
-  const logout = ({ redirectLocation }) => {
+  const logout = async ({ redirectLocation }) => {
+    await doLogout();
     setUser(null);
     setIsLoading(false);
     console.log('Redirecting');
-    router.push(redirectLocation || '/login');
+    router.push(redirectLocation || '/signin');
   };
 
   const authenticate = async () => {
@@ -83,20 +84,6 @@ export const UserProvider: FC<Props> = ({ children }) => {
     setIsLoading(false);
   };
 
-  //For debug only
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
-  useEffect(() => {
-    console.log(router.route);
-    if (isAuthenticated) {
-      if (router.route === ('/signin' || '/signup')) {
-        router.push('/home');
-      }
-    }
-  }, [router, isAuthenticated]);
-
   return (
     <UserContext.Provider
       value={{
@@ -107,7 +94,6 @@ export const UserProvider: FC<Props> = ({ children }) => {
         login,
         isLoading,
         isAuthenticated,
-        token: Cookies.get('refresh_token'),
       }}
     >
       {children}
