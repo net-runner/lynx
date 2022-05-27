@@ -12,6 +12,7 @@ import GithubLoginButton from '../../components/GithubLoginButton';
 import GoogleLoginButton from '../../components/GoogleLoginButton';
 import Link from 'next/link';
 import { useUser } from '../../context/user.context';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 type Inputs = {
   email: string;
@@ -28,11 +29,13 @@ const SignIn = () => {
 
   const { login } = useUser();
   //Enter key press handler => submit form
+  useHotkeys('enter, numpadenter', () => {
+    handleSubmit(onSubmit)();
+  });
   useEffect(() => {
     const listener = (event) => {
       if (event.code === 'Enter' || event.code === 'NumpadEnter') {
         event.preventDefault();
-        handleSubmit(onSubmit)();
       }
     };
     document.addEventListener('keydown', listener);
@@ -51,9 +54,7 @@ const SignIn = () => {
     <S.Wrapper>
       <AuthLinkFlavor type="up" />
       <LynxLogoDetail style={{ position: 'absolute', top: -25, right: -25 }} />
-      <S.Title>
-        Hi, welcome back!
-      </S.Title>
+      <S.Title>Hi, welcome back!</S.Title>
       <form onSubmit={handleSubmit(onSubmit)}>
         <label>Email</label>
         <S.Input
