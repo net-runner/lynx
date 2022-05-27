@@ -25,8 +25,8 @@ const Header = ({ type }: { type?: 'signin' | 'signup' }) => {
         <S.HeaderTextLink href="stats">Stats</S.HeaderTextLink>
         <S.HeaderTextLink href="top">Top</S.HeaderTextLink>
       </S.Nav>
-      {!isAuthenticated && <AuthButtons />}
       <S.Nav>
+        {!isAuthenticated && <AuthButtons />}
         <a href="https://github.com/net-runner/lynx">
           <GithubIcon />
         </a>
