@@ -12,6 +12,9 @@ import { LynxLogoDetailNoCircleSmallBox } from '../../assets/icons';
 import GithubLoginButton from '../../components/GithubLoginButton';
 import GoogleLoginButton from '../../components/GoogleLoginButton';
 import { useHotkeys } from 'react-hotkeys-hook';
+import { useUser } from '../../context/user.context';
+import { useRouter } from 'next/router';
+import { route } from 'next/dist/server/router';
 
 type Inputs = {
   email: string;
@@ -21,6 +24,9 @@ type Inputs = {
 };
 
 const SignUp: React.FC = () => {
+  const { isAuthenticated } = useUser();
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -32,6 +38,11 @@ const SignUp: React.FC = () => {
   useHotkeys('enter, numpadenter', () => {
     handleSubmit(onSubmit)();
   });
+
+  if (isAuthenticated) {
+    router.push('/');
+    return null;
+  }
 
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
   return (
