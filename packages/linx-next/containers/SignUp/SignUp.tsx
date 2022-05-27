@@ -14,7 +14,6 @@ import GoogleLoginButton from '../../components/GoogleLoginButton';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useUser } from '../../context/user.context';
 import { useRouter } from 'next/router';
-import { route } from 'next/dist/server/router';
 
 type Inputs = {
   email: string;
