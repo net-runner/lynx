@@ -6,7 +6,7 @@ const env = process.env.NODE_ENV;
 const isProduction = env === 'production';
 
 export const cookieOptions: CookieOptions = {
-  maxAge: 15 * 60,
+  maxAge: 365 * 24 * 60 * 60,
   httpOnly: true,
   domain: isProduction ? COOKIE_DOMAIN : 'localhost',
   path: '/',
