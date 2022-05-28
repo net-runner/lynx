@@ -62,9 +62,9 @@ export const signUp = async ({ name, email, password, repeat_password }) => {
       },
       { withCredentials: true }
     );
-    console.log(res.data);
     return res;
   } catch (error) {
     console.log(error);
+    return false;
   }
 };

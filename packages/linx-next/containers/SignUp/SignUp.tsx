@@ -63,11 +63,13 @@ const SignUp: React.FC = () => {
           {/* {errors.email && <span>Email is required</span>} */}
           <label>Password</label>
           <S.Input
+            type={'password'}
             {...register('password', { required: true })}
             placeholder="Enter your password"
           />
           <label>Repeat password</label>
           <S.Input
+            type={'password'}
             {...register('repeat_password', { required: true })}
             placeholder="Re enter your password"
           />

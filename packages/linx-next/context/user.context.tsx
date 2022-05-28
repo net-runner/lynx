@@ -75,8 +75,9 @@ export const UserProvider: FC<Props> = ({ children, initialUser }) => {
   };
 
   const signup = async ({ name, email, password, repeat_password }) => {
-    await signUp({ name, email, password, repeat_password });
-    authenticate();
+    const isSignupCorrect = await signUp({ name, email, password, repeat_password });
+    if(!isSignupCorrect) return;
+    await login({email, password})
   };
 
   const logout = async ({ redirectLocation }) => {
