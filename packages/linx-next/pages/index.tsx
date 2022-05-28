@@ -5,7 +5,7 @@ import LandingPage from '../containers/LandingPage';
 const Index = () => <LandingPage />;
 
 Index.getLayout = (page: ReactElement) => {
-  return <AuthLayout type={"signup"}>{page}</AuthLayout>;
+  return <AuthLayout>{page}</AuthLayout>;
 };
 
 export default Index;

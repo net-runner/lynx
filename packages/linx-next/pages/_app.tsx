@@ -16,7 +16,6 @@ type NextPageWithLayout = NextPage & {
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
   hasAuthCookies: boolean;
-  ssrUser: any;
 };
 const theme = {
   white: '#F9F9F9',

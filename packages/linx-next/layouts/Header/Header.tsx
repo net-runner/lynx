@@ -7,8 +7,8 @@ import { useUser } from '../../context/user.context';
 import UserDropdown from '../../components/UserDropdown';
 import { useRouter } from 'next/router';
 
-const Header = ({ type }: { type?: 'signin' | 'signup' }) => {
-  const { user, isAuthenticated } = useUser();
+const Header = () => {
+  const { isAuthenticated } = useUser();
   const router = useRouter();
   const handleClick = (href: string) => {
     router.push(href);

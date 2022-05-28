@@ -19,16 +19,10 @@ const Wrapper = styled.div`
   overflow: hidden;
 `;
 
-const AuthLayout = ({
-  type,
-  children,
-}: {
-  type?: 'signin' | 'signup';
-  children;
-}) => {
+const AuthLayout = ({ children }) => {
   return (
     <Wrapper>
-      <Header type={type} />
+      <Header />
       <Content>{children}</Content>
       <Footer />
       <ServiceRouteLinks />

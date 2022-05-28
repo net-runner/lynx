@@ -10,7 +10,6 @@ import { doLogout, getUser, signIn, signUp } from '../api/user';
 import { useRouter } from 'next/router';
 import { User } from '@prisma/client';
 import useSWR from 'swr';
-import Cookies from 'js-cookie';
 import axios from 'axios';
 export interface UserContext {
   user?: User;

@@ -7,7 +7,7 @@ const SigninPage = () => <SignIn />;
 
 SigninPage.getLayout = (page: ReactElement) => {
   return (
-    <AuthLayout type="signin">
+    <AuthLayout>
       <NextSeo title="Signin" description="Sign in to your account." />
       {page}
     </AuthLayout>
