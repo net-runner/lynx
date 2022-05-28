@@ -13,9 +13,8 @@ const MainFeed = ({
 }: {
   linkGroupData?: serverSideLinkGroupData;
 }) => {
-  const [linkGroups, setLinkGroups] = useState<LinkGroup[]>([
-    ...linkGroupData.groups,
-  ]);
+  const initialGroups = linkGroupData?.groups ? [...linkGroupData.groups] : [];
+  const [linkGroups, setLinkGroups] = useState<LinkGroup[]>(initialGroups);
   const [areAllListsFetched, setAllListsFetched] = useState(false);
   const [currentPage, setPage] = useState(parseInt(linkGroupData.currentPage));
   const [observedElement, setObservedElement] = useState<HTMLLIElement | null>(

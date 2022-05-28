@@ -17,22 +17,21 @@ export const Container = styled.div`
 `;
 
 export const DropdownContainer = styled.div`
-  border: 1px solid;
-  border-color: #f9f9f9;
   display: none;
-  /* border-color: rgba(249, 249, 249, 0.25); */
-  border-radius: 0.75rem;
   position: absolute;
-  background-color: #21242d;
-  top: 3rem;
+  min-width: 10rem;
+  top: 4rem;
+  right: -0.1rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #f9f9f9;
+  border-radius: 0.75rem;
+  background-color: ${({ theme }) => theme.backgroundSecondary};
   text-align: start;
-  width: 100%;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
 
   &.open {
     display: block;
   }
+
   &::before,
   &::after {
     content: '';
@@ -51,6 +50,7 @@ export const DropdownContainer = styled.div`
     border: 1.1rem solid transparent;
     border-bottom-color: ${({ theme }) => theme.backgroundSecondary};
   }
+
   &::before {
     top: -1.95rem;
     /* transform: rotateZ(45deg); */
