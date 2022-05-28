@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as S from './MainFeed.styled';
 import { LinkGroup } from '@prisma/client';
+import AllListsFetchedPanel from '../../components/AllListsFetchedPanel';
 
 interface serverSideLinkGroupData {
   currentPage: string;
@@ -15,20 +16,29 @@ const MainFeed = ({
   const [linkGroups, setLinkGroups] = useState<LinkGroup[]>([
     ...linkGroupData.groups,
   ]);
+  const [areAllListsFetched, setAllListsFetched] = useState(false);
   const [currentPage, setPage] = useState(parseInt(linkGroupData.currentPage));
   const [observedElement, setObservedElement] = useState<HTMLLIElement | null>(
     null
   );
   const intersectionObserver = useRef(null);
+  const showDeadEnd = () => {
+    if (!areAllListsFetched) return null;
+    return <AllListsFetchedPanel />;
+  };
+  const endFetching = () => {
+    intersectionObserver.current.unobserve(observedElement);
+    setAllListsFetched(true);
+  };
 
   const loadData = useCallback(async () => {
     const res = await (
       await fetch(
-        `${process.env.FRONTEND_URL}/api/linkgroup/4/${currentPage + 1}`
+        `${process.env.FRONTEND_URL}/api/linkgroup/4/${currentPage + 1}/7`
       )
     ).json();
-    if (res.groups.length === 0)
-      intersectionObserver.current.unobserve(observedElement);
+    if (!res?.groups) return;
+    if (res.groups.length === 0) return endFetching();
     const updatedList = [...linkGroups, ...res.groups];
     setLinkGroups(updatedList);
   }, [linkGroups, setLinkGroups, currentPage, observedElement]);
@@ -61,7 +71,7 @@ const MainFeed = ({
   }, [observedElement]);
 
   return (
-    <ul>
+    <S.Wrapper>
       {linkGroups?.length > 0 &&
         linkGroups.map((linkgroup, i) => {
           return i === linkGroups.length - 1 ? (
@@ -73,12 +83,13 @@ const MainFeed = ({
               <span>{linkgroup.name}</span>
             </li>
           ) : (
-            <li className="vvvv" key={i}>
+            <li className="vvvv" key={linkgroup.id}>
               <span>{linkgroup.name}</span>
             </li>
           );
         })}
-    </ul>
+      {showDeadEnd()}
+    </S.Wrapper>
   );
 };
 

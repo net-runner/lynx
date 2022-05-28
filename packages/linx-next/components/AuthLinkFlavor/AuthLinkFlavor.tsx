@@ -1,7 +1,7 @@
 import * as S from './AuthLinkFlavor.styled';
 
 interface Props {
-  type: 'up' | 'down';
+  type: 'up' | 'down' | 'relative';
 }
 
 const AuthLinkFlavor: React.FC<Props> = ({ type }) => (
