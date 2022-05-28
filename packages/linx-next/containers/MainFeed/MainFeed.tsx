@@ -2,10 +2,16 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as S from './MainFeed.styled';
 import { LinkGroup } from '@prisma/client';
 import AllListsFetchedPanel from '../../components/AllListsFetchedPanel';
+import { default as LinkGroupContainer } from '../../components/LinkGroupDisplay';
 
+interface LinkGroupWithUserName extends LinkGroup {
+  userId: {
+    name: string;
+  };
+}
 interface serverSideLinkGroupData {
   currentPage: string;
-  groups: LinkGroup[];
+  groups: LinkGroupWithUserName[];
 }
 
 const MainFeed = ({
@@ -14,10 +20,11 @@ const MainFeed = ({
   linkGroupData?: serverSideLinkGroupData;
 }) => {
   const initialGroups = linkGroupData?.groups ? [...linkGroupData.groups] : [];
-  const [linkGroups, setLinkGroups] = useState<LinkGroup[]>(initialGroups);
+  const [linkGroups, setLinkGroups] =
+    useState<LinkGroupWithUserName[]>(initialGroups);
   const [areAllListsFetched, setAllListsFetched] = useState(false);
   const [currentPage, setPage] = useState(parseInt(linkGroupData.currentPage));
-  const [observedElement, setObservedElement] = useState<HTMLLIElement | null>(
+  const [observedElement, setObservedElement] = useState<HTMLDivElement | null>(
     null
   );
   const intersectionObserver = useRef(null);
@@ -74,17 +81,13 @@ const MainFeed = ({
       {linkGroups?.length > 0 &&
         linkGroups.map((linkgroup, i) => {
           return i === linkGroups.length - 1 ? (
-            <li
-              className="vvvv active"
+            <LinkGroupContainer
+              data={linkgroup}
               key={linkgroup.id}
-              ref={setObservedElement}
-            >
-              <span>{linkgroup.name}</span>
-            </li>
+              forwardedRef={setObservedElement}
+            />
           ) : (
-            <li className="vvvv" key={linkgroup.id}>
-              <span>{linkgroup.name}</span>
-            </li>
+            <LinkGroupContainer data={linkgroup} key={linkgroup.id} />
           );
         })}
       {showDeadEnd()}
