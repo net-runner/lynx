@@ -76,10 +76,10 @@ export async function getLinkGroupFromDatabase(linkGroupId) {
   }
 }
 
-export async function getLinkGroupsFromDatabase(limit, page) {
+export async function getLinkGroupsFromDatabase(limit, page, skip) {
   try {
     const linkGroupsFromDb = await db.linkGroup.findMany({
-      skip: limit * page,
+      skip: limit * page + skip,
       take: limit,
     });
     if (!linkGroupsFromDb) return null;

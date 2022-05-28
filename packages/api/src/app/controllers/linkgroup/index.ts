@@ -141,12 +141,13 @@ class LinkGroupController {
       const url = req.url.split("/")
       const limit = parseInt(url[2]);
       const page =  parseInt(url[3]) || 0;
+      const skip =  parseInt(url[4]) || 0;
 
       if (limit > 50) return res.status(400).send('Limit exceeded');
       if (typeof limit !== 'number' || typeof page !== 'number')
         return res.status(400).send('Limit and page have to be numbers');
 
-      const linksFromDb = await getLinkGroupsFromDatabase(limit, page);
+      const linksFromDb = await getLinkGroupsFromDatabase(limit, page, skip);
 
       const discordWebhookBody = {
         title: `GET link groups array from db, limit: ${limit}, page: ${page}`,

@@ -14,5 +14,6 @@ linkGroupRouter.post('/del/:id', requireUser, linkGroupController.delete);
 linkGroupRouter.get('/', null);
 linkGroupRouter.get('/:id', linkGroupController.getSingle);
 linkGroupRouter.get('/:limit/:page', linkGroupController.getMany);
+linkGroupRouter.get('/:limit/:page/:skip', linkGroupController.getMany);
 
 export default linkGroupRouter;
