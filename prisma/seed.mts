@@ -82,7 +82,7 @@ const initialLinkGroups = [
   {
     id: uuidv4(),
     owner: initialUsers[0].id,
-    name: 'Tabletop resources',
+    name: 'Tabletop',
     description: "Various generators, tools and resources for tabletop rpg's",
     privacyLevel: 3,
   },
@@ -210,6 +210,12 @@ const initialLinks = [
   {
     link: 'https://www.owlbear.rodeo',
     description: 'Web tabletop encounter tool',
+    privacyLevel: 3,
+    group: initialLinkGroups[0].id,
+  },
+  {
+    link: 'https://mapstyle.withgoogle.com/',
+    description: 'Styled google map as rpg resource',
     privacyLevel: 3,
     group: initialLinkGroups[0].id,
   },
