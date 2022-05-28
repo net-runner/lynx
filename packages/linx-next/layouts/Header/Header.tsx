@@ -13,9 +13,9 @@ const Header = ({ type }: { type?: 'signin' | 'signup' }) => {
   };
   const AuthButtons = () => {
     switch (type) {
-      case 'signin':
-        return <Button onClick={() => handleClick('signup')}>Sign up</Button>;
       case 'signup':
+        return <Button onClick={() => handleClick('signup')}>Sign up</Button>;
+      case 'signin':
         return <Button onClick={() => handleClick('signin')}>Sign in</Button>;
       default:
         return <></>;
