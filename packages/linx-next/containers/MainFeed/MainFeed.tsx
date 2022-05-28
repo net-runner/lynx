@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as S from './MainFeed.styled';
-import { useRouter } from 'next/router';
-import { getgroup } from '../../api/linkgroup';
-import { LinkGroup, User } from '@prisma/client';
+import { LinkGroup } from '@prisma/client';
 
 interface serverSideLinkGroupData {
   currentPage: string;
@@ -14,61 +12,73 @@ const MainFeed = ({
 }: {
   linkGroupData?: serverSideLinkGroupData;
 }) => {
-  const [linkGroups, setLinkGroups] = useState<LinkGroup[]>(
-    linkGroupData.groups
+  const [linkGroups, setLinkGroups] = useState<LinkGroup[]>([
+    ...linkGroupData.groups,
+  ]);
+  const [currentPage, setPage] = useState(parseInt(linkGroupData.currentPage));
+  const [observedElement, setObservedElement] = useState<HTMLLIElement | null>(
+    null
   );
-  const observedElement = useRef<HTMLLIElement | null>(null);
-  const router = useRouter();
+  const intersectionObserver = useRef(null);
 
-  const triggerFetch = () => {
-    const query = router.query;
-    query.page = (parseInt(linkGroupData.currentPage) + 1).toString();
-    router.push({
-      pathname: router.pathname,
-      query: query,
-    });
-  };
-
-  // Set users from linkGroupData
-  useEffect(() => {
-    console.log(linkGroupData);
-    // if (linkGroupData?.groups?.length !== 0) {
-    //   setUsers(linkGroupData?.groups);
-    // }
-  }, [linkGroupData]);
+  const loadData = useCallback(async () => {
+    const res = await (
+      await fetch(
+        `${process.env.FRONTEND_URL}/api/linkgroup/4/${currentPage + 1}`
+      )
+    ).json();
+    if (res.groups.length === 0)
+      intersectionObserver.current.unobserve(observedElement);
+    const updatedList = [...linkGroups, ...res.groups];
+    setLinkGroups(updatedList);
+  }, [linkGroups, setLinkGroups, currentPage, observedElement]);
+  const triggerFetch = useRef(loadData);
 
   useEffect(() => {
-    const cachedRef = observedElement.current;
-    if (!cachedRef) return;
-    const intersectionObserver = new IntersectionObserver(
+    intersectionObserver.current = new IntersectionObserver(
       (entries) => {
         const first_entry = entries[0];
-        first_entry.isIntersecting && triggerFetch();
+        if (first_entry.isIntersecting) {
+          setPage((page) => page + 1);
+          triggerFetch.current();
+        }
       },
       { threshold: 0.5 }
     );
-    intersectionObserver.observe(cachedRef);
-    return () => intersectionObserver.unobserve(cachedRef);
-  });
+  }, []);
+
+  useEffect(() => {
+    triggerFetch.current = loadData;
+  }, [loadData]);
+
+  useEffect(() => {
+    const currentObserver = intersectionObserver.current;
+
+    if (!observedElement || !currentObserver) return;
+
+    currentObserver.observe(observedElement);
+    return () => currentObserver.unobserve(observedElement);
+  }, [observedElement]);
 
   return (
-    <>
-      <ul className="user-list">
-        {linkGroups.length > 0 &&
-          linkGroups.map((linkgroup, i) => {
-            return (
-              <></>
-              // <li
-              //   className="user"
-              //   key={i}
-              //   ref={i === users.length - 1 && observedElement}
-              // >
-              //   <span>{user.name}</span>
-              // </li>
-            );
-          })}
-      </ul>
-    </>
+    <ul>
+      {linkGroups?.length > 0 &&
+        linkGroups.map((linkgroup, i) => {
+          return i === linkGroups.length - 1 ? (
+            <li
+              className="vvvv active"
+              key={linkgroup.id}
+              ref={setObservedElement}
+            >
+              <span>{linkgroup.name}</span>
+            </li>
+          ) : (
+            <li className="vvvv" key={i}>
+              <span>{linkgroup.name}</span>
+            </li>
+          );
+        })}
+    </ul>
   );
 };
 
