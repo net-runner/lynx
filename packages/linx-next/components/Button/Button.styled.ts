@@ -11,6 +11,6 @@ export const Button = styled.button`
   color: #000;
   font-weight: bold;
   font-size: 1.4rem;
-  font-family: 'Lato', sans-serif;
+  font-family: 'Poppins', sans-serif;
   white-space: nowrap;
 `;
