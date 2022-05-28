@@ -19,6 +19,7 @@ export const Container = styled.div`
 export const DropdownContainer = styled.div`
   border: 1px solid;
   border-color: #f9f9f9;
+  display: none;
   /* border-color: rgba(249, 249, 249, 0.25); */
   border-radius: 0.75rem;
   position: absolute;
@@ -29,6 +30,9 @@ export const DropdownContainer = styled.div`
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 
+  &.open {
+    display: block;
+  }
   &::before,
   &::after {
     content: '';

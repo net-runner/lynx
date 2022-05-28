@@ -24,9 +24,9 @@ const Header = ({ type }: { type?: 'signin' | 'signup' }) => {
     <S.Header>
       <S.Nav>
         <LogoAppName />
-        <S.HeaderTextLink href="explore">Explore</S.HeaderTextLink>
-        <S.HeaderTextLink href="stats">Stats</S.HeaderTextLink>
-        <S.HeaderTextLink href="top">Top</S.HeaderTextLink>
+        <S.HeaderTextLink href="/explore">Explore</S.HeaderTextLink>
+        <S.HeaderTextLink href="/stats">Stats</S.HeaderTextLink>
+        <S.HeaderTextLink href="/top">Top</S.HeaderTextLink>
       </S.Nav>
       <S.Nav>
         {isAuthenticated && <UserDropdown />}
