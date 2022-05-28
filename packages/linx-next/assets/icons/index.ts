@@ -7,8 +7,10 @@ import LynxLogoDetail from './LynxLogoDetail';
 import LynxLogoDetailNoCircle from './LynxLogoDetailNoCircleSmallBox';
 import LynxLogoDetailNoCircleSmallBox from './LynxLogoDetailNoCircleSmallBox';
 import NoConnectionIcon from './NoConnectionIcon';
+import ChevronDown from './ChevronDown';
 
 export {
+  ChevronDown,
   GithubIcon,
   GithubOutlineIcon,
   LinkIcon,

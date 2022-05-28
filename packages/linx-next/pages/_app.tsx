@@ -1,12 +1,10 @@
 import { AppProps } from 'next/app';
-import { NextPage, NextPageContext } from 'next/types';
+import { NextPage } from 'next/types';
 import { ReactElement, ReactNode } from 'react';
 import { ThemeProvider } from 'styled-components';
 import AuthGate from '../auth/AuthGate';
 import { UserProvider } from '../context/user.context';
 import '../styles/global.scss';
-import Cookies from 'cookies';
-import axios from 'axios';
 
 type NextPageWithLayout = NextPage & {
   //Gets per page computed layout
@@ -18,6 +16,7 @@ type NextPageWithLayout = NextPage & {
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
   hasAuthCookies: boolean;
+  ssrUser: any;
 };
 const theme = {
   white: '#F9F9F9',
