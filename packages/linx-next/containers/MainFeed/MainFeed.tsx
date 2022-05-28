@@ -2,9 +2,21 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as S from './MainFeed.styled';
 import { useRouter } from 'next/router';
 import { getgroup } from '../../api/linkgroup';
+import { LinkGroup, User } from '@prisma/client';
 
-const MainFeed = ({ linkGroupData }: { linkGroupData? }) => {
-  const [users, setUsers] = useState([]);
+interface serverSideLinkGroupData {
+  currentPage: string;
+  groups: LinkGroup[];
+}
+
+const MainFeed = ({
+  linkGroupData,
+}: {
+  linkGroupData?: serverSideLinkGroupData;
+}) => {
+  const [linkGroups, setLinkGroups] = useState<LinkGroup[]>(
+    linkGroupData.groups
+  );
   const observedElement = useRef<HTMLLIElement | null>(null);
   const router = useRouter();
 
@@ -19,7 +31,7 @@ const MainFeed = ({ linkGroupData }: { linkGroupData? }) => {
 
   // Set users from linkGroupData
   useEffect(() => {
-    console.log(linkGroupData)
+    console.log(linkGroupData);
     // if (linkGroupData?.groups?.length !== 0) {
     //   setUsers(linkGroupData?.groups);
     // }
@@ -42,16 +54,17 @@ const MainFeed = ({ linkGroupData }: { linkGroupData? }) => {
   return (
     <>
       <ul className="user-list">
-        {users.length > 0 &&
-          users.map((user, i) => {
+        {linkGroups.length > 0 &&
+          linkGroups.map((linkgroup, i) => {
             return (
-              <li
-                className="user"
-                key={i}
-                ref={i === users.length - 1 && observedElement}
-              >
-                <span>{user.name}</span>
-              </li>
+              <></>
+              // <li
+              //   className="user"
+              //   key={i}
+              //   ref={i === users.length - 1 && observedElement}
+              // >
+              //   <span>{user.name}</span>
+              // </li>
             );
           })}
       </ul>
