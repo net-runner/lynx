@@ -6,7 +6,7 @@ import {
   ReactNode,
   useEffect,
 } from 'react';
-import { doLogout, getUser, signIn } from '../api/user';
+import { doLogout, getUser, signIn, signUp } from '../api/user';
 import { useRouter } from 'next/router';
 import { User } from '@prisma/client';
 import useSWR from 'swr';
@@ -18,6 +18,17 @@ export interface UserContext {
   logout: ({ redirectLocation: string }) => void;
   setRedirect: (url: string) => void;
   login: ({ email, password }: { email: string; password: string }) => void;
+  signup: ({
+    name,
+    email,
+    password,
+    repeat_password,
+  }: {
+    name: string;
+    email: string;
+    password: string;
+    repeat_password: string;
+  }) => void;
   isLoading: boolean;
   isAuthenticated: boolean;
 }
@@ -64,6 +75,11 @@ export const UserProvider: FC<Props> = ({ children, initialUser }) => {
     authenticate();
   };
 
+  const signup = async ({ name, email, password, repeat_password }) => {
+    await signUp({ name, email, password, repeat_password });
+    authenticate();
+  };
+
   const logout = async ({ redirectLocation }) => {
     await doLogout();
     await axios.get(`${process.env.FRONTEND_URL}/api/logout`);
@@ -98,6 +114,7 @@ export const UserProvider: FC<Props> = ({ children, initialUser }) => {
         logout,
         setRedirect,
         login,
+        signup,
         isLoading,
         isAuthenticated,
       }}

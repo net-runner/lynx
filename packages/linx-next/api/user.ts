@@ -44,19 +44,26 @@ export const getUser = async () => {
 
 export const logout = async () => {
   try {
-    await axios.get(`/api/auth/logout`, { withCredentials: true });
+    await axios.get(`/api/auth/logout`);
   } catch (error) {
     console.log(error);
   }
 };
 
-export const signUp = async ({ email, password, name }) => {
+export const signUp = async ({ name, email, password, repeat_password }) => {
   try {
-    const res = await axios.post(`api/auth/signup`, {
-      email,
-      password,
-      name,
-    });
+    const res = await axios.post(
+      `api/auth/signup`,
+      {
+        name,
+        email,
+        password,
+        repeat_password,
+      },
+      { withCredentials: true }
+    );
+    console.log(res.data);
+    return res;
   } catch (error) {
     console.log(error);
   }

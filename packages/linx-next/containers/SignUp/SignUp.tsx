@@ -19,11 +19,11 @@ type Inputs = {
   email: string;
   name: string;
   password: string;
-  repeatPassword: string;
+  repeat_password: string;
 };
 
 const SignUp: React.FC = () => {
-  const { isAuthenticated } = useUser();
+  const { isAuthenticated, signup } = useUser();
   const router = useRouter();
 
   const {
@@ -43,7 +43,7 @@ const SignUp: React.FC = () => {
     return null;
   }
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = (data) => signup(data);
   return (
     <S.Wrapper>
       <S.Column>
@@ -68,7 +68,7 @@ const SignUp: React.FC = () => {
           />
           <label>Repeat password</label>
           <S.Input
-            {...register('repeatPassword', { required: true })}
+            {...register('repeat_password', { required: true })}
             placeholder="Re enter your password"
           />
           {/* {errors.password && <span>Password is required</span>} */}
