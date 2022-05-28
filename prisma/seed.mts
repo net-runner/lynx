@@ -90,7 +90,7 @@ const initialLinkGroups = [
     id: uuidv4(),
     owner: initialUsers[0].id,
     name: 'Path of Exile',
-    description: 'Helpful PoE links and builds',
+    description: 'Helpful PoE links',
     privacyLevel: 3,
   },
   {
@@ -219,6 +219,111 @@ const initialLinks = [
     privacyLevel: 3,
     group: initialLinkGroups[0].id,
   },
+  //-- Poe
+  {
+    link: 'https://github.com/PathOfBuildingCommunity/PathOfBuilding',
+    description: 'Most comprehensive character building/prototyping tool',
+    privacyLevel: 3,
+    group: initialLinkGroups[1].id,
+  },
+  {
+    link: 'https://github.com/SnosMe/awakened-poe-trade',
+    description: 'All in one overlay tool for trading simplification',
+    privacyLevel: 3,
+    group: initialLinkGroups[1].id,
+  },
+  {
+    link: 'https://www.poeprices.info/',
+    description: 'Web app for item price checking',
+    privacyLevel: 3,
+    group: initialLinkGroups[1].id,
+  },
+  {
+    link: 'https://www.craftofexile.com/',
+    description:
+      "Webapp which provides tools and information about PoE's crafting systems",
+    privacyLevel: 3,
+    group: initialLinkGroups[1].id,
+  },
+  {
+    link: 'https://poe.ninja/',
+    description:
+      'All around biggest platform for fast checking currently trending builds, prices and statistics',
+    privacyLevel: 3,
+    group: initialLinkGroups[1].id,
+  },
+  {
+    link: 'https://github.com/viktorgullmark/exilence-next',
+    description:
+      'Desktop app for wealth and farming efficiency summarization',
+    privacyLevel: 3,
+    group: initialLinkGroups[1].id,
+  },
+  {
+    link: 'https://www.pathofexile.com/fullscreen-atlas-skill-tree',
+    description:
+      'GGG interactive web atlas skill tree',
+    privacyLevel: 3,
+    group: initialLinkGroups[1].id,
+  },
+  {
+    link: 'https://poe-racing.com/',
+    description:
+      'PoE leaderboard for racing/challenges',
+    privacyLevel: 3,
+    group: initialLinkGroups[1].id,
+  },
+  {
+    link: 'https://chrome.google.com/webstore/detail/better-pathofexile-tradin/fhlinfpmdlijegjlpgedcmglkakaghnk',
+    description:
+      'Chrome | Firefox addon for improved trading',
+    privacyLevel: 3,
+    group: initialLinkGroups[1].id,
+  },
+  //- Info
+  {
+    link: 'https://www.britannica.com/',
+    description:
+      'Online encyclopedia',
+    privacyLevel: 3,
+    group: initialLinkGroups[2].id,
+  },
+  {
+    link: 'https://sci.hubg.org/',
+    description:
+      'Science resources database not gated behind paywalls',
+    privacyLevel: 3,
+    group: initialLinkGroups[2].id,
+  },
+  {
+    link: 'https://sip.srem.pl/',
+    description:
+      'Polish surface information system',
+    privacyLevel: 3,
+    group: initialLinkGroups[2].id,
+  },
+  {
+    link: 'https://www.zotero.org/',
+    description:
+      'Research assistant for Academic resource linking',
+    privacyLevel: 3,
+    group: initialLinkGroups[2].id,
+  },
+  {
+    link: 'https://libgen.rs/',
+    description:
+      'Biggest repository of published books and resources',
+    privacyLevel: 3,
+    group: initialLinkGroups[2].id,
+  },
+  {
+    link: 'https://liveuamap.com/',
+    description:
+      'Map for conflict monitoring',
+    privacyLevel: 3,
+    group: initialLinkGroups[2].id,
+  },
+  //-
 ];
 
 const load = async () => {
@@ -236,6 +341,9 @@ const load = async () => {
 
     //Create initial linkgroups
     await db.linkGroup.createMany({ data: initialLinkGroups });
+
+    //Create initial links
+    await db.link.createMany({ data: initialLinks });
   } catch (e) {
     console.error('There was an error while seeding');
     console.error(e);
