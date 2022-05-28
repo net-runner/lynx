@@ -8,7 +8,8 @@
     "heroku-postbuild": "npx prisma generate && nx build api --prod",
     "prisma:generate": "npx prisma generate",
     "prisma:studio": "npx prisma studio",
-    "prisma:push": "npx prisma db push"
+    "prisma:push": "npx prisma db push",
+    "prisma:seed": "node ./prisma/seed.mts"
   },
   "private": true,
   "devDependencies": {
