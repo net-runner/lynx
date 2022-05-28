@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as S from './MainFeed.styled';
 import { useRouter } from 'next/router';
-import { getgroup } from '../../api/linkgroup';
-import { LinkGroup, User } from '@prisma/client';
+import { LinkGroup } from '@prisma/client';
 
 interface serverSideLinkGroupData {
   currentPage: string;
@@ -54,18 +53,23 @@ const MainFeed = ({
   return (
     <>
       <ul className="user-list">
-        {linkGroups.length > 0 &&
+        {linkGroups?.length > 0 &&
           linkGroups.map((linkgroup, i) => {
-            return (
-              <></>
-              // <li
-              //   className="user"
-              //   key={i}
-              //   ref={i === users.length - 1 && observedElement}
-              // >
-              //   <span>{user.name}</span>
-              // </li>
-            );
+            return i === linkGroups.length - 1 ?
+              <li
+                className="user"
+                key={i}
+              >
+                <span>{linkgroup.name}</span>
+              </li>
+             :
+            <li
+              className="user"
+              key={i}
+              // ref={observedElement}
+            >
+              <span>{linkgroup.name}</span>
+            </li>
           })}
       </ul>
     </>
