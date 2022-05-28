@@ -1,22 +1,23 @@
 @import './breakpoints.scss';
 
 //Colors from figma
-$background: #16181E;
-$primary: #00B9AE;
+$background: #16181e;
+$primary: #00b9ae;
 $white: #f9f9f9;
-$highlight: #21242D;
+$highlight: #21242d;
 
 html {
   -webkit-text-size-adjust: 100%;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
   line-height: 1.5;
   tab-size: 4;
   scroll-behavior: smooth;
   font-size: 62.5%;
   height: 100%;
   width: 100%;
-  font-feature-settings: "kern";
+  font-feature-settings: 'kern';
   text-rendering: optimizeLegibility;
   color: $white;
 }
@@ -43,7 +44,12 @@ body {
   border-style: solid;
   border-color: currentColor;
 }
-
+.vvvv {
+  margin-top: 20rem;
+  &.active {
+    background: red;
+  }
+}
 ::selection {
   background: $primary;
   color: $white;
