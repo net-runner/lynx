@@ -10,7 +10,8 @@ import { doLogout, getUser, signIn } from '../api/user';
 import { useRouter } from 'next/router';
 import { User } from '@prisma/client';
 import useSWR from 'swr';
-
+import Cookies from 'js-cookie';
+import axios from 'axios';
 export interface UserContext {
   user?: User;
   authenticate: (newToken: string) => Promise<void>;
@@ -34,12 +35,14 @@ export const useUser = () => {
 
 interface Props {
   children: ReactNode;
+  initialUser?: User;
 }
 const fetcher = (x) => fetch(x).then((res) => res.json());
 
-export const UserProvider: FC<Props> = ({ children }) => {
-  const [user, setUser] = useState<User>(null);
+export const UserProvider: FC<Props> = ({ children, initialUser }) => {
+  const [user, setUser] = useState<User>(initialUser || null);
   const [redirect, setRedirect] = useState<string>(null);
+  const [hasLogout, setHasLogout] = useState(false);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const isAuthenticated = !!user;
@@ -50,22 +53,25 @@ export const UserProvider: FC<Props> = ({ children }) => {
     getUser
   );
   useEffect(() => {
-    if (!user && userr) {
+    if (!user && userr && !hasLogout) {
       setUser(userr);
     }
-  }, [user, userr]);
+  }, [user, userr, hasLogout]);
 
   const login = async ({ email, password }) => {
+    setHasLogout(false);
     await signIn({ email, password });
     authenticate();
   };
 
   const logout = async ({ redirectLocation }) => {
     await doLogout();
-    setUser(null);
+    await axios.get(`${process.env.FRONTEND_URL}/api/logout`);
+    setHasLogout(true);
+    setUser(undefined);
     setIsLoading(false);
-    console.log('Redirecting');
     router.push(redirectLocation || '/signin');
+    // router.reload();
   };
 
   const authenticate = async () => {

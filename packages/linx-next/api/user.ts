@@ -20,7 +20,9 @@ export const signIn = async ({ email, password }) => {
 export const doLogout = async () => {
   try {
     await axios
-      .get(`/api/auth/logout`, { withCredentials: true })
+      .get(`${process.env.FRONTEND_URL}/api/auth/logout`, {
+        withCredentials: true,
+      })
       .then((r) => r.data);
   } catch (error) {
     console.log(error);
