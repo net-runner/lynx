@@ -57,9 +57,9 @@ export const UserProvider: FC<Props> = ({ children, initialUser }) => {
   const [isLoading, setIsLoading] = useState(false);
   const isAuthenticated = !!user;
 
-  const { data: cookies } = useSWR('/api/auth', fetcher);
+  const { data: cookies } = useSWR(!hasLogout && '/api/auth', fetcher);
   const { data: userr } = useSWR(
-    cookies?.hasAuthCookies && '/api/auth/me',
+    !hasLogout && cookies?.hasAuthCookies && '/api/auth/me',
     getUser
   );
   useEffect(() => {
