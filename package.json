@@ -9,7 +9,7 @@
     "prisma:generate": "npx prisma generate",
     "prisma:studio": "npx prisma studio",
     "prisma:push": "npx prisma db push",
-    "prisma:seed": "node ./prisma/seed.mts"
+    "prisma:seed": "node ./prisma/seed.mjs"
   },
   "private": true,
   "devDependencies": {
