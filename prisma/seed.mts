@@ -21,7 +21,7 @@ const initialTags = [
   { id: uuidv4(), name: 'tutorial' },
   { id: uuidv4(), name: 'howto' },
   { id: uuidv4(), name: 'animation' },
-  { id: uuidv4(), name: 'calculators' },
+  { id: uuidv4(), name: 'calculator' },
   { id: uuidv4(), name: 'wow' },
   { id: uuidv4(), name: 'knowledge sharing' },
   { id: uuidv4(), name: 'knwoledge' },
@@ -151,6 +151,60 @@ const initialLinkGroups = [
   },
 ];
 const link: Link = null;
+
+const initialGroupTags = [
+  {
+    group: initialLinkGroups[0].id,
+    tag: initialTags[13].id,
+  },
+  {
+    group: initialLinkGroups[0].id,
+    tag: initialTags[10].id,
+  },
+  {
+    group: initialLinkGroups[0].id,
+    tag: initialTags[11].id,
+  },
+  {
+    group: initialLinkGroups[0].id,
+    tag: initialTags[12].id,
+  },
+  //- Poe
+  {
+    group: initialLinkGroups[1].id,
+    tag: initialTags[51].id,
+  },
+  {
+    group: initialLinkGroups[1].id,
+    tag: initialTags[13].id,
+  },
+  {
+    group: initialLinkGroups[1].id,
+    tag: initialTags[55].id,
+  },
+  {
+    group: initialLinkGroups[1].id,
+    tag: initialTags[12].id,
+  },
+  //- Info
+  {
+    group: initialLinkGroups[2].id,
+    tag: initialTags[55].id,
+  },
+  {
+    group: initialLinkGroups[2].id,
+    tag: initialTags[21].id,
+  },
+  {
+    group: initialLinkGroups[2].id,
+    tag: initialTags[22].id,
+  },
+  {
+    group: initialLinkGroups[2].id,
+    tag: initialTags[38].id,
+  },
+];
+
 const initialLinks = [
   {
     link: 'https://azgaar.github.io/Fantasy-Map-Generator/',
@@ -341,6 +395,9 @@ const load = async () => {
 
     //Create initial links
     await db.link.createMany({ data: initialLinks });
+
+    //Create initial group tags
+    await db.groupTag.createMany({ data: initialGroupTags });
   } catch (e) {
     console.error('There was an error while seeding');
     console.error(e);
