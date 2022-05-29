@@ -3,11 +3,12 @@ import * as S from './StatPill.styled';
 
 interface Props {
   ico: JSX.Element;
-  stat: number;
+  stat: number | string;
+  isReversed?: boolean;
 }
 
-const StatPill: React.FC<Props> = ({ ico, stat }) => (
-  <S.Wrapper>
+const StatPill: React.FC<Props> = ({ ico, stat, isReversed }) => (
+  <S.Wrapper isReversed={isReversed}>
     <div>{stat}</div>
     <S.IconWrapper>{ico}</S.IconWrapper>
   </S.Wrapper>

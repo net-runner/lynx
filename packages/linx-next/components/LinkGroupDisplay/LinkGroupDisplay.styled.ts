@@ -9,10 +9,10 @@ export const Wrapper = styled.div`
   flex-direction: column;
   width: 80rem;
   min-height: 22rem;
-  padding: 3rem 3rem;
-  margin: 1rem 0;
+  margin: 1rem 0 3rem;
   border-radius: 2rem;
   background: ${({ theme }) => theme.backgroundSecondary};
+  border: 0.3rem solid ${({ theme }) => theme.backgroundSecondary};
   & > * {
     z-index: 3;
   }
@@ -22,8 +22,21 @@ export const Header = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  min-height: 10rem;
   width: 100%;
+  min-height: 10rem;
+  padding: 3rem 2rem;
+  border-radius: 2rem 2rem 0 0;
+  background: ${({ theme }) => theme.backgroundSecondary};
+`;
+
+export const Footer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 3rem 2rem;
+  border-radius: 0 0 2rem 2rem;
+  background: ${({ theme }) => theme.background};
 `;
 
 export const LinkIco = styled(LinkIcon)`
@@ -34,35 +47,60 @@ export const StatsWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 1.4rem;
   & > div:not(:first-child) {
-    margin-left: 1rem;
+    margin-left: 1.4rem;
   }
+`;
+
+export const HeaderLeftPart = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+`;
+
+export const HeaderRightPart = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  flex-direction: column;
 `;
 
 export const TitleWrapper = styled.div`
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 0.6rem;
   & > a {
+    display: inline-block;
     font-family: 'Segoe UI', serif;
     text-align: center;
-    line-height: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  & > a:first-child {
+  & > a:nth-child(1) {
+    font-weight: 200;
+    font-size: 3rem;
+    max-width: 15rem;
+  }
+  & > a:nth-child(3) {
     font-weight: bold;
-    font-size: 4rem;
-  }
-  & > a:last-child {
-    font-weight: normal;
-    font-style: italic;
-    font-size: 2rem;
-    margin-top: 1rem;
+    font-size: 3rem;
+    max-width: 32rem;
   }
 `;
 
+export const TitleDivider = styled.div`
+  font-family: 'Segoe UI', serif;
+  text-align: center;
+  font-weight: normal;
+  font-size: 2.5rem;
+`;
+
 export const Description = styled.p`
-  width: 70%;
+  width: 100%;
   font-size: 1.8rem;
   font-weight: normal;
   line-height: 160%;
@@ -72,8 +110,8 @@ export const Description = styled.p`
   -ms-box-orient: vertical;
   -moz-box-orient: vertical;
   -webkit-box-orient: vertical;
-  line-clamp: 4;
-  -webkit-line-clamp: 4;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
 `;
 
 export const ImageContainer = styled.div`

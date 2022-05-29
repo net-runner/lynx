@@ -10,6 +10,9 @@ import NoConnectionIcon from './NoConnectionIcon';
 import ChevronDown from './ChevronDown';
 import LinkedAmountIcon from './LinkedAmountIcon';
 import WatchersIcon from './WatchersIcon';
+import StarEmpty from './StarEmpty';
+import StarHalf from './StarHalf';
+import StarFull from './StarFull';
 
 export {
   ChevronDown,
@@ -24,4 +27,7 @@ export {
   LynxLogoDetailNoCircleSmallBox,
   LinkedAmountIcon,
   WatchersIcon,
+  StarEmpty,
+  StarHalf,
+  StarFull,
 };
