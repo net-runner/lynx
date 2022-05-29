@@ -1,6 +1,8 @@
 import React, { memo, Ref } from 'react';
 import * as S from './LinkGroupDisplay.styled';
 import { LinkGroup } from '@prisma/client';
+import StatPill from '../StatPill';
+import Link from 'next/link';
 
 interface LinkGroupWithUserName extends LinkGroup {
   userId: {
@@ -23,16 +25,21 @@ const LinkGroupDisplay: React.FC<Props> = memo(({ data, forwardedRef }) => {
     stars,
     userId: { name: ownerName },
   } = data;
+  const author = `@${ownerName}`;
   return (
     <S.Wrapper ref={forwardedRef}>
-      <S.Header>{name}</S.Header>
-      <S.Info>{ownerName}</S.Info>
-      <S.Info>{description}</S.Info>
-      <S.Info>{linksAmount}</S.Info>
-      <S.Info>{linkedCount}</S.Info>
-      <S.Info>{watcherCount}</S.Info>
-      <S.Info>{picture}</S.Info>
-      <S.Info>{stars}</S.Info>
+      <S.Header>
+        <S.TitleWrapper>
+          <Link href={`/u/${ownerName}/g/${name}`}>{name}</Link>
+          <Link href={`/u/${ownerName}`}>{author}</Link>
+        </S.TitleWrapper>
+        <S.StatsWrapper>
+          <StatPill stat={linksAmount} ico={<S.LinkIco />} />
+          <StatPill stat={linkedCount} ico={<S.LinkIco />} />
+          <StatPill stat={watcherCount} ico={<S.LinkIco />} />
+        </S.StatsWrapper>
+      </S.Header>
+      <S.Description>{description}</S.Description>
     </S.Wrapper>
   );
 });

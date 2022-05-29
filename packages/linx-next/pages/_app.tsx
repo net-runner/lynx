@@ -22,6 +22,7 @@ const theme = {
   primary: '#00B9AE',
   background: '#16181E',
   backgroundSecondary: '#21242D',
+  backgroundTertiary: '#424856',
 };
 function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout || ((page) => page);
