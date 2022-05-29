@@ -3,6 +3,8 @@ import * as S from './LinkGroupDisplay.styled';
 import { LinkGroup } from '@prisma/client';
 import StatPill from '../StatPill';
 import Link from 'next/link';
+import Image from 'next/image';
+import { ImageFade } from './LinkGroupDisplay.styled';
 
 interface LinkGroupWithUserName extends LinkGroup {
   userId: {
@@ -40,6 +42,15 @@ const LinkGroupDisplay: React.FC<Props> = memo(({ data, forwardedRef }) => {
         </S.StatsWrapper>
       </S.Header>
       <S.Description>{description}</S.Description>
+      {/*<S.ImageContainer>*/}
+      {/*  <Image*/}
+      {/*    src={picture || '/images/linkgroupDefaultBackground.png'}*/}
+      {/*    alt="defaultBackground"*/}
+      {/*    height={200}*/}
+      {/*    width={200}*/}
+      {/*  />*/}
+      {/*</S.ImageContainer>*/}
+      {/*<S.ImageFade />*/}
     </S.Wrapper>
   );
 });
