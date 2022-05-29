@@ -1,4 +1,4 @@
-import { Link, LinkGroup, PrismaClient, User } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
 const db = new PrismaClient();
 
@@ -66,7 +66,7 @@ const initialTags = [
   { id: uuidv4(), name: 'hardware' },
 ];
 const dN = new Date();
-const initialUsers: User[] = [
+const initialUsers = [
   {
     id: uuidv4(),
     name: 'lynxapp',
@@ -150,7 +150,6 @@ const initialLinkGroups = [
     privacyLevel: 3,
   },
 ];
-const link: Link = null;
 
 const initialGroupTags = [
   {
