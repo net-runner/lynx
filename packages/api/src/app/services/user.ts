@@ -40,6 +40,17 @@ export async function getGoogleOAuthTokens(code: string): Promise<TokenBundle> {
   }
 }
 
+export async function getAllUserGroups(userId: string) {
+  return await db.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      linkGroups: true,
+    },
+  });
+}
+
 export async function getAllUsers() {
   return await db.user.findMany({
     select: {
