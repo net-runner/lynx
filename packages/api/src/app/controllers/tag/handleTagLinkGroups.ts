@@ -1,6 +1,6 @@
-import { authorizedRouteHandler } from '../../../interfaces';
+import { defaultRouteHandler } from '../../../interfaces';
 
-const handleGetTagLinkGroups: authorizedRouteHandler = async (req, res) => {
+const handleGetTagLinkGroups: defaultRouteHandler = async (req, res) => {
   return res.end();
 };
 

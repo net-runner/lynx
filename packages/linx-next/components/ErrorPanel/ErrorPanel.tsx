@@ -16,9 +16,7 @@ const ErrorPanel: React.FC<ErrorPageProps> = ({ type }) => {
             <p>0</p>
             <p>4</p>
           </S.ErrorNumbers>
-          <S.Info>
-            No page found with that address.
-          </S.Info>
+          <S.Info>No page found with that address.</S.Info>
         </S.Wrapper>
       );
     case '500':
@@ -29,9 +27,7 @@ const ErrorPanel: React.FC<ErrorPageProps> = ({ type }) => {
             <p>0</p>
             <p>0</p>
           </S.ErrorNumbers>
-          <S.Info>
-            Server-side error occurred.
-          </S.Info>
+          <S.Info>Server-side error occurred.</S.Info>
         </S.Wrapper>
       );
     case 'offline':

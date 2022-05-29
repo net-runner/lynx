@@ -254,72 +254,69 @@ const initialLinks = [
   },
   {
     link: 'https://github.com/viktorgullmark/exilence-next',
-    description:
-      'Desktop app for wealth and farming efficiency summarization',
+    description: 'Desktop app for wealth and farming efficiency summarization',
     privacyLevel: 3,
     group: initialLinkGroups[1].id,
   },
   {
     link: 'https://www.pathofexile.com/fullscreen-atlas-skill-tree',
-    description:
-      'GGG interactive web atlas skill tree',
+    description: 'GGG interactive web atlas skill tree',
     privacyLevel: 3,
     group: initialLinkGroups[1].id,
   },
   {
     link: 'https://poe-racing.com/',
-    description:
-      'PoE leaderboard for racing/challenges',
+    description: 'PoE leaderboard for racing/challenges',
     privacyLevel: 3,
     group: initialLinkGroups[1].id,
   },
   {
     link: 'https://chrome.google.com/webstore/detail/better-pathofexile-tradin/fhlinfpmdlijegjlpgedcmglkakaghnk',
-    description:
-      'Chrome | Firefox addon for improved trading',
+    description: 'Chrome | Firefox addon for improved trading',
     privacyLevel: 3,
     group: initialLinkGroups[1].id,
   },
+  {
+    link: 'https://www.filterblade.xyz/',
+    description: 'Website with loot filter for any league',
+    privacyLevel: 3,
+    group: initialLinkGroups[1].id,
+  },
+
   //- Info
   {
     link: 'https://www.britannica.com/',
-    description:
-      'Online encyclopedia',
+    description: 'Online encyclopedia',
     privacyLevel: 3,
     group: initialLinkGroups[2].id,
   },
   {
     link: 'https://sci.hubg.org/',
-    description:
-      'Science resources database not gated behind paywalls',
+    description: 'Science resources database not gated behind paywalls',
     privacyLevel: 3,
     group: initialLinkGroups[2].id,
   },
   {
     link: 'https://sip.srem.pl/',
-    description:
-      'Polish surface information system',
+    description: 'Polish surface information system',
     privacyLevel: 3,
     group: initialLinkGroups[2].id,
   },
   {
     link: 'https://www.zotero.org/',
-    description:
-      'Research assistant for Academic resource linking',
+    description: 'Research assistant for Academic resource linking',
     privacyLevel: 3,
     group: initialLinkGroups[2].id,
   },
   {
     link: 'https://libgen.rs/',
-    description:
-      'Biggest repository of published books and resources',
+    description: 'Biggest repository of published books and resources',
     privacyLevel: 3,
     group: initialLinkGroups[2].id,
   },
   {
     link: 'https://liveuamap.com/',
-    description:
-      'Map for conflict monitoring',
+    description: 'Map for conflict monitoring',
     privacyLevel: 3,
     group: initialLinkGroups[2].id,
   },
