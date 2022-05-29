@@ -40,6 +40,15 @@ export async function getGoogleOAuthTokens(code: string): Promise<TokenBundle> {
   }
 }
 
+export async function getAllUsers() {
+  return await db.user.findMany({
+    select: {
+      name: true,
+      id: true,
+    },
+  });
+}
+
 export async function getGoogleUser(
   id_token: string,
   access_token: string
