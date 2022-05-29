@@ -4,7 +4,7 @@ import { LinkGroup } from '@prisma/client';
 import StatPill from '../StatPill';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ImageFade } from './LinkGroupDisplay.styled';
+import { LinkedAmountIcon, WatchersIcon } from '../../assets/icons';
 
 interface LinkGroupWithUserName extends LinkGroup {
   userId: {
@@ -37,8 +37,8 @@ const LinkGroupDisplay: React.FC<Props> = memo(({ data, forwardedRef }) => {
         </S.TitleWrapper>
         <S.StatsWrapper>
           <StatPill stat={linksAmount} ico={<S.LinkIco />} />
-          <StatPill stat={linkedCount} ico={<S.LinkIco />} />
-          <StatPill stat={watcherCount} ico={<S.LinkIco />} />
+          <StatPill stat={linkedCount} ico={<LinkedAmountIcon />} />
+          <StatPill stat={watcherCount} ico={<WatchersIcon />} />
         </S.StatsWrapper>
       </S.Header>
       <S.Description>{description}</S.Description>

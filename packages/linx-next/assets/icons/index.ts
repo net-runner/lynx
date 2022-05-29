@@ -8,6 +8,8 @@ import LynxLogoDetailNoCircle from './LynxLogoDetailNoCircleSmallBox';
 import LynxLogoDetailNoCircleSmallBox from './LynxLogoDetailNoCircleSmallBox';
 import NoConnectionIcon from './NoConnectionIcon';
 import ChevronDown from './ChevronDown';
+import LinkedAmountIcon from './LinkedAmountIcon';
+import WatchersIcon from './WatchersIcon';
 
 export {
   ChevronDown,
@@ -20,4 +22,6 @@ export {
   LynxLogoDetailNoCircle,
   NoConnectionIcon,
   LynxLogoDetailNoCircleSmallBox,
+  LinkedAmountIcon,
+  WatchersIcon,
 };
