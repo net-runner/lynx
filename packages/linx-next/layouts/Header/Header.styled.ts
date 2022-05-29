@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import styled from 'styled-components';
 
 export const Header = styled.header`
@@ -13,13 +12,6 @@ export const Header = styled.header`
   font-family: Inter, serif;
 `;
 
-export const HeaderTextLink = styled(Link)`
-  text-decoration: none;
-  font-size: 2rem;
-  font-family: Inter, serif;
-  font-weight: normal;
-`;
-
 export const Nav = styled.nav`
   display: flex;
   text-align: center;
@@ -27,6 +19,10 @@ export const Nav = styled.nav`
   justify-items: center;
   justify-content: space-between;
   a {
+    text-decoration: none;
+    font-size: 1.8rem;
+    font-family: Inter, serif;
+    font-weight: normal;
     &:not(:first-child) {
       margin-left: 2rem;
     }

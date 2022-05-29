@@ -6,6 +6,7 @@ import { GithubIcon } from '../../assets/icons';
 import { useUser } from '../../context/user.context';
 import UserDropdown from '../../components/UserDropdown';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const Header = () => {
   const { isAuthenticated } = useUser();
@@ -24,9 +25,9 @@ const Header = () => {
     <S.Header>
       <S.Nav>
         <LogoAppName />
-        <S.HeaderTextLink href="/explore">Explore</S.HeaderTextLink>
-        <S.HeaderTextLink href="/stats">Stats</S.HeaderTextLink>
-        <S.HeaderTextLink href="/top">Top</S.HeaderTextLink>
+        <Link href="/explore">Explore</Link>
+        <Link href="/stats">Stats</Link>
+        <Link href="/top">Top</Link>
       </S.Nav>
       <S.Nav>
         {isAuthenticated && <UserDropdown />}
