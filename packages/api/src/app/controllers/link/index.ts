@@ -145,10 +145,6 @@ class LinkController {
       const linksFromDb = await getLinksFromDatabase(limit, page);
       if (!linksFromDb) return res.status(404).end();
 
-      //Save db req to redis
-      const key = req.originalUrl;
-      setExCache(key, 3600, JSON.stringify(linksFromDb));
-
       const discordWebhookBody = {
         title: `GET links array from db`,
         description: `limit: ${limit}, page: ${page}, skip: ${skip}`,

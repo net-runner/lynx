@@ -14,7 +14,7 @@ linkRouter.post('/del', requireUser, linkController.delete);
 
 //For getting links no auth required
 linkRouter.get('/:id', cache, linkController.getSingle);
-linkRouter.get('/:limit/:page', cache, linkController.getMany);
-linkRouter.get('/:limit/:page/:skip', cache, linkController.getMany);
+linkRouter.get('/:limit/:page', linkController.getMany);
+linkRouter.get('/:limit/:page/:skip', linkController.getMany);
 
 export default linkRouter;

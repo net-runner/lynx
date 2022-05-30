@@ -16,6 +16,7 @@ import {
 import { Request } from 'hyper-express';
 import { showSelectedObjectKeys } from '../../helpers/utilsJS';
 import { LinkGroup } from '@prisma/client';
+import { setExCache } from '../../helpers/redis';
 
 class LinkGroupController {
   protected validateAndDestructureBody = async (
@@ -121,6 +122,10 @@ class LinkGroupController {
 
       const linkGroupFromDb = await getLinkGroupFromDatabase(id);
       if (!linkGroupFromDb) return res.status(404).end();
+
+      //Save record to redis
+      const key = req.originalUrl;
+      setExCache(key, 3600, JSON.stringify(linkGroupFromDb));
 
       const discordWebhookBody = {
         title: `GET link group from db: ${linkGroupFromDb.name}`,
