@@ -21,11 +21,7 @@ const LandingPage: React.FC = () => {
       <S.ButtonContainer>
         <Button
           onClick={() =>
-            handleClick(
-              !isAuthenticated
-                ? 'signin'
-                : `u/` + user.name.toLowerCase().replace(' ', '-')
-            )
+            handleClick(!isAuthenticated ? 'signin' : `u/` + user.username)
           }
         >
           Manage bookmarks

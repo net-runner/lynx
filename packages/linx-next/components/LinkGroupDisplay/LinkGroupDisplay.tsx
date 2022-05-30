@@ -29,7 +29,11 @@ const LinkGroupDisplay: React.FC<Props> = memo(({ data, forwardedRef }) => {
           <S.TitleWrapper>
             <Link href={`/u/${owner}`}>{owner}</Link>
             <S.TitleDivider>&nbsp;/&nbsp;</S.TitleDivider>
-            <Link href={`/u/${owner}/g/${name}`}>{name}</Link>
+            <Link
+              href={`/u/${owner}/g/${name.toLowerCase().replaceAll(' ', '-')}`}
+            >
+              {name}
+            </Link>
           </S.TitleWrapper>
         </S.HeaderLeftPart>
         <S.HeaderRightPart>

@@ -13,7 +13,7 @@ const UserDropdown = () => {
   return (
     <S.RelativeContainer ref={ref}>
       <S.Container onClick={() => setOpen(!Open)}>
-        {isAuthenticated && user.name.toLocaleLowerCase().replace(' ', '-')}
+        {isAuthenticated && user.name}
         <ChevronDown />
       </S.Container>
 
@@ -22,7 +22,7 @@ const UserDropdown = () => {
           <Link
             href={`${process.env.FRONTEND_URL}u/${user.name
               .toLocaleLowerCase()
-              .replace(' ', '-')}`}
+              .replaceAll(' ', '-')}`}
           >
             Profile
           </Link>

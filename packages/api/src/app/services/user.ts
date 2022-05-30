@@ -135,7 +135,7 @@ export async function findOrCreateUser(
       const newUser = await db.user.create({
         data: {
           email: user.email,
-          username: user.name.toLowerCase().replace(' ', '-'),
+          username: user.name.toLowerCase().replaceAll(' ', '-'),
           password: user.password || 'x',
           authProvider: authProvider,
           name: user.name,
