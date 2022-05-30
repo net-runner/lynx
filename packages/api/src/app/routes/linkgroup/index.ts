@@ -11,7 +11,6 @@ linkGroupRouter.post('/del', requireUser, linkGroupController.delete);
 
 //For getting links no auth required
 //implement pagination for /
-linkGroupRouter.get('/', null);
 linkGroupRouter.get('/:id', linkGroupController.getSingle);
 linkGroupRouter.get('/:limit/:page', linkGroupController.getMany);
 linkGroupRouter.get('/:limit/:page/:skip', linkGroupController.getMany);
