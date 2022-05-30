@@ -4,14 +4,9 @@ import { LinkGroup } from '@prisma/client';
 import AllListsFetchedPanel from '../../components/AllListsFetchedPanel';
 import { default as LinkGroupContainer } from '../../components/LinkGroupDisplay';
 
-interface LinkGroupWithUserName extends LinkGroup {
-  userId: {
-    name: string;
-  };
-}
 interface serverSideLinkGroupData {
   currentPage: string;
-  groups: LinkGroupWithUserName[];
+  groups: LinkGroup[];
 }
 
 const MainFeed = ({
@@ -20,8 +15,7 @@ const MainFeed = ({
   linkGroupData?: serverSideLinkGroupData;
 }) => {
   const initialGroups = linkGroupData?.groups ? [...linkGroupData.groups] : [];
-  const [linkGroups, setLinkGroups] =
-    useState<LinkGroupWithUserName[]>(initialGroups);
+  const [linkGroups, setLinkGroups] = useState(initialGroups);
   const [areAllListsFetched, setAllListsFetched] = useState(false);
   const [currentPage, setPage] = useState(parseInt(linkGroupData.currentPage));
   const [observedElement, setObservedElement] = useState<HTMLDivElement | null>(
@@ -32,10 +26,10 @@ const MainFeed = ({
     if (!areAllListsFetched) return null;
     return <AllListsFetchedPanel />;
   };
-  const endFetching = () => {
+  const endFetching = useCallback(() => {
     intersectionObserver.current.unobserve(observedElement);
     setAllListsFetched(true);
-  };
+  }, [observedElement]);
 
   const loadData = useCallback(async () => {
     const res = await (
@@ -47,7 +41,7 @@ const MainFeed = ({
     if (res.groups.length === 0) return endFetching();
     const updatedList = [...linkGroups, ...res.groups];
     setLinkGroups(updatedList);
-  }, [linkGroups, setLinkGroups, currentPage, observedElement]);
+  }, [linkGroups, setLinkGroups, currentPage, endFetching]);
   const triggerFetch = useRef(loadData);
 
   useEffect(() => {

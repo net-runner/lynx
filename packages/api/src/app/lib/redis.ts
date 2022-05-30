@@ -8,5 +8,6 @@ const redisClient = new Redis(process.env.REDIS_TLS_URL, {
   },
 });
 redisClient.on('ready', () => log.info('[REDIS] Connected'));
+redisClient.on('error', (e) => log.error('[REDIS] ' + e));
 
 export default redisClient;

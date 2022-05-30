@@ -6,13 +6,8 @@ import Link from 'next/link';
 import { LinkedAmountIcon, WatchersIcon } from '../../assets/icons';
 import ReviewStars from '../ReviewStars';
 
-interface LinkGroupWithUserName extends LinkGroup {
-  userId: {
-    name: string;
-  };
-}
 interface Props {
-  data: LinkGroupWithUserName;
+  data: LinkGroup;
   forwardedRef?: Ref<HTMLDivElement>;
 }
 
@@ -23,18 +18,18 @@ const LinkGroupDisplay: React.FC<Props> = memo(({ data, forwardedRef }) => {
     linksAmount,
     linkedCount,
     watcherCount,
+    owner,
     stars,
-    userId: { name: ownerName },
   } = data;
-  const reviewsStat = `(${watcherCount})`
+  const reviewsStat = `(${watcherCount})`;
   return (
     <S.Wrapper ref={forwardedRef}>
       <S.Header>
         <S.HeaderLeftPart>
           <S.TitleWrapper>
-            <Link href={`/u/${ownerName}`}>{ownerName}</Link>
+            <Link href={`/u/${owner}`}>{owner}</Link>
             <S.TitleDivider>&nbsp;/&nbsp;</S.TitleDivider>
-            <Link href={`/u/${ownerName}/g/${name}`}>{name}</Link>
+            <Link href={`/u/${owner}/g/${name}`}>{name}</Link>
           </S.TitleWrapper>
         </S.HeaderLeftPart>
         <S.HeaderRightPart>
@@ -43,7 +38,11 @@ const LinkGroupDisplay: React.FC<Props> = memo(({ data, forwardedRef }) => {
             <StatPill stat={linkedCount} ico={<LinkedAmountIcon />} />
             <StatPill stat={watcherCount} ico={<WatchersIcon />} />
           </S.StatsWrapper>
-          <StatPill stat={reviewsStat} ico={<ReviewStars rating={stars} />} isReversed={true} />
+          <StatPill
+            stat={reviewsStat}
+            ico={<ReviewStars rating={stars} />}
+            isReversed={true}
+          />
         </S.HeaderRightPart>
       </S.Header>
       <S.Footer>

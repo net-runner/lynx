@@ -8,7 +8,6 @@ import {
   userGroupRouter,
   userRouter,
 } from './app/routes';
-import corsMiddleware from './app/middlewares/cors';
 import log from './app/helpers/logger';
 import * as cookieParser from 'cookie-parser';
 import deserializeUser from './app/middlewares/auth/deserializeUser';
@@ -47,7 +46,7 @@ app.use(deserializeUser);
 app.use(rateLimiterMiddleware);
 
 app.use('/auth', authRouter);
-app.use('/users', userRouter);
+app.use('/user', userRouter);
 app.use('/stats', statRouter);
 app.use('/usersgroup', userGroupRouter);
 app.use('/link', linkRouter);
