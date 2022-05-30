@@ -1,5 +1,4 @@
-import { defaultRouteMiddlewareInterface } from '../../../interfaces/index';
-
+import { defaultRouteMiddlewareInterface } from '../../../interfaces';
 import log from '../../helpers/logger';
 import redisClient from '../../lib/redis';
 
@@ -15,7 +14,8 @@ const cache: defaultRouteMiddlewareInterface = async (req, res) => {
 
   if (cachedResponse) {
     log.info(`Cache hit for ${key}`);
-    res.send(cachedResponse);
+    const response = JSON.parse(cachedResponse);
+    res.json(response);
   } else {
     log.info(`Cache miss for ${key}`);
     return;
