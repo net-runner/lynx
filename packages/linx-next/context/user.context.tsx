@@ -6,17 +6,28 @@ import {
   ReactNode,
   useEffect,
 } from 'react';
-import { doLogout, getUser, signIn } from '../helpers/user';
+import { doLogout, getUser, signIn, signUp } from '../api/user';
 import { useRouter } from 'next/router';
 import { User } from '@prisma/client';
 import useSWR from 'swr';
-
+import axios from 'axios';
 export interface UserContext {
   user?: User;
   authenticate: (newToken: string) => Promise<void>;
   logout: ({ redirectLocation: string }) => void;
   setRedirect: (url: string) => void;
   login: ({ email, password }: { email: string; password: string }) => void;
+  signup: ({
+    name,
+    email,
+    password,
+    repeat_password,
+  }: {
+    name: string;
+    email: string;
+    password: string;
+    repeat_password: string;
+  }) => void;
   isLoading: boolean;
   isAuthenticated: boolean;
 }
@@ -34,38 +45,49 @@ export const useUser = () => {
 
 interface Props {
   children: ReactNode;
+  initialUser?: User;
 }
 const fetcher = (x) => fetch(x).then((res) => res.json());
 
-export const UserProvider: FC<Props> = ({ children }) => {
-  const [user, setUser] = useState<User>(null);
+export const UserProvider: FC<Props> = ({ children, initialUser }) => {
+  const [user, setUser] = useState<User>(initialUser || null);
   const [redirect, setRedirect] = useState<string>(null);
+  const [hasLogout, setHasLogout] = useState(false);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const isAuthenticated = !!user;
 
-  const { data: cookies } = useSWR('/api/auth', fetcher);
+  const { data: cookies } = useSWR(!hasLogout && '/api/auth', fetcher);
   const { data: userr } = useSWR(
-    cookies?.hasAuthCookies && '/api/auth/me',
+    !hasLogout && cookies?.hasAuthCookies && '/api/auth/me',
     getUser
   );
   useEffect(() => {
-    if (!user && userr) {
+    if (!user && userr && !hasLogout) {
       setUser(userr);
     }
-  }, [user, userr]);
+  }, [user, userr, hasLogout]);
 
   const login = async ({ email, password }) => {
+    setHasLogout(false);
     await signIn({ email, password });
     authenticate();
   };
 
+  const signup = async ({ name, email, password, repeat_password }) => {
+    const isSignupCorrect = await signUp({ name, email, password, repeat_password });
+    if(!isSignupCorrect) return;
+    await login({email, password})
+  };
+
   const logout = async ({ redirectLocation }) => {
     await doLogout();
-    setUser(null);
+    await axios.get(`${process.env.FRONTEND_URL}/api/logout`);
+    setHasLogout(true);
+    setUser(undefined);
     setIsLoading(false);
-    console.log('Redirecting');
     router.push(redirectLocation || '/signin');
+    // router.reload();
   };
 
   const authenticate = async () => {
@@ -75,7 +97,7 @@ export const UserProvider: FC<Props> = ({ children }) => {
       const newUser = await getUser();
       setUser(newUser);
       // Cookies.set('access_token', token);
-      router.push(redirect || '/home');
+      router.push(redirect || '/explore');
     } catch (error) {
       console.log({ error });
       // unauthenticateAPI();
@@ -92,6 +114,7 @@ export const UserProvider: FC<Props> = ({ children }) => {
         logout,
         setRedirect,
         login,
+        signup,
         isLoading,
         isAuthenticated,
       }}

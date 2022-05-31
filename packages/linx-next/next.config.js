@@ -5,13 +5,16 @@ const withPWA = require('next-pwa')
 const env = process.env.NODE_ENV
 const isProdction = env === "production";
 const API_URL = isProdction ? process.env.API_URL : "http://localhost:80/"
+const FRONTEND_URL = isProdction ? process.env.FRONTEND_URL : "http://localhost:4200/"
+
 
 /**
  * @type {import('@nrwl/next/plugins/with-nx').WithNxOptions}
  **/
 const nextConfig = {
   env: {
-    API_URL: process.env.API_URL
+    API_URL,
+    FRONTEND_URL,
   },
   async rewrites() {
     return [

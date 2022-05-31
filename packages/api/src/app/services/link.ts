@@ -4,6 +4,7 @@ import {
   hideSelectedObjectKeys,
 } from '../helpers/utilsJS';
 import { deleteFromCache, setExCache } from '../helpers/redis';
+import log from "../helpers/logger";
 
 export async function createLink(link) {
   try {
@@ -15,10 +16,11 @@ export async function createLink(link) {
       },
     });
     //Cache after create
-    setExCache(newLink.id, 3600, JSON.stringify(newLink));
+    // setExCache(newLink.id, 3600, JSON.stringify(newLink));
     return newLink;
   } catch (e) {
-    throw new Error(e);
+    log.error(e);
+    return false;
   }
 }
 
@@ -33,11 +35,12 @@ export async function editLinkInDatabase(updatedLink, linkId) {
       },
     });
     //Cache after edit
-    setExCache(linkFromDb.id, 3600, JSON.stringify(linkFromDb));
+    // setExCache(linkFromDb.id, 3600, JSON.stringify(linkFromDb));
     if (!linkFromDb) return null;
     return linkFromDb;
   } catch (e) {
-    throw new Error(e);
+    log.error(e);
+    return false;
   }
 }
 
@@ -48,7 +51,7 @@ export async function deleteLinkFromDatabase(linkId) {
         id: linkId,
       },
     });
-    deleteFromCache(linkId);
+    // deleteFromCache(linkId);
     return true;
   } catch {
     return false;
@@ -65,7 +68,8 @@ export async function getLinkFromDatabase(linkId) {
     if (!linkFromDb) return null;
     return linkFromDb;
   } catch (e) {
-    throw new Error(e);
+    log.error(e);
+    return false;
   }
 }
 
@@ -78,6 +82,7 @@ export async function getLinksFromDatabase(limit, page) {
     if (!linksFromDb) return null;
     return linksFromDb;
   } catch (e) {
-    throw new Error(e);
+    log.error(e);
+    return false;
   }
 }

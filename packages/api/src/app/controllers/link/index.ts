@@ -62,7 +62,7 @@ class LinkController {
       res.status(200).json(createdLink);
     } catch (e) {
       log.error({ err: e.message, desc: e });
-      res.json({ err: e.message, desc: e });
+      return res.status(500).json({ err: e.message, desc: e });
     }
   };
   public edit: authorizedRouteHandler = async (req, res) => {
@@ -76,7 +76,6 @@ class LinkController {
       if (!lynxLink) return res.status(400).end();
 
       const editedLink = await editLinkInDatabase(lynxLink, lynxLink.id);
-
       if (!editedLink) return res.status(500).end();
 
       const discordWebhookBody = {
@@ -87,7 +86,7 @@ class LinkController {
       res.status(200).json(editedLink);
     } catch (e) {
       log.error({ err: e.message, desc: e });
-      res.json({ err: e.message, desc: e });
+      return res.status(500).json({ err: e.message, desc: e });
     }
   };
   public delete: defaultRouteHandler = async (req, res) => {
@@ -108,14 +107,12 @@ class LinkController {
       res.status(200).end();
     } catch (e) {
       log.error({ err: e.message, desc: e });
-      res.json({ err: e.message, desc: e });
+      return res.status(500).json({ err: e.message, desc: e });
     }
   };
   public getSingle: defaultRouteHandler = async (req, res) => {
     try {
-      const body = await req.json();
-      const { id } = body;
-      log.info(id);
+      const { id } = req.params;
 
       const linkFromDb = await getLinkFromDatabase(id);
       if (!linkFromDb) return res.status(404).end();
@@ -133,37 +130,34 @@ class LinkController {
       res.status(200).json(linkFromDb);
     } catch (e) {
       log.error({ err: e.message, desc: e });
-      res.json({ err: e.message, desc: e });
+      return res.status(500).json({ err: e.message, desc: e });
     }
   };
   public getMany: defaultRouteHandler = async (req, res) => {
     try {
-      const body = await req.json();
-      const { limit } = body;
-      let { page } = body;
+      const limit = parseInt(req.params.limit);
+      const page = parseInt(req.params.page) || 0;
+      const skip = parseInt(req.params.skip) || 0;
 
       if (limit > 50) return res.status(400).send('Limit exceeded');
-      if (page === undefined) page = 0;
-      if (typeof limit !== 'number' || typeof page !== 'number')
-        return res.status(400).send('Limit and page have to be numbers');
+      if (isNaN(limit)) return res.status(400).send('Limit has to be a number');
 
       const linksFromDb = await getLinksFromDatabase(limit, page);
-
-      //Save db req to redis
-      const key = req.originalUrl;
-      setExCache(key, 3600, JSON.stringify(linksFromDb));
+      if (!linksFromDb) return res.status(404).end();
 
       const discordWebhookBody = {
-        title: `GET links array from db, limit: ${limit}, page: ${page}`,
-        description: `---`,
+        title: `GET links array from db`,
+        description: `limit: ${limit}, page: ${page}, skip: ${skip}`,
       };
       pushDiscordWebhook(discordWebhookBody);
 
-      const linksResponse = linksFromDb.map((linkFromDb) => linkFromDb);
-      res.status(200).json(linksResponse);
+      res.status(200).json({
+        currentPage: page,
+        links: linksFromDb,
+      });
     } catch (e) {
       log.error({ err: e.message, desc: e });
-      res.json({ err: e.message, desc: e });
+      return res.status(500).json({ err: e.message, desc: e });
     }
   };
 }

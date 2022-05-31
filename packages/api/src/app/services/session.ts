@@ -1,6 +1,6 @@
 import { signJwt, verifyJwt } from '../helpers/jwt';
 import log from '../helpers/logger';
-import { getFromCache, setExCache } from '../helpers/redis';
+import { deleteFromCache, getFromCache, setExCache } from '../helpers/redis';
 import db from '../lib/db';
 import { AuthProvider, getUserById } from './user';
 
@@ -23,7 +23,12 @@ export async function createSession(
 }
 
 export async function removeSession(sessionId: string) {
-  await db.session.delete({ where: { id: sessionId } });
+  try {
+    deleteFromCache(sessionId);
+    await db.session.delete({ where: { id: sessionId } });
+  } catch (e) {
+    log.error(e);
+  }
 }
 
 export async function removeAllSessions(userId: string) {

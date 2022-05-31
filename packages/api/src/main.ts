@@ -8,12 +8,12 @@ import {
   userGroupRouter,
   userRouter,
 } from './app/routes';
-import corsMiddleware from './app/middlewares/cors';
 import log from './app/helpers/logger';
 import * as cookieParser from 'cookie-parser';
 import deserializeUser from './app/middlewares/auth/deserializeUser';
 import rateLimiterMiddleware from './app/middlewares/rateLimit';
 import * as cors from 'cors';
+import statRouter from './app/routes/stats';
 const { FRONTEND_URL, NODE_ENV } = process.env;
 const isProduction = NODE_ENV === 'production';
 const app = new Server();
@@ -46,7 +46,8 @@ app.use(deserializeUser);
 app.use(rateLimiterMiddleware);
 
 app.use('/auth', authRouter);
-app.use('/users', userRouter);
+app.use('/user', userRouter);
+app.use('/stats', statRouter);
 app.use('/usersgroup', userGroupRouter);
 app.use('/link', linkRouter);
 app.use('/linkgroup', linkGroupRouter);

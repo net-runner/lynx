@@ -25,10 +25,20 @@ export const ErrorNumbers = styled.div`
     transform: translateY(2.5rem);
   }
 `;
+
 export const LogoContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;
   text-align: center;
   margin-bottom: 3rem;
+`;
+
+export const Info = styled.p`
+  font-size: 2.5rem;
+  font-family: Inter, serif;
+  font-weight: normal;
+  line-height: 160%;
+  text-align: center;
+  margin: 0 1rem;
 `;

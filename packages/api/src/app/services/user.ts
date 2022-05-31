@@ -40,6 +40,27 @@ export async function getGoogleOAuthTokens(code: string): Promise<TokenBundle> {
   }
 }
 
+export async function getAllUserGroups(username: string) {
+  const uLinkgroups = await db.user.findUnique({
+    where: {
+      username,
+    },
+    select: {
+      linkGroups: true,
+    },
+  });
+
+  return uLinkgroups;
+}
+
+export async function getAllUsers() {
+  return await db.user.findMany({
+    select: {
+      username: true,
+    },
+  });
+}
+
 export async function getGoogleUser(
   id_token: string,
   access_token: string
@@ -114,6 +135,7 @@ export async function findOrCreateUser(
       const newUser = await db.user.create({
         data: {
           email: user.email,
+          username: user.name.toLowerCase().replaceAll(' ', '-'),
           password: user.password || 'x',
           authProvider: authProvider,
           name: user.name,

@@ -9,13 +9,12 @@ linkRouter.get('/healthcheck', (req, res) => {
   res.status(200).end();
 });
 linkRouter.post('/add', requireUser, linkController.add);
-linkRouter.post('/edit/:id', requireUser, linkController.edit);
-linkRouter.post('/del/:id', requireUser, linkController.delete);
+linkRouter.post('/edit', requireUser, linkController.edit);
+linkRouter.post('/del', requireUser, linkController.delete);
 
 //For getting links no auth required
-//TODO implement pagination for /
-linkRouter.get('/', null);
 linkRouter.get('/:id', cache, linkController.getSingle);
-linkRouter.get('/:limit/:page', cache, linkController.getMany);
+linkRouter.get('/:limit/:page', linkController.getMany);
+linkRouter.get('/:limit/:page/:skip', linkController.getMany);
 
 export default linkRouter;

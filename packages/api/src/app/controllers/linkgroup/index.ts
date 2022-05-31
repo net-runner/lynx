@@ -16,6 +16,7 @@ import {
 import { Request } from 'hyper-express';
 import { showSelectedObjectKeys } from '../../helpers/utilsJS';
 import { LinkGroup } from '@prisma/client';
+import { setExCache } from '../../helpers/redis';
 
 class LinkGroupController {
   protected validateAndDestructureBody = async (
@@ -64,7 +65,7 @@ class LinkGroupController {
       res.status(200).json(createdLinkGroup);
     } catch (e) {
       log.error({ err: e.message, desc: e });
-      res.json({ err: e.message, desc: e });
+      return res.status(500).json({ err: e.message, desc: e });
     }
   };
   public edit: authorizedRouteHandler = async (req, res) => {
@@ -91,7 +92,7 @@ class LinkGroupController {
       res.status(200).json(editedLinkGroup);
     } catch (e) {
       log.error({ err: e.message, desc: e });
-      res.json({ err: e.message, desc: e });
+      return res.status(500).json({ err: e.message, desc: e });
     }
   };
   public delete: defaultRouteHandler = async (req, res) => {
@@ -112,17 +113,19 @@ class LinkGroupController {
       res.status(200).end();
     } catch (e) {
       log.error({ err: e.message, desc: e });
-      res.json({ err: e.message, desc: e });
+      return res.status(500).json({ err: e.message, desc: e });
     }
   };
   public getSingle: defaultRouteHandler = async (req, res) => {
     try {
-      const body = await req.json();
-      const { id } = body;
-      log.info(id);
+      const { id } = req.params;
 
       const linkGroupFromDb = await getLinkGroupFromDatabase(id);
       if (!linkGroupFromDb) return res.status(404).end();
+
+      //Save record to redis
+      const key = req.originalUrl;
+      setExCache(key, 3600, JSON.stringify(linkGroupFromDb));
 
       const discordWebhookBody = {
         title: `GET link group from db: ${linkGroupFromDb.name}`,
@@ -133,33 +136,34 @@ class LinkGroupController {
       res.status(200).json(linkGroupFromDb);
     } catch (e) {
       log.error({ err: e.message, desc: e });
-      res.json({ err: e.message, desc: e });
+      return res.status(500).json({ err: e.message, desc: e });
     }
   };
   public getMany: defaultRouteHandler = async (req, res) => {
     try {
-      const body = await req.json();
-      const { limit } = body;
-      let { page } = body;
+      const limit = parseInt(req.params.limit);
+      const page = parseInt(req.params.page) || 0;
+      const skip = parseInt(req.params.skip) || 0;
 
       if (limit > 50) return res.status(400).send('Limit exceeded');
-      if (page === undefined) page = 0;
-      if (typeof limit !== 'number' || typeof page !== 'number')
-        return res.status(400).send('Limit and page have to be numbers');
+      if (isNaN(limit)) return res.status(400).send('Limit has to be a number');
 
-      const linksFromDb = await getLinkGroupsFromDatabase(limit, page);
+      const groupsFromDb = await getLinkGroupsFromDatabase(limit, page, skip);
+      if (!groupsFromDb) return res.status(404).end();
 
       const discordWebhookBody = {
-        title: `GET link groups array from db, limit: ${limit}, page: ${page}`,
-        description: `---`,
+        title: `GET link groups array from db`,
+        description: `limit: ${limit}, page: ${page}, skip: ${skip}`,
       };
       pushDiscordWebhook(discordWebhookBody);
 
-      const linksResponse = linksFromDb.map((linkFromDb) => linkFromDb);
-      res.status(200).json(linksResponse);
+      res.status(200).json({
+        currentPage: page,
+        groups: groupsFromDb,
+      });
     } catch (e) {
       log.error({ err: e.message, desc: e });
-      res.json({ err: e.message, desc: e });
+      return res.status(500).json({ err: e.message, desc: e });
     }
   };
 }

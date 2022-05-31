@@ -24,7 +24,7 @@ export async function createLinkGroup(linkGroup) {
     });
   } catch (e) {
     log.error(e);
-    throw new Error();
+    return false;
   }
 }
 
@@ -45,7 +45,8 @@ export async function editLinkGroupInDatabase(updatedLinkGroup, linkGroupId) {
     if (!linkGroupFromDb) return null;
     return linkGroupFromDb;
   } catch (e) {
-    throw new Error(e);
+    log.error(e);
+    return false;
   }
 }
 
@@ -72,19 +73,21 @@ export async function getLinkGroupFromDatabase(linkGroupId) {
     if (!linkGroupFromDb) return null;
     return linkGroupFromDb;
   } catch (e) {
-    throw new Error(e);
+    log.error(e);
+    return false;
   }
 }
 
-export async function getLinkGroupsFromDatabase(limit, page) {
+export async function getLinkGroupsFromDatabase(limit, page, skip) {
   try {
     const linkGroupsFromDb = await db.linkGroup.findMany({
-      skip: limit * page,
+      skip: limit * page + skip,
       take: limit,
     });
     if (!linkGroupsFromDb) return null;
     return linkGroupsFromDb;
   } catch (e) {
-    throw new Error(e);
+    log.error(e);
+    return false;
   }
 }

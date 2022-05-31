@@ -15,6 +15,9 @@ export const Container = styled.div`
     right: 1rem;
     bottom: 0;
   }
+  &.relative {
+    position: relative;
+  }
 `;
 export const SpecialLinkIcon = styled(LinkIcon)`
   width: 5.5rem;

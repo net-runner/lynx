@@ -1,31 +1,8 @@
-import { useRouter } from 'next/router';
 import { ReactElement } from 'react';
-import Button from '../components/Button';
-import {
-  BigInformationSection,
-  LandingHeader,
-} from '../components/Text/Text.styled';
 import AuthLayout from '../layouts/AuthLayout/AuthLayout';
+import LandingPage from '../containers/LandingPage';
 
-const Index = () => {
-  const router = useRouter();
-  const handleClick = (href: string) => {
-    router.push(href);
-  };
-  return (
-    <div className="landing-container">
-      <LandingHeader>Manage your links with style</LandingHeader>
-      <BigInformationSection>
-        Lynx helps you manage your bookmarks with ease & enables sharing and
-        finding new exciting sites with a click of a buton.
-      </BigInformationSection>
-      <div className="landing-buttons-container">
-        <Button onClick={() => handleClick('signin')}>Manage bookmarks</Button>
-        <Button onClick={() => handleClick('explore')}>Explore</Button>
-      </div>
-    </div>
-  );
-};
+const Index = () => <LandingPage />;
 
 Index.getLayout = (page: ReactElement) => {
   return <AuthLayout>{page}</AuthLayout>;

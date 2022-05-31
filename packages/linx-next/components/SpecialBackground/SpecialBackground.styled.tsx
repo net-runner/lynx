@@ -30,8 +30,6 @@ export const SpecialLinkIcon = styled(LinkIcon)`
   transition: 3s ease-in-out;
   &:hover {
     transition: 0.3s ease-in-out;
-    transform: rotate(
-      ${() => Math.floor(Math.random() * 360) + 180}deg
-    ) !important;
+    transform: rotate(700deg) !important;
   }
 `;

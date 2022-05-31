@@ -13,6 +13,7 @@ import GoogleLoginButton from '../../components/GoogleLoginButton';
 import Link from 'next/link';
 import { useUser } from '../../context/user.context';
 import { useHotkeys } from 'react-hotkeys-hook';
+import { useRouter } from 'next/router';
 
 type Inputs = {
   email: string;
@@ -26,17 +27,20 @@ const SignIn = () => {
     watch,
     formState: { errors },
   } = useForm<Inputs>();
-
-  const { login } = useUser();
+  const router = useRouter();
+  const { login, isAuthenticated } = useUser();
   //Enter key press handler => submit form
   useHotkeys('enter, numpadenter', () => {
     handleSubmit(onSubmit)();
   });
 
+  if (isAuthenticated) {
+    router.push('/');
+    return null;
+  }
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const ax = login(data);
-    console.log(ax);
-    console.log(data);
+    login(data);
   };
 
   return (

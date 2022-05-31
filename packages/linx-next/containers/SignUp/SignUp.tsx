@@ -12,15 +12,20 @@ import { LynxLogoDetailNoCircleSmallBox } from '../../assets/icons';
 import GithubLoginButton from '../../components/GithubLoginButton';
 import GoogleLoginButton from '../../components/GoogleLoginButton';
 import { useHotkeys } from 'react-hotkeys-hook';
+import { useUser } from '../../context/user.context';
+import { useRouter } from 'next/router';
 
 type Inputs = {
   email: string;
   name: string;
   password: string;
-  repeatPassword: string;
+  repeat_password: string;
 };
 
 const SignUp: React.FC = () => {
+  const { isAuthenticated, signup } = useUser();
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -33,7 +38,12 @@ const SignUp: React.FC = () => {
     handleSubmit(onSubmit)();
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  if (isAuthenticated) {
+    router.push('/');
+    return null;
+  }
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => signup(data);
   return (
     <S.Wrapper>
       <S.Column>
@@ -53,12 +63,14 @@ const SignUp: React.FC = () => {
           {/* {errors.email && <span>Email is required</span>} */}
           <label>Password</label>
           <S.Input
+            type={'password'}
             {...register('password', { required: true })}
             placeholder="Enter your password"
           />
           <label>Repeat password</label>
           <S.Input
-            {...register('repeatPassword', { required: true })}
+            type={'password'}
+            {...register('repeat_password', { required: true })}
             placeholder="Re enter your password"
           />
           {/* {errors.password && <span>Password is required</span>} */}

@@ -1,12 +1,10 @@
 import { AppProps } from 'next/app';
-import { NextPage, NextPageContext } from 'next/types';
+import { NextPage } from 'next/types';
 import { ReactElement, ReactNode } from 'react';
 import { ThemeProvider } from 'styled-components';
 import AuthGate from '../auth/AuthGate';
 import { UserProvider } from '../context/user.context';
 import '../styles/global.scss';
-import Cookies from 'cookies';
-import axios from 'axios';
 
 type NextPageWithLayout = NextPage & {
   //Gets per page computed layout
@@ -24,6 +22,7 @@ const theme = {
   primary: '#00B9AE',
   background: '#16181E',
   backgroundSecondary: '#21242D',
+  backgroundTertiary: '#343a46',
 };
 function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout || ((page) => page);
