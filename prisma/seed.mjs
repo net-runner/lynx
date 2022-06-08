@@ -84,6 +84,7 @@ const initialLinkGroups = [
     id: uuidv4(),
     owner: 'lynxapp',
     name: 'Tabletop',
+    groupname: 'tabletop',
     description: "Various generators, tools and resources for tabletop rpg's",
     privacyLevel: 0,
   },
@@ -91,6 +92,7 @@ const initialLinkGroups = [
     id: uuidv4(),
     owner: 'lynxapp',
     name: 'Path of Exile',
+    groupname: 'path-of-exile',
     description: 'Helpful PoE links',
     privacyLevel: 0,
   },
@@ -98,6 +100,7 @@ const initialLinkGroups = [
     id: uuidv4(),
     owner: 'lynxapp',
     name: 'Super information',
+    groupname: 'super-information',
     description: 'Encyclopedias and various information providers of any kind',
     privacyLevel: 0,
   },
@@ -105,6 +108,7 @@ const initialLinkGroups = [
     id: uuidv4(),
     owner: 'lynxapp',
     name: 'React Native Yt Channels',
+    groupname: 'react-native-yt-channels',
     description: 'React Native youtube with tons of insightful content',
     privacyLevel: 0,
   },
@@ -112,6 +116,7 @@ const initialLinkGroups = [
     id: uuidv4(),
     owner: 'lynxapp',
     name: 'Abstract strategy games',
+    groupname: 'abstract-strategy-games',
     description: 'List of many abstract strategy games mostly in 2D',
     privacyLevel: 0,
   },
@@ -119,6 +124,7 @@ const initialLinkGroups = [
     id: uuidv4(),
     owner: 'lynxapp',
     name: 'Steam',
+    groupname: 'steam',
     description: 'Steam related statistics, tools and apps',
     privacyLevel: 0,
   },
@@ -126,6 +132,7 @@ const initialLinkGroups = [
     id: uuidv4(),
     owner: 'lynxapp',
     name: 'Awesome',
+    groupname: 'awesome',
     description: 'Group with all of the awesome repositories',
     privacyLevel: 0,
   },
@@ -133,6 +140,7 @@ const initialLinkGroups = [
     id: uuidv4(),
     owner: 'lynxapp',
     name: 'Essential Firefox addons',
+    groupname: 'essential-firefox-addons',
     description: 'Extensions every Firefox user needs',
     privacyLevel: 0,
   },
@@ -140,6 +148,7 @@ const initialLinkGroups = [
     id: uuidv4(),
     owner: 'lynxapp',
     name: 'Essential Chrome addons',
+    groupname: 'essential-chrome-addons',
     description: 'Extensions every Chrome user needs',
     privacyLevel: 0,
   },
@@ -147,6 +156,7 @@ const initialLinkGroups = [
     id: uuidv4(),
     owner: 'lynxapp',
     name: 'Blender',
+    groupname: 'blender',
     description: 'Blender tuts and resources',
     privacyLevel: 0,
   },
@@ -382,15 +392,18 @@ const load = async () => {
     //TODO Implement initial db data seeding
 
     //Create initial tags
+
     await db.tag.deleteMany();
     await db.tag.createMany({
       data: initialTags,
     });
 
     //Create initial lynxapp user
+    await db.user.deleteMany();
     await db.user.createMany({ data: initialUsers });
 
     //Create initial linkgroups
+    await db.linkGroup.deleteMany();
     await db.linkGroup.createMany({ data: initialLinkGroups });
 
     //Create initial links

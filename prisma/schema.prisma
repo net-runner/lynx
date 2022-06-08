@@ -22,6 +22,7 @@ model Review {
 model LinkGroup {
   id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   owner        String     @db.VarChar
+  groupname    String     @db.VarChar
   name         String     @db.VarChar
   description  String     @db.VarChar
   picture      String     @default("") @db.VarChar
@@ -34,6 +35,9 @@ model LinkGroup {
   links        Link[]
   reviews      Review[]
   tags         GroupTag[]
+
+  @@unique([owner, groupname], map: "unique_groupname_per_owner")
+  @@index([owner], map: "lg_owner_fkey")
 }
 
 model Link {
@@ -42,7 +46,7 @@ model Link {
   privacyLevel Int        @default(0)
   owner        String?    @db.Uuid
   stars        Float      @default(0)
-  description  String?
+  description  String?    @db.VarChar
   group        String?    @db.Uuid
   userId       User?      @relation(fields: [owner], references: [id], onDelete: Cascade, onUpdate: NoAction)
   groupId      LinkGroup? @relation(fields: [group], references: [id], onDelete: Cascade, onUpdate: NoAction)

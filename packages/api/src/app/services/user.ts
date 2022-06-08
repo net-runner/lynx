@@ -53,6 +53,31 @@ export async function getAllUserGroups(username: string) {
   return uLinkgroups;
 }
 
+export async function getAllUsersWithGroups() {
+  const uWLinkgroups = await db.user.findMany({
+    include: { linkGroups: true },
+  });
+  return uWLinkgroups;
+}
+
+export async function getAllUserGroupLinks(
+  username: string,
+  groupname: string
+) {
+  const links = await db.linkGroup.findUnique({
+    where: {
+      owner_groupname: {
+        owner: username,
+        groupname,
+      },
+    },
+    include: {
+      links: true,
+    },
+  });
+  return links;
+}
+
 export async function getAllUsers() {
   return await db.user.findMany({
     select: {

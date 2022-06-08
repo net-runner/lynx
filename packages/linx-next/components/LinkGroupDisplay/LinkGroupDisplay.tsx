@@ -20,20 +20,17 @@ const LinkGroupDisplay: React.FC<Props> = memo(({ data, forwardedRef }) => {
     watcherCount,
     owner,
     stars,
+    groupname,
   } = data;
   const reviewsStat = `(${watcherCount})`;
   return (
-    <S.Wrapper ref={forwardedRef}>
+    <S.Wrapper ref={forwardedRef || null}>
       <S.Header>
         <S.HeaderLeftPart>
           <S.TitleWrapper>
             <Link href={`/u/${owner}`}>{owner}</Link>
             <S.TitleDivider>&nbsp;/&nbsp;</S.TitleDivider>
-            <Link
-              href={`/u/${owner}/g/${name.toLowerCase().replaceAll(' ', '-')}`}
-            >
-              {name}
-            </Link>
+            <Link href={`/u/${owner}/${groupname}`}>{name}</Link>
           </S.TitleWrapper>
         </S.HeaderLeftPart>
         <S.HeaderRightPart>

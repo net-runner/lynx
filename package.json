@@ -7,7 +7,7 @@
     "heroku:push": "git push heroku development:main",
     "heroku-postbuild": "npx prisma generate && nx build api --prod",
     "prisma:generate": "npx prisma generate",
-    "prisma:studio": "npx prisma studio",
+    "prisma:studio": "npx prisma studio --port 5151",
     "prisma:push": "npx prisma db push",
     "prisma:seed": "node ./prisma/seed.mjs"
   },

@@ -12,7 +12,7 @@ const Header = () => {
   const { isAuthenticated } = useUser();
   const router = useRouter();
   const handleClick = (href: string) => {
-    router.push(href);
+    router.push(process.env.FRONTEND_URL + href);
   };
   const AuthButtons = () =>
     router.pathname === '/signin' ? (
