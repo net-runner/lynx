@@ -29,7 +29,7 @@ model LinkGroup {
   stars        Float      @default(0)
   watcherCount Int        @default(0)
   linkedCount  Int        @default(0)
-  linksAmount  Int        @default(0)
+  linksCount   Int        @default(0)
   privacyLevel Int        @default(0)
   user         User?      @relation(fields: [owner], references: [username], onDelete: Cascade, onUpdate: NoAction)
   links        Link[]

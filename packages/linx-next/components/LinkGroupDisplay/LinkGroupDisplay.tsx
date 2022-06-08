@@ -9,9 +9,6 @@ import ReviewStars from '../ReviewStars';
 interface Props {
   data: LinkGroup & {
     links?: L[];
-    _count?: {
-      links: number;
-    };
   };
   forwardedRef?: Ref<HTMLDivElement>;
 }
@@ -20,7 +17,6 @@ const LinkGroupDisplay: React.FC<Props> = memo(({ data, forwardedRef }) => {
   const {
     name,
     description,
-    linksAmount,
     linkedCount,
     watcherCount,
     owner,
@@ -28,8 +24,14 @@ const LinkGroupDisplay: React.FC<Props> = memo(({ data, forwardedRef }) => {
     groupname,
   } = data;
   const reviewsStat = `(${watcherCount})`;
+  const linksCount = () => {
+    if (data.links) {
+      return data.links.length;
+    }
+    return data.linksCount || 0;
+  };
   return (
-    <S.Wrapper ref={forwardedRef || null}>
+    <S.Wrapper ref={forwardedRef}>
       <S.Header>
         <S.HeaderLeftPart>
           <S.TitleWrapper>
@@ -40,14 +42,7 @@ const LinkGroupDisplay: React.FC<Props> = memo(({ data, forwardedRef }) => {
         </S.HeaderLeftPart>
         <S.HeaderRightPart>
           <S.StatsWrapper>
-            <StatPill
-              stat={
-                (data._count && data._count.links) ||
-                (data.links && data.links.length) ||
-                0
-              }
-              ico={<S.LinkIco />}
-            />
+            <StatPill stat={linksCount()} ico={<S.LinkIco />} />
             <StatPill stat={linkedCount} ico={<LinkedAmountIcon />} />
             <StatPill stat={watcherCount} ico={<WatchersIcon />} />
           </S.StatsWrapper>

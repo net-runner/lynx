@@ -84,13 +84,6 @@ export async function getLinkGroupsFromDatabase(limit, page, skip) {
     const linkGroupsFromDb = await db.linkGroup.findMany({
       skip: limit * page + skip,
       take: limit,
-      include: {
-        _count: {
-          select: {
-            links: true,
-          },
-        },
-      },
     });
     if (!linkGroupsFromDb) return null;
     return linkGroupsFromDb;

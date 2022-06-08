@@ -85,6 +85,7 @@ const initialLinkGroups = [
     owner: 'lynxapp',
     name: 'Tabletop',
     groupname: 'tabletop',
+    linksCount: 11,
     description: "Various generators, tools and resources for tabletop rpg's",
     privacyLevel: 0,
   },
@@ -93,6 +94,7 @@ const initialLinkGroups = [
     owner: 'lynxapp',
     name: 'Path of Exile',
     groupname: 'path-of-exile',
+    linksCount: 10,
     description: 'Helpful PoE links',
     privacyLevel: 0,
   },
@@ -101,6 +103,7 @@ const initialLinkGroups = [
     owner: 'lynxapp',
     name: 'Super information',
     groupname: 'super-information',
+    linksCount: 6,
     description: 'Encyclopedias and various information providers of any kind',
     privacyLevel: 0,
   },
@@ -407,9 +410,11 @@ const load = async () => {
     await db.linkGroup.createMany({ data: initialLinkGroups });
 
     //Create initial links
+    await db.link.deleteMany();
     await db.link.createMany({ data: initialLinks });
 
     //Create initial group tags
+    await db.groupTag.deleteMany();
     await db.groupTag.createMany({ data: initialGroupTags });
   } catch (e) {
     console.error('There was an error while seeding');
