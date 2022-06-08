@@ -6,7 +6,11 @@ import { default as LinkGroupContainer } from '../../components/LinkGroupDisplay
 
 interface serverSideLinkGroupData {
   currentPage: string;
-  groups: LinkGroup[];
+  groups: (LinkGroup & {
+    _count: {
+      links: number;
+    };
+  })[];
 }
 
 const MainFeed = ({

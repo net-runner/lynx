@@ -1,13 +1,18 @@
 import React, { memo, Ref } from 'react';
 import * as S from './LinkGroupDisplay.styled';
-import { LinkGroup } from '@prisma/client';
+import { Link as L, LinkGroup } from '@prisma/client';
 import StatPill from '../StatPill';
 import Link from 'next/link';
 import { LinkedAmountIcon, WatchersIcon } from '../../assets/icons';
 import ReviewStars from '../ReviewStars';
 
 interface Props {
-  data: LinkGroup;
+  data: LinkGroup & {
+    links?: L[];
+    _count?: {
+      links: number;
+    };
+  };
   forwardedRef?: Ref<HTMLDivElement>;
 }
 
@@ -35,7 +40,14 @@ const LinkGroupDisplay: React.FC<Props> = memo(({ data, forwardedRef }) => {
         </S.HeaderLeftPart>
         <S.HeaderRightPart>
           <S.StatsWrapper>
-            <StatPill stat={linksAmount} ico={<S.LinkIco />} />
+            <StatPill
+              stat={
+                (data._count && data._count.links) ||
+                (data.links && data.links.length) ||
+                0
+              }
+              ico={<S.LinkIco />}
+            />
             <StatPill stat={linkedCount} ico={<LinkedAmountIcon />} />
             <StatPill stat={watcherCount} ico={<WatchersIcon />} />
           </S.StatsWrapper>

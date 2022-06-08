@@ -1,13 +1,8 @@
 import MainLayout from '../../layouts/MainLayout';
 import React, { ReactElement } from 'react';
 import MainFeed from '../../containers/MainFeed';
-import { LinkGroup } from '@prisma/client';
 
-const UserDashboard = ({
-  initialLinkGroups,
-}: {
-  initialLinkGroups: LinkGroup[];
-}) => {
+const UserDashboard = ({ initialLinkGroups }: { initialLinkGroups }) => {
   return (
     <MainFeed
       linkGroupData={{
