@@ -19,7 +19,6 @@ const handleUserGroupLinks: authorizedRouteHandler = async (req, res) => {
   const username = req.params.user;
   const group = req.params.group;
   const links = await getAllUserGroupLinks(username, group);
-  console.log(links);
   return res.status(200).json(links);
 };
 

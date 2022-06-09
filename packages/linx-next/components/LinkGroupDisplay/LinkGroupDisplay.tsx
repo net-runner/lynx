@@ -5,6 +5,7 @@ import StatPill from '../StatPill';
 import Link from 'next/link';
 import { LinkedAmountIcon, WatchersIcon } from '../../assets/icons';
 import ReviewStars from '../ReviewStars';
+import LinkComponent from '../LinkComponent';
 
 interface Props {
   data: LinkGroup & {
@@ -55,6 +56,8 @@ const LinkGroupDisplay: React.FC<Props> = memo(({ data, forwardedRef }) => {
       </S.Header>
       <S.Footer>
         <S.Description>{description}</S.Description>
+        {data.links &&
+          data.links.map((link) => <LinkComponent link={link} key={link.id} />)}
       </S.Footer>
     </S.Wrapper>
   );
