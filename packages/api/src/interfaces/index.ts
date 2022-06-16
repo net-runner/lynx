@@ -27,6 +27,9 @@ interface AuthorizedRouteLocals {
   id: JwtPayload;
 }
 export interface authorizedRouteHandler {
-  (req: Request<DefaultRequestLocals>, res: Response<AuthorizedRouteLocals>);
+  (
+    req: Request<DefaultRequestLocals>,
+    res: Response<AuthorizedRouteLocals>,
+    next?: MiddlewareNext
+  );
 }
-

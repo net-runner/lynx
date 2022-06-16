@@ -17,6 +17,7 @@ const deserializeUser: defaultRouteMiddlewareInterface = async (req, res) => {
 
     const { decoded, expired } = verifyJwt(accessToken);
     if (decoded) {
+      console.log(decoded);
       res.locals.id = decoded;
       return;
     }

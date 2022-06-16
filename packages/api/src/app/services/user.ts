@@ -138,7 +138,6 @@ export async function getUser(email: string): Promise<User> {
   }
 }
 export async function getUserById(userId: string): Promise<User> {
-  log.info('USR-id: ' + userId);
   const cachedUser = await getFromCache(userId);
 
   if (cachedUser) {
