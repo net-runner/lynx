@@ -23,6 +23,7 @@ const signUpSchema = Joi.object({
   .with('password', 'repeat_password');
 
 export const validateSignUp = async (user: LynxUser): Promise<boolean> => {
+  if (user.name === 'all') return false;
   const value = signUpSchema.validate(user);
   return !value.error;
 };
