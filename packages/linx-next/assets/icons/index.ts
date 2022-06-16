@@ -13,6 +13,7 @@ import WatchersIcon from './WatchersIcon';
 import StarEmpty from './StarEmpty';
 import StarHalf from './StarHalf';
 import StarFull from './StarFull';
+import OpenInNewTab from './OpenInNewTab';
 
 export {
   ChevronDown,
@@ -30,4 +31,5 @@ export {
   StarEmpty,
   StarHalf,
   StarFull,
+  OpenInNewTab,
 };

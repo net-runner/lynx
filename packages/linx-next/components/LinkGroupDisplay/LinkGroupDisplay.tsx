@@ -16,6 +16,7 @@ interface Props {
 
 const LinkGroupDisplay: React.FC<Props> = memo(({ data, forwardedRef }) => {
   const {
+    id: groupId,
     name,
     description,
     linkedCount,
@@ -23,12 +24,10 @@ const LinkGroupDisplay: React.FC<Props> = memo(({ data, forwardedRef }) => {
     owner,
     stars,
     groupname,
+    links,
   } = data;
-  const reviewsStat = `(${watcherCount})`;
   const linksCount = () => {
-    if (data.links) {
-      return data.links.length;
-    }
+    if (data.links) return data.links.length;
     return data.linksCount || 0;
   };
   return (
@@ -48,7 +47,7 @@ const LinkGroupDisplay: React.FC<Props> = memo(({ data, forwardedRef }) => {
             <StatPill stat={watcherCount} ico={<WatchersIcon />} />
           </S.StatsWrapper>
           <StatPill
-            stat={reviewsStat}
+            stat={`(${watcherCount})`}
             ico={<ReviewStars rating={stars} />}
             isReversed={true}
           />
@@ -56,8 +55,9 @@ const LinkGroupDisplay: React.FC<Props> = memo(({ data, forwardedRef }) => {
       </S.Header>
       <S.Footer>
         <S.Description>{description}</S.Description>
-        {data.links &&
-          data.links.map((link) => <LinkComponent link={link} key={link.id} />)}
+        {links?.map((link) => (
+          <LinkComponent link={link} key={link.id} groupId={groupId} />
+        ))}
       </S.Footer>
     </S.Wrapper>
   );

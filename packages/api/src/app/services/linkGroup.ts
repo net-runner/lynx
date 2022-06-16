@@ -20,7 +20,7 @@ export async function createLinkGroup(linkGroup) {
       data: {
         ...linkGroup,
         groupname: linkGroup.name.toLowerCase().replaceAll(' ', '-'),
-        userId: { connect: { id: owner } },
+        user: { connect: { id: owner } },
       },
     });
   } catch (e) {
@@ -34,7 +34,7 @@ export async function editLinkGroupInDatabase(updatedLinkGroup, linkGroupId) {
     updatedLinkGroup = hideSelectedObjectKeys(updatedLinkGroup, [
       'id',
       'owner',
-      'userId',
+      'user',
     ]);
     updatedLinkGroup = hideObjectKeysWithoutValues(updatedLinkGroup);
     const linkGroupFromDb = await db.linkGroup.update({
@@ -67,6 +67,23 @@ export async function deleteLinkGroupFromDatabase(linkGroupId) {
 export async function getLinkGroupFromDatabase(linkGroupId) {
   try {
     const linkGroupFromDb = await db.linkGroup.findFirst({
+      where: {
+        id: linkGroupId,
+      },
+    });
+    if (!linkGroupFromDb) return null;
+    return linkGroupFromDb;
+  } catch (e) {
+    log.error(e);
+    return false;
+  }
+}
+
+export async function incrementLinkGroupLinkedCount(linkGroupId) {
+  try {
+    console.log(linkGroupId);
+    const linkGroupFromDb = await db.linkGroup.update({
+      data: { linkedCount: { increment: 1 } },
       where: {
         id: linkGroupId,
       },

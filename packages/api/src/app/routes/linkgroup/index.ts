@@ -9,6 +9,7 @@ const linkGroupController = new LinkGroupController();
 linkGroupRouter.post('/add', requireUser, linkGroupController.add);
 linkGroupRouter.post('/edit', requireUser, linkGroupController.edit);
 linkGroupRouter.post('/del', requireUser, linkGroupController.delete);
+linkGroupRouter.post('/incrementLinkedCount', linkGroupController.incrementLinkedCount);
 
 linkGroupRouter.get('/:id', cache, linkGroupController.getSingle);
 linkGroupRouter.get('/:limit/:page', linkGroupController.getMany);
