@@ -41,7 +41,7 @@ export async function getGoogleOAuthTokens(code: string): Promise<TokenBundle> {
 }
 
 export async function getAllUserGroups(username: string) {
-  const uLinkgroups = await db.user.findUnique({
+  return await db.user.findUnique({
     where: {
       username,
     },
@@ -49,22 +49,19 @@ export async function getAllUserGroups(username: string) {
       linkGroups: true,
     },
   });
-
-  return uLinkgroups;
 }
 
 export async function getAllUsersWithGroups() {
-  const uWLinkgroups = await db.user.findMany({
+  return await db.user.findMany({
     include: { linkGroups: true },
   });
-  return uWLinkgroups;
 }
 
 export async function getAllUserGroupLinks(
   username: string,
   groupname: string
 ) {
-  const links = await db.linkGroup.findUnique({
+  return await db.linkGroup.findUnique({
     where: {
       owner_groupname: {
         owner: username,
@@ -75,7 +72,6 @@ export async function getAllUserGroupLinks(
       links: true,
     },
   });
-  return links;
 }
 
 export async function getAllUsers() {
@@ -114,7 +110,7 @@ export async function isEmailFree(email: string): Promise<boolean> {
   const cachedUser = await getFromCache(email);
 
   if (cachedUser) {
-    return cachedUser;
+    return false;
   } else {
     const getUser = await db.user.findUnique({
       where: {
@@ -122,7 +118,7 @@ export async function isEmailFree(email: string): Promise<boolean> {
       },
     });
     setExCache(email, 3600, JSON.stringify(getUser));
-    return getUser === null ? true : false;
+    return getUser === null;
   }
 }
 
