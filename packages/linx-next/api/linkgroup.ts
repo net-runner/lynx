@@ -1,13 +1,10 @@
-import axios from 'axios';
-
-const { FRONTEND_URL } = process.env;
-export const getgroup = async ({ page, limit }) => {
+export const getGroups = async (limit, page = 0, skip = 0) => {
   try {
-    const res = await axios.get(
-      `${FRONTEND_URL}/api/linkgroup/${limit}/${page}`
-    );
-    console.log(res.data);
-    return res;
+    return await (
+      await fetch(
+        `${process.env.FRONTEND_URL}/api/linkgroup/${limit}/${page}/${skip}`
+      )
+    ).json();
   } catch (error) {
     console.log('E ' + error);
   }

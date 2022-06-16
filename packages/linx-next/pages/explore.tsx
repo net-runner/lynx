@@ -2,6 +2,7 @@ import { ReactElement } from 'react';
 import MainLayout from '../layouts/MainLayout';
 import MainFeed from '../containers/MainFeed';
 import { GetServerSideProps } from 'next';
+import { getGroups } from '../api/linkgroup';
 
 const Explore = ({ linkGroupData }) => (
   <MainFeed linkGroupData={linkGroupData} />
@@ -10,10 +11,7 @@ const Explore = ({ linkGroupData }) => (
 export const getServerSideProps: GetServerSideProps = async () => {
   let linkGroupData;
   try {
-    linkGroupData = await(
-      await fetch(`${process.env.FRONTEND_URL}/api/linkgroup/7/0`)
-    ).json();
-    // console.log(linkGroupData);
+    linkGroupData = await getGroups(7);
   } catch (err) {
     linkGroupData = { error: { message: err.message } };
   }

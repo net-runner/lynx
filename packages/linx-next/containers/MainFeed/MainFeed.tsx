@@ -3,6 +3,7 @@ import * as S from './MainFeed.styled';
 import { LinkGroup } from '@prisma/client';
 import AllListsFetchedPanel from '../../components/AllListsFetchedPanel';
 import { default as LinkGroupContainer } from '../../components/LinkGroupDisplay';
+import { getGroups } from '../../api/linkgroup';
 
 interface serverSideLinkGroupData {
   currentPage: string;
@@ -36,11 +37,7 @@ const MainFeed = ({
   }, [observedElement]);
 
   const loadData = useCallback(async () => {
-    const res = await (
-      await fetch(
-        `${process.env.FRONTEND_URL}/api/linkgroup/4/${currentPage + 1}/7`
-      )
-    ).json();
+    const res = await getGroups(4, currentPage + 1, 7);
     if (!res?.groups) return;
     if (res.groups.length === 0) return endFetching();
     const updatedList = [...linkGroups, ...res.groups];
