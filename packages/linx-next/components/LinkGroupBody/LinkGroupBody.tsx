@@ -1,7 +1,8 @@
 import React from 'react';
 import * as S from './LinkGroupBody.styled';
-import LinkComponent from '../LinkComponent';
 import { Link as L, LinkGroup } from '@prisma/client';
+import LinkComponent from '../LinkComponent';
+import LinkGroupForm from '../LinkGroupForm';
 
 interface Props {
   data: LinkGroup & {
@@ -17,6 +18,7 @@ const LinkGroupBody: React.FC<Props> = ({ data }) => {
       {links?.map((link) => (
         <LinkComponent link={link} key={link.id} groupId={groupId} />
       ))}
+      <LinkGroupForm />
     </S.Wrapper>
   );
 };

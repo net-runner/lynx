@@ -14,6 +14,7 @@ import StarEmpty from './StarEmpty';
 import StarHalf from './StarHalf';
 import StarFull from './StarFull';
 import OpenInNewTab from './OpenInNewTab';
+import AddIcon from './AddIcon';
 
 export {
   ChevronDown,
@@ -32,4 +33,5 @@ export {
   StarHalf,
   StarFull,
   OpenInNewTab,
+  AddIcon,
 };
