@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import useOutside from '../../hooks/useOutside';
 import * as S from './LinkGroupForm.styled';
 import Button from '../Button';
+import ExpandingButton from '../ExpandingButton';
 
 type Inputs = {
   link: string;
@@ -47,14 +48,10 @@ const LinkGroupForm: React.FC = () => {
           <Button type="submit">Add link</Button>
         </S.Form>
       ) : (
-        <S.AddWrapper>
-          <S.AddContainer>
-            <S.IconWrapper onClick={expandForm}>
-              <S.AddIco />
-            </S.IconWrapper>
-            <S.AddText onClick={expandForm}>Add new link to group</S.AddText>
-          </S.AddContainer>
-        </S.AddWrapper>
+        <ExpandingButton
+          onClickHandler={expandForm}
+          text={'Add new link to group'}
+        />
       )}
     </S.Wrapper>
   );
