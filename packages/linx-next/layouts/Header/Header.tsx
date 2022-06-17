@@ -7,6 +7,7 @@ import { useUser } from '../../context/user.context';
 import UserDropdown from '../../components/UserDropdown';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import UserNav from '../UserNav';
 
 const Header = () => {
   const { isAuthenticated } = useUser();
@@ -30,11 +31,13 @@ const Header = () => {
         <Link href="/top">Top</Link>
       </S.Nav>
       <S.Nav>
-        {isAuthenticated && <UserDropdown />}
+        {isAuthenticated && <UserNav />}
         {!isAuthenticated && <AuthButtons />}
-        <a href="https://github.com/net-runner/lynx">
-          <GithubIcon />
-        </a>
+        <Link href="https://github.com/net-runner/lynx">
+          <a>
+            <GithubIcon />
+          </a>
+        </Link>
       </S.Nav>
     </S.Header>
   );

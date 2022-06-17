@@ -3,15 +3,16 @@ import * as S from './ExpandingButton.styled';
 interface Props {
   onClickHandler: (event: React.MouseEvent<HTMLDivElement>) => void;
   text: string;
+  type?: 'small';
 }
-const ExpandingButton = ({ onClickHandler, text }: Props) => {
+const ExpandingButton = ({ onClickHandler, text, type }: Props) => {
   return (
     <S.AddWrapper onClick={onClickHandler}>
-      <S.AddContainer>
-        <S.IconWrapper>
-          <S.AddIco />
+      <S.AddContainer type={type}>
+        <S.IconWrapper type={type}>
+          <S.AddIco type={type} />
         </S.IconWrapper>
-        <S.AddText>{text}</S.AddText>
+        <S.AddText type={type}>{text}</S.AddText>
       </S.AddContainer>
     </S.AddWrapper>
   );
