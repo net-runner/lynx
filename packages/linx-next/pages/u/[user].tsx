@@ -1,15 +1,37 @@
 import MainLayout from '../../layouts/MainLayout';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useMemo } from 'react';
 import MainFeed from '../../containers/MainFeed';
+import { useRouter } from 'next/router';
+import { useUser } from '../../context/user.context';
+import { LinkGroup } from '@prisma/client';
+import LynxInfoPanel from '../../components/LynxInfoPanel';
 
-const UserDashboard = ({ initialLinkGroups }: { initialLinkGroups }) => {
+interface Props {
+  initialLinkGroups: (LinkGroup & { _count: { links: number } })[];
+}
+const UserDashboard = ({ initialLinkGroups }: Props) => {
+  const {
+    query: { user },
+  } = useRouter();
+  const { user: u } = useUser();
+  const isUserDashboard = useMemo(() => {
+    if (user && u && u.username) {
+      return user === u.username;
+    }
+    return false;
+  }, [user, u]);
   return (
-    <MainFeed
-      linkGroupData={{
-        currentPage: '5',
-        groups: initialLinkGroups,
-      }}
-    />
+    <>
+      {initialLinkGroups.length === 0 && (
+        <LynxInfoPanel text={'Nothing to see here!'} />
+      )}
+      <MainFeed
+        linkGroupData={{
+          currentPage: '5',
+          groups: initialLinkGroups,
+        }}
+      />
+    </>
   );
 };
 export async function getStaticPaths() {

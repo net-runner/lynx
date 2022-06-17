@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as S from './MainFeed.styled';
 import { LinkGroup } from '@prisma/client';
-import AllListsFetchedPanel from '../../components/AllListsFetchedPanel';
+import LynxInfoPanel from '../../components/LynxInfoPanel';
 import { default as LinkGroupContainer } from '../../components/LinkGroupDisplay';
 import { getGroups } from '../../api/linkgroup';
 
@@ -29,7 +29,13 @@ const MainFeed = ({
   const intersectionObserver = useRef(null);
   const showDeadEnd = () => {
     if (!areAllListsFetched) return null;
-    return <AllListsFetchedPanel />;
+    return (
+      <LynxInfoPanel
+        text={
+          "Seems like You've gone so far that sadly we have nothing else to show You"
+        }
+      />
+    );
   };
   const endFetching = useCallback(() => {
     intersectionObserver.current.unobserve(observedElement);
