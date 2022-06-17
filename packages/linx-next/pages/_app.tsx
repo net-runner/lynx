@@ -24,6 +24,7 @@ const theme = {
   backgroundSecondary: '#21242D',
   backgroundTertiary: '#343a46',
 };
+export type CustomTheme = typeof theme;
 function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout || ((page) => page);
   return (

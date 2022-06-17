@@ -46,7 +46,11 @@ export async function getAllUserGroups(username: string) {
       username,
     },
     select: {
-      linkGroups: true,
+      linkGroups: {
+        include: {
+          tags: true,
+        },
+      },
     },
   });
 }
@@ -70,16 +74,23 @@ export async function getAllUserGroupLinks(
     },
     include: {
       links: true,
+      tags: true,
     },
   });
 }
 
 export async function getAllUsers() {
-  return await db.user.findMany({
+  const cachedUsers = await getFromCache('allUsers');
+
+  if (cachedUsers) {
+    return cachedUsers;
+  }
+  const users = await db.user.findMany({
     select: {
       username: true,
     },
   });
+  setExCache('allUsers', 3600, JSON.stringify(users));
 }
 
 export async function getGoogleUser(

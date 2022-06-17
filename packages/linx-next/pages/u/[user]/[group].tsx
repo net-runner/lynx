@@ -1,18 +1,20 @@
 import MainLayout from '../../../layouts/MainLayout';
 import React, { ReactElement } from 'react';
-import { Link, LinkGroup, User } from '@prisma/client';
+import { GroupTag, Link, LinkGroup, Tag, User } from '@prisma/client';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import LinkGroupDisplay from '../../../components/LinkGroupDisplay';
+import { getTags } from '../../../api/tag';
 
-const ShowGroupContent = ({
-  groupWithLinks,
-}: {
+interface Props {
   groupWithLinks: LinkGroup & {
+    tags: GroupTag[];
     links: Link[];
   };
-}) => {
+  tags: Tag[];
+}
+const ShowGroupContent = ({ groupWithLinks, tags }: Props) => {
   if (groupWithLinks) {
-    return <LinkGroupDisplay data={groupWithLinks} />;
+    return <LinkGroupDisplay data={groupWithLinks} tags={tags} />;
   }
   return <>No data</>;
 };
@@ -35,6 +37,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
   // const { group } = context.params;
   const { user, group } = context.params;
 
+  const tags = await getTags();
+
   const res = await fetch(
     `${process.env.FRONTEND_URL}api/user/${user}/g/${group}`
   ).then((res) => res.json());
@@ -44,7 +48,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     };
   } else {
     return {
-      props: { groupWithLinks: res },
+      props: { groupWithLinks: res, tags },
     };
   }
 };

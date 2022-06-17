@@ -118,6 +118,8 @@ model GroupTag {
   tag     String    @db.Uuid
   groupId LinkGroup @relation(fields: [group], references: [id], onDelete: Cascade, onUpdate: NoAction)
   tagId   Tag       @relation(fields: [tag], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([group, tag], map: "unique_tag_per_group")
 }
 
 model LinkTag {

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as S from './MainFeed.styled';
-import { LinkGroup } from '@prisma/client';
+import { GroupTag, LinkGroup, Tag } from '@prisma/client';
 import LynxInfoPanel from '../../components/LynxInfoPanel';
 import { default as LinkGroupContainer } from '../../components/LinkGroupDisplay';
 import { getGroups } from '../../api/linkgroup';
@@ -8,17 +8,17 @@ import { getGroups } from '../../api/linkgroup';
 interface serverSideLinkGroupData {
   currentPage: string;
   groups: (LinkGroup & {
+    tags: GroupTag[];
     _count: {
       links: number;
     };
   })[];
 }
-
-const MainFeed = ({
-  linkGroupData,
-}: {
-  linkGroupData?: serverSideLinkGroupData;
-}) => {
+interface Props {
+  linkGroupData: serverSideLinkGroupData;
+  tags: Tag[];
+}
+const MainFeed = ({ linkGroupData, tags }: Props) => {
   const initialGroups = linkGroupData?.groups ? [...linkGroupData.groups] : [];
   const [linkGroups, setLinkGroups] = useState(initialGroups);
   const [areAllListsFetched, setAllListsFetched] = useState(false);
@@ -86,9 +86,14 @@ const MainFeed = ({
               data={linkgroup}
               key={linkgroup.id}
               forwardedRef={setObservedElement}
+              tags={tags}
             />
           ) : (
-            <LinkGroupContainer data={linkgroup} key={linkgroup.id} />
+            <LinkGroupContainer
+              data={linkgroup}
+              key={linkgroup.id}
+              tags={tags}
+            />
           );
         })}
       {showDeadEnd()}

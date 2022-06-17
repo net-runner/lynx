@@ -1,7 +1,10 @@
 import { Router } from 'hyper-express';
-import handleCreateTag from '../../controllers/tag/handleCreateTag';
-import handleGetTags from '../../controllers/tag/handleGetTags';
-import handleGetTagLinkGroups from '../../controllers/tag/handleTagLinkGroups';
+import {
+  handleCreateTag,
+  handleGetTagLinkGroups,
+  handleGetTags,
+} from '../../controllers/tag';
+
 import requireUser from '../../middlewares/auth/requireUser';
 
 const tagRouter = new Router();

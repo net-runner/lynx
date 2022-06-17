@@ -3,13 +3,18 @@ import React, { ReactElement, useMemo } from 'react';
 import MainFeed from '../../containers/MainFeed';
 import { useRouter } from 'next/router';
 import { useUser } from '../../context/user.context';
-import { LinkGroup } from '@prisma/client';
+import { GroupTag, LinkGroup, Tag } from '@prisma/client';
 import LynxInfoPanel from '../../components/LynxInfoPanel';
+import { getTags } from '../../api/tag';
 
 interface Props {
-  initialLinkGroups: (LinkGroup & { _count: { links: number } })[];
+  initialLinkGroups: (LinkGroup & {
+    tags: GroupTag[];
+    _count: { links: number };
+  })[];
+  tags: Tag[];
 }
-const UserDashboard = ({ initialLinkGroups }: Props) => {
+const UserDashboard = ({ initialLinkGroups, tags }: Props) => {
   const {
     query: { user },
   } = useRouter();
@@ -30,6 +35,7 @@ const UserDashboard = ({ initialLinkGroups }: Props) => {
           currentPage: '5',
           groups: initialLinkGroups,
         }}
+        tags={tags}
       />
     </>
   );
@@ -50,10 +56,11 @@ export async function getStaticPaths() {
 }
 export async function getStaticProps(context) {
   const { user } = context.params;
+  const tags = await getTags();
+
   const res = await fetch(`${process.env.FRONTEND_URL}api/user/${user}`).then(
     (res) => res.json()
   );
-
   if (res === null) {
     return {
       props: { initialLinkGroups: null },
@@ -61,7 +68,7 @@ export async function getStaticProps(context) {
   } else {
     const { linkGroups } = res;
     return {
-      props: { initialLinkGroups: linkGroups },
+      props: { initialLinkGroups: linkGroups, tags },
     };
   }
 }
