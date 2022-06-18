@@ -30,7 +30,7 @@ export const validateSignUp = async (user: LynxUser): Promise<boolean> => {
 
 const linkSchema = Joi.object({
   id: Joi.string().guid(),
-  link: Joi.string().domain(),
+  link: Joi.string().uri(),
   description: Joi.string(),
   privacyLevel: Joi.number(),
   owner: Joi.string().guid(),
@@ -51,6 +51,7 @@ export const validateLink = async (
     value = linkAddSchema.validate(link);
   if (actionType === ControllerMethodTypes.EDIT)
     value = linkSchema.validate(link);
+  console.log(value.error)
   return !value.error;
 };
 

@@ -36,6 +36,11 @@ class LinkController {
     lynxLink.owner = userId;
 
     log.info(lynxLink.id, lynxLink.link);
+    if (
+      !lynxLink.link.startsWith('https://') &&
+      !lynxLink.link.startsWith('http://')
+    )
+      lynxLink.link = `https://${lynxLink.link}`;
     const isLinkValidated = await validateLink(lynxLink, actionType);
     if (!isLinkValidated) return false;
     return lynxLink;
