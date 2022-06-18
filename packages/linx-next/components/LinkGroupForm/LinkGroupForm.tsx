@@ -50,7 +50,10 @@ const LinkGroupForm: React.FC = () => {
       ) : (
         <ExpandingButton
           onClickHandler={expandForm}
-          text={'Add new link to group'}
+          text="Add new link to group"
+          type="dynamic"
+          site="right"
+          size="big"
         />
       )}
     </S.Wrapper>

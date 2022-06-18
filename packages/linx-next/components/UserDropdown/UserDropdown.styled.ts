@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const RelativeContainer = styled.div`
   position: relative;
+  margin-left: 2rem;
 `;
 export const Container = styled.div`
   display: flex;

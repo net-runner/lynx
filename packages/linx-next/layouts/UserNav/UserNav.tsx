@@ -11,9 +11,11 @@ const UserNav = () => {
   return (
     <>
       <ExpandingButton
-        type="small"
         onClickHandler={handleClick}
         text="Create link group"
+        type="static"
+        site="left"
+        size="small"
       />
       <UserDropdown />
     </>
