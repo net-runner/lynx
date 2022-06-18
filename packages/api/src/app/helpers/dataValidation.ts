@@ -31,7 +31,7 @@ export const validateSignUp = async (user: LynxUser): Promise<boolean> => {
 const linkSchema = Joi.object({
   id: Joi.string().guid(),
   link: Joi.string().uri(),
-  description: Joi.string(),
+  description: Joi.string().min(5),
   privacyLevel: Joi.number(),
   owner: Joi.string().guid(),
   group: Joi.string().guid(),

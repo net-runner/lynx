@@ -11,13 +11,18 @@ interface Props {
   };
   tags: Tag[];
   forwardedRef?: Ref<HTMLDivElement>;
+  addNewLinkToState?: (link: string) => void;
 }
 
 const LinkGroupDisplay: React.FC<Props> = memo(
-  ({ data, forwardedRef, tags }) => (
+  ({ data, forwardedRef, tags, addNewLinkToState }) => (
     <S.Wrapper ref={forwardedRef}>
       <LinkGroupHeader data={data} />
-      <LinkGroupBody data={data} tags={tags} />
+      <LinkGroupBody
+        data={data}
+        tags={tags}
+        addNewLinkToState={addNewLinkToState}
+      />
     </S.Wrapper>
   )
 );

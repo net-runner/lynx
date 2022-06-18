@@ -12,9 +12,10 @@ interface Props {
     links?: L[];
   };
   tags: (Tag & { _count: { Groups: number } })[];
+  addNewLinkToState?: (link: string) => void;
 }
 
-const LinkGroupBody: React.FC<Props> = ({ data, tags }) => {
+const LinkGroupBody: React.FC<Props> = ({ data, tags, addNewLinkToState }) => {
   const { id: groupId, description, links, tags: dT } = data;
   const { isUserResource } = useUser();
   return (
@@ -24,7 +25,12 @@ const LinkGroupBody: React.FC<Props> = ({ data, tags }) => {
       {links?.map((link) => (
         <LinkComponent link={link} key={link.id} groupId={groupId} />
       ))}
-      {isUserResource && links && <LinkGroupForm />}
+      {isUserResource && links && (
+        <LinkGroupForm
+          groupId={groupId}
+          addNewLinkToState={addNewLinkToState}
+        />
+      )}
     </S.Wrapper>
   );
 };

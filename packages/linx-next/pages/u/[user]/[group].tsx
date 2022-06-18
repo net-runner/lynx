@@ -1,5 +1,5 @@
 import MainLayout from '../../../layouts/MainLayout';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { GroupTag, Link, LinkGroup, Tag, User } from '@prisma/client';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import LinkGroupDisplay from '../../../components/LinkGroupDisplay';
@@ -13,12 +13,24 @@ interface Props {
   tags: Tag[];
 }
 const ShowGroupContent = ({ groupWithLinks, tags }: Props) => {
-  if (groupWithLinks) {
-    return <LinkGroupDisplay data={groupWithLinks} tags={tags} />;
+  const [linksGroup, updateLinksGroup] = useState(groupWithLinks);
+  const addNewLinkToState = (link) => {
+    const updatedLinksGroup = { ...linksGroup };
+    updatedLinksGroup.links.push(link);
+    updateLinksGroup(updatedLinksGroup);
+  };
+  if (linksGroup) {
+    return (
+      <LinkGroupDisplay
+        data={linksGroup}
+        tags={tags}
+        addNewLinkToState={addNewLinkToState}
+      />
+    );
   }
   return <>No data</>;
 };
-export const getStaticPaths: GetStaticPaths = async (context) => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const users = (await fetch(
     `${process.env.FRONTEND_URL}api/user/all/groups`
   ).then((res) => res.json())) as (User & { linkGroups: LinkGroup[] })[];
