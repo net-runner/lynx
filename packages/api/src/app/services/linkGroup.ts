@@ -19,7 +19,8 @@ export async function createLinkGroup(linkGroup) {
     return await db.linkGroup.create({
       data: {
         ...linkGroup,
-        userId: { connect: { id: owner } },
+        groupname: linkGroup.name.toLowerCase().replaceAll(' ', '-'),
+        user: { connect: { id: owner } },
       },
     });
   } catch (e) {
@@ -33,7 +34,7 @@ export async function editLinkGroupInDatabase(updatedLinkGroup, linkGroupId) {
     updatedLinkGroup = hideSelectedObjectKeys(updatedLinkGroup, [
       'id',
       'owner',
-      'userId',
+      'user',
     ]);
     updatedLinkGroup = hideObjectKeysWithoutValues(updatedLinkGroup);
     const linkGroupFromDb = await db.linkGroup.update({
@@ -78,11 +79,31 @@ export async function getLinkGroupFromDatabase(linkGroupId) {
   }
 }
 
+export async function incrementLinkGroupLinkedCount(linkGroupId) {
+  try {
+    console.log(linkGroupId);
+    const linkGroupFromDb = await db.linkGroup.update({
+      data: { linkedCount: { increment: 1 } },
+      where: {
+        id: linkGroupId,
+      },
+    });
+    if (!linkGroupFromDb) return null;
+    return linkGroupFromDb;
+  } catch (e) {
+    log.error(e);
+    return false;
+  }
+}
+
 export async function getLinkGroupsFromDatabase(limit, page, skip) {
   try {
     const linkGroupsFromDb = await db.linkGroup.findMany({
       skip: limit * page + skip,
       take: limit,
+      include: {
+        tags: true,
+      },
     });
     if (!linkGroupsFromDb) return null;
     return linkGroupsFromDb;

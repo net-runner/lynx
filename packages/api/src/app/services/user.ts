@@ -41,24 +41,56 @@ export async function getGoogleOAuthTokens(code: string): Promise<TokenBundle> {
 }
 
 export async function getAllUserGroups(username: string) {
-  const uLinkgroups = await db.user.findUnique({
+  return await db.user.findUnique({
     where: {
       username,
     },
     select: {
-      linkGroups: true,
+      linkGroups: {
+        include: {
+          tags: true,
+        },
+      },
     },
   });
+}
 
-  return uLinkgroups;
+export async function getAllUsersWithGroups() {
+  return await db.user.findMany({
+    include: { linkGroups: true },
+  });
+}
+
+export async function getAllUserGroupLinks(
+  username: string,
+  groupname: string
+) {
+  return await db.linkGroup.findUnique({
+    where: {
+      owner_groupname: {
+        owner: username,
+        groupname,
+      },
+    },
+    include: {
+      links: true,
+      tags: true,
+    },
+  });
 }
 
 export async function getAllUsers() {
-  return await db.user.findMany({
+  const cachedUsers = await getFromCache('allUsers');
+
+  if (cachedUsers) {
+    return cachedUsers;
+  }
+  const users = await db.user.findMany({
     select: {
       username: true,
     },
   });
+  setExCache('allUsers', 3600, JSON.stringify(users));
 }
 
 export async function getGoogleUser(
@@ -89,7 +121,7 @@ export async function isEmailFree(email: string): Promise<boolean> {
   const cachedUser = await getFromCache(email);
 
   if (cachedUser) {
-    return cachedUser;
+    return false;
   } else {
     const getUser = await db.user.findUnique({
       where: {
@@ -97,7 +129,7 @@ export async function isEmailFree(email: string): Promise<boolean> {
       },
     });
     setExCache(email, 3600, JSON.stringify(getUser));
-    return getUser === null ? true : false;
+    return getUser === null;
   }
 }
 
@@ -113,8 +145,7 @@ export async function getUser(email: string): Promise<User> {
   }
 }
 export async function getUserById(userId: string): Promise<User> {
-  log.info('USR-id: ' + userId);
-  const cachedUser = await getFromCache(userId);
+  const cachedUser = false;
 
   if (cachedUser) {
     return cachedUser;

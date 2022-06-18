@@ -17,17 +17,16 @@ const handleSignup: defaultRouteHandler = async (req, res) => {
       name,
       email,
       password,
+      repeat_password,
     };
     log.info(name);
 
-    const isUserValidated = await validateSignUp({
-      ...lynxUser,
-      repeat_password,
-    });
+    const isUserValidated = await validateSignUp(lynxUser);
     if (!isUserValidated) return res.status(400).end();
 
     const isEmailRegistered = await isEmailFree(email);
-    if (!isEmailRegistered) return res.status(403).end();
+    if (!isEmailRegistered)
+      return res.status(403).send('This email is already in database');
 
     await bcrypt.hash(password, 10).then((hash) => {
       lynxUser.password = hash;

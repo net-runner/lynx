@@ -7,12 +7,13 @@ import { useUser } from '../../context/user.context';
 import UserDropdown from '../../components/UserDropdown';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import UserNav from '../UserNav';
 
 const Header = () => {
   const { isAuthenticated } = useUser();
   const router = useRouter();
   const handleClick = (href: string) => {
-    router.push(href);
+    router.push(process.env.FRONTEND_URL + href);
   };
   const AuthButtons = () =>
     router.pathname === '/signin' ? (
@@ -28,13 +29,16 @@ const Header = () => {
         <Link href="/explore">Explore</Link>
         <Link href="/stats">Stats</Link>
         <Link href="/top">Top</Link>
+        <Link href="/t/all">Tags</Link>
       </S.Nav>
       <S.Nav>
-        {isAuthenticated && <UserDropdown />}
+        {isAuthenticated && <UserNav />}
         {!isAuthenticated && <AuthButtons />}
-        <a href="https://github.com/net-runner/lynx">
-          <GithubIcon />
-        </a>
+        <Link href="https://github.com/net-runner/lynx">
+          <a>
+            <GithubIcon />
+          </a>
+        </Link>
       </S.Nav>
     </S.Header>
   );

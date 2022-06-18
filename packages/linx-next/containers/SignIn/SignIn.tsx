@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import * as S from './SignIn.styled';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import AuthLinkFlavor from '../../components/AuthLinkFlavor';

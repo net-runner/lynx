@@ -23,14 +23,24 @@ const signUpSchema = Joi.object({
   .with('password', 'repeat_password');
 
 export const validateSignUp = async (user: LynxUser): Promise<boolean> => {
+  if (user.name === 'all') return false;
   const value = signUpSchema.validate(user);
   return !value.error;
 };
 
 const linkSchema = Joi.object({
   id: Joi.string().guid(),
-  link: Joi.string().domain(),
-  description: Joi.string(),
+  link: Joi.string()
+    .uri()
+    .custom((value) => {
+      const firstDoubleSlashIndex = value.indexOf('//');
+      const lastDoubleSlashIndex = value.lastIndexOf('//');
+      if (firstDoubleSlashIndex !== lastDoubleSlashIndex)
+        throw new Error(
+          'repeated forward-slashes (//) are not valid in the link'
+        );
+    }),
+  description: Joi.string().min(5),
   privacyLevel: Joi.number(),
   owner: Joi.string().guid(),
   group: Joi.string().guid(),

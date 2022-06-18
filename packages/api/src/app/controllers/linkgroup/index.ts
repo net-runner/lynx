@@ -7,6 +7,7 @@ import {
   editLinkGroupInDatabase,
   getLinkGroupFromDatabase,
   getLinkGroupsFromDatabase,
+  incrementLinkGroupLinkedCount,
 } from '../../services/linkGroup';
 import {
   authorizedRouteHandler,
@@ -161,6 +162,26 @@ class LinkGroupController {
         currentPage: page,
         groups: groupsFromDb,
       });
+    } catch (e) {
+      log.error({ err: e.message, desc: e });
+      return res.status(500).json({ err: e.message, desc: e });
+    }
+  };
+  public incrementLinkedCount: defaultRouteHandler = async (req, res) => {
+    try {
+      const body = await req.json();
+      const { id } = body;
+
+      const linkGroupFromDb = await incrementLinkGroupLinkedCount(id);
+      if (!linkGroupFromDb) return res.status(404).end();
+
+      const discordWebhookBody = {
+        title: `incremented linkedCount in link group ${linkGroupFromDb.name}`,
+        description: `new linked count: ${linkGroupFromDb.linkedCount}`,
+      };
+      pushDiscordWebhook(discordWebhookBody);
+
+      res.status(200).json(linkGroupFromDb);
     } catch (e) {
       log.error({ err: e.message, desc: e });
       return res.status(500).json({ err: e.message, desc: e });

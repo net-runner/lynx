@@ -7,6 +7,7 @@ import {
 import { pushDiscordWebhook } from '../../helpers/pushDiscordWebhook';
 import { authorizeAndEnd } from '../../helpers/authorizeAndEnd';
 import { defaultRouteHandler } from '../../../interfaces';
+import log from '../../helpers/logger';
 const { GOOGLE_APP_ID, API_URL, FRONTEND_URL } = process.env;
 
 const env = process.env.NODE_ENV;
@@ -55,7 +56,8 @@ class GoogleAuthController {
 
       return authorizeAndEnd(user, req, res, AuthProvider.Google);
     } catch (e) {
-      console.error({
+      log.info(e);
+      log.error({
         err: e.message,
         desc: e.response.data.error_description,
       });

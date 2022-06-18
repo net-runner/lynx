@@ -1,13 +1,43 @@
-import axios from 'axios';
+import { LinkGroup } from '@prisma/client';
 
-const { FRONTEND_URL } = process.env;
-export const getgroup = async ({ page, limit }) => {
+export const getGroups = async (limit, page = 0, skip = 0) => {
   try {
-    const res = await axios.get(
-      `${FRONTEND_URL}/api/linkgroup/${limit}/${page}`
+    return await (
+      await fetch(
+        `${process.env.FRONTEND_URL}/api/linkgroup/${limit}/${page}/${skip}`
+      )
+    ).json();
+  } catch (error) {
+    console.log('E ' + error);
+  }
+};
+
+export const incrementLinkedCount = async (groupId) => {
+  try {
+    await fetch(
+      `${process.env.FRONTEND_URL}/api/linkgroup/incrementLinkedCount`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          id: groupId,
+        }),
+      }
     );
-    console.log(res.data);
-    return res;
+  } catch (error) {
+    console.log('E ' + error);
+  }
+};
+
+export const createGroup = async (data) => {
+  try {
+    const newGroup: LinkGroup = await fetch(
+      `${process.env.FRONTEND_URL}/api/linkgroup/add`,
+      {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }
+    ).then((res) => res.json());
+    return newGroup;
   } catch (error) {
     console.log('E ' + error);
   }

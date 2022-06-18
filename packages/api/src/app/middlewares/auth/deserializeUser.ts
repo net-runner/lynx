@@ -17,13 +17,14 @@ const deserializeUser: defaultRouteMiddlewareInterface = async (req, res) => {
 
     const { decoded, expired } = verifyJwt(accessToken);
     if (decoded) {
+      console.log(decoded);
       res.locals.id = decoded;
       return;
     }
 
     if (expired && refreshToken) {
       const newAccessToken = await tokenRefresh(refreshToken);
-      log.info('[AUTH] Minted new acces token ' + newAccessToken);
+      log.info('[AUTH] Minted new acces token for ' + req.ip);
       if (newAccessToken) {
         res.setHeader('x-access-token', newAccessToken as string);
         res.setHeader('Authorization', ('Bearer ' + newAccessToken) as string);

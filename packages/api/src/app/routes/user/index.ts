@@ -1,11 +1,11 @@
 import { Router } from 'hyper-express';
-import handleAllUsers from '../../controllers/user/getAll';
-import handleAllUsersGroups from '../../controllers/user/getAllUserGroups';
+import { UserController } from '../../controllers';
 
 const userRouter = new Router();
 
-userRouter.get('/all', handleAllUsers);
-userRouter.get('/:user', handleAllUsersGroups);
-userRouter.get('/:user/g/:group', null);
+userRouter.get('/all', UserController.handleAllUsers);
+userRouter.get('/all/groups', UserController.handleAllUsersWithGroups);
+userRouter.get('/:user', UserController.handleAllUsersGroups);
+userRouter.get('/:user/g/:group', UserController.handleUserGroupLinks);
 
 export default userRouter;

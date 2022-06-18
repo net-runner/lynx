@@ -1,19 +1,24 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as S from './MainFeed.styled';
-import { LinkGroup } from '@prisma/client';
-import AllListsFetchedPanel from '../../components/AllListsFetchedPanel';
+import { GroupTag, LinkGroup, Tag } from '@prisma/client';
+import LynxInfoPanel from '../../components/LynxInfoPanel';
 import { default as LinkGroupContainer } from '../../components/LinkGroupDisplay';
+import { getGroups } from '../../api/linkgroup';
 
 interface serverSideLinkGroupData {
   currentPage: string;
-  groups: LinkGroup[];
+  groups: (LinkGroup & {
+    tags: GroupTag[];
+    _count: {
+      links: number;
+    };
+  })[];
 }
-
-const MainFeed = ({
-  linkGroupData,
-}: {
-  linkGroupData?: serverSideLinkGroupData;
-}) => {
+interface Props {
+  linkGroupData: serverSideLinkGroupData;
+  tags: (Tag & { _count: { Groups: number } })[];
+}
+const MainFeed = ({ linkGroupData, tags }: Props) => {
   const initialGroups = linkGroupData?.groups ? [...linkGroupData.groups] : [];
   const [linkGroups, setLinkGroups] = useState(initialGroups);
   const [areAllListsFetched, setAllListsFetched] = useState(false);
@@ -24,7 +29,13 @@ const MainFeed = ({
   const intersectionObserver = useRef(null);
   const showDeadEnd = () => {
     if (!areAllListsFetched) return null;
-    return <AllListsFetchedPanel />;
+    return (
+      <LynxInfoPanel
+        text={
+          "Seems like You've gone so far that sadly we have nothing else to show You"
+        }
+      />
+    );
   };
   const endFetching = useCallback(() => {
     intersectionObserver.current.unobserve(observedElement);
@@ -32,11 +43,7 @@ const MainFeed = ({
   }, [observedElement]);
 
   const loadData = useCallback(async () => {
-    const res = await (
-      await fetch(
-        `${process.env.FRONTEND_URL}/api/linkgroup/4/${currentPage + 1}/7`
-      )
-    ).json();
+    const res = await getGroups(4, currentPage + 1, 7);
     if (!res?.groups) return;
     if (res.groups.length === 0) return endFetching();
     const updatedList = [...linkGroups, ...res.groups];
@@ -79,9 +86,14 @@ const MainFeed = ({
               data={linkgroup}
               key={linkgroup.id}
               forwardedRef={setObservedElement}
+              tags={tags}
             />
           ) : (
-            <LinkGroupContainer data={linkgroup} key={linkgroup.id} />
+            <LinkGroupContainer
+              data={linkgroup}
+              key={linkgroup.id}
+              tags={tags}
+            />
           );
         })}
       {showDeadEnd()}

@@ -1,11 +1,11 @@
-import { defaultRouteMiddlewareInterface } from '../../../interfaces';
+import { authorizedRouteHandler } from '../../../interfaces';
 import log from '../../helpers/logger';
 
-const requireUser: defaultRouteMiddlewareInterface = (req, res, next) => {
+const requireUser: authorizedRouteHandler = (req, res, next) => {
   log.info('[AUTH] USER CHECK REQUESTED FOR ' + req.originalUrl);
-  const user = res.locals.id;
+  const id = res.locals.id;
 
-  if (!user) return res.status(403).end();
+  if (!id || !id.user || !id.session) return res.status(403).end();
 
   return next();
 };
