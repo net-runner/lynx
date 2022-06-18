@@ -15,7 +15,7 @@ interface Props {
 const UserDashboard = ({ initialLinkGroups, tags }: Props) => {
   return (
     <>
-      {initialLinkGroups.length === 0 && (
+      {initialLinkGroups?.length === 0 && (
         <LynxInfoPanel text={'Nothing to see here!'} />
       )}
       <MainFeed
