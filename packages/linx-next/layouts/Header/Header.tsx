@@ -29,6 +29,7 @@ const Header = () => {
         <Link href="/explore">Explore</Link>
         <Link href="/stats">Stats</Link>
         <Link href="/top">Top</Link>
+        <Link href="/t/all">Tags</Link>
       </S.Nav>
       <S.Nav>
         {isAuthenticated && <UserNav />}

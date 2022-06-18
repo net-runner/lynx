@@ -4,10 +4,11 @@ import React, { useMemo } from 'react';
 import * as S from './TagList.styled';
 
 interface Props {
-  tags: Tag[];
+  tags: (Tag & { _count: { Groups: number } })[];
   filterTags?: GroupTag[];
+  showCount?: boolean;
 }
-const TagList = ({ tags, filterTags }: Props) => {
+const TagList = ({ tags, filterTags, showCount }: Props) => {
   const filterTaglist = useMemo(() => {
     if (!filterTags) return tags;
     return filterTags.map((tag) => {
@@ -26,7 +27,9 @@ const TagList = ({ tags, filterTags }: Props) => {
       {filterTaglist.map((tag) => (
         <S.TagContainer key={tag.name}>
           <Link href={process.env.FRONTEND_URL + 't/' + tag.name}>
-            <a>{tag.name}</a>
+            <a>
+              {tag.name} {showCount && tag._count.Groups}
+            </a>
           </Link>
         </S.TagContainer>
       ))}
