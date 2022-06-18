@@ -1,4 +1,5 @@
 import { LinkGroup } from '@prisma/client';
+import log from '../helpers/logger';
 import { getFromCache, setExCache } from '../helpers/redis';
 import db from '../lib/db';
 
@@ -29,26 +30,31 @@ export const createTag = async (tag) => {
   return await db.tag.create(tag);
 };
 export const getTagLinkGroups = async (tagName: string) => {
-  const { Groups } = await db.tag.findUnique({
-    where: {
-      name: tagName,
-    },
-    select: {
-      Groups: {
-        select: {
-          group: {
-            include: {
-              tags: true,
+  try {
+    const { Groups } = await db.tag.findUnique({
+      where: {
+        name: tagName,
+      },
+      select: {
+        Groups: {
+          select: {
+            group: {
+              include: {
+                tags: true,
+              },
             },
           },
         },
       },
-    },
-  });
-  const linkGroups: LinkGroup[] = [];
-  for (let index = 0; index < Groups.length; index++) {
-    const element = Groups[index].group;
-    linkGroups.push(element);
+    });
+    const linkGroups: LinkGroup[] = [];
+    for (let index = 0; index < Groups.length; index++) {
+      const element = Groups[index].group;
+      linkGroups.push(element);
+    }
+    return linkGroups;
+  } catch (error) {
+    log.error(error);
+    return [];
   }
-  return linkGroups;
 };
