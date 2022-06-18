@@ -1,10 +1,25 @@
 import React, { ReactElement } from 'react';
+import { getTags } from '../api/tag';
+import CreateLinkGroup from '../components/CreateLinkGroup';
 import MainLayout from '../layouts/MainLayout';
 
 //New linkgroup creation screen
-const New = () => {
-  return <div>new</div>;
+const New = ({ tags }) => {
+  return <CreateLinkGroup tags={tags} />;
 };
+export async function getStaticProps(context) {
+  const tags = await getTags();
+
+  if (tags === null) {
+    return {
+      props: { tags: null },
+    };
+  } else {
+    return {
+      props: { tags },
+    };
+  }
+}
 New.getLayout = (page: ReactElement) => {
   return <MainLayout>{page}</MainLayout>;
 };

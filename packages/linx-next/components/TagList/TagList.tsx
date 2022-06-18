@@ -7,8 +7,16 @@ interface Props {
   tags: (Tag & { _count: { Groups: number } })[];
   filterTags?: GroupTag[];
   showCount?: boolean;
+  selectedTags?: number[];
+  onClickHandler?: (index: number) => void;
 }
-const TagList = ({ tags, filterTags, showCount }: Props) => {
+const TagList = ({
+  tags,
+  filterTags,
+  showCount,
+  selectedTags,
+  onClickHandler,
+}: Props) => {
   const filterTaglist = useMemo(() => {
     if (!filterTags) return tags;
     return filterTags.map((tag) => {
@@ -22,15 +30,26 @@ const TagList = ({ tags, filterTags, showCount }: Props) => {
     });
   }, [tags, filterTags]);
 
+  const LinkWrapper = ({ tag, i, children }) => {
+    if (onClickHandler)
+      return <div onClick={() => onClickHandler(i)}>{children}</div>;
+    return (
+      <Link href={process.env.FRONTEND_URL + 't/' + tag.name}>{children}</Link>
+    );
+  };
+
   return (
     <S.Wrapper>
-      {filterTaglist.map((tag) => (
-        <S.TagContainer key={tag.name}>
-          <Link href={process.env.FRONTEND_URL + 't/' + tag.name}>
+      {filterTaglist.map((tag, index) => (
+        <S.TagContainer
+          key={tag.name}
+          selected={selectedTags && selectedTags.includes(index)}
+        >
+          <LinkWrapper i={index} tag={tag}>
             <a>
               {tag.name} {showCount && tag._count.Groups}
             </a>
-          </Link>
+          </LinkWrapper>
         </S.TagContainer>
       ))}
     </S.Wrapper>
