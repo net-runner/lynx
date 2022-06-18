@@ -5,6 +5,7 @@ import {
   useState,
   ReactNode,
   useEffect,
+  useMemo,
 } from 'react';
 import { doLogout, getUser, signIn, signUp } from '../api/user';
 import { useRouter } from 'next/router';
@@ -30,6 +31,7 @@ export interface UserContext {
   }) => void;
   isLoading: boolean;
   isAuthenticated: boolean;
+  isUserResource: boolean;
 }
 
 export const UserContext = createContext<UserContext>(null);
@@ -62,6 +64,15 @@ export const UserProvider: FC<Props> = ({ children, initialUser }) => {
     !hasLogout && cookies?.hasAuthCookies && '/api/auth/me',
     getUser
   );
+
+  const isUserResource = useMemo(() => {
+    const current_route = router?.query?.user;
+    if (user && user && user.username) {
+      return user.username === current_route;
+    }
+    return false;
+  }, [user, router.query]);
+
   useEffect(() => {
     if (!user && userr && !hasLogout) {
       setUser(userr);
@@ -75,9 +86,14 @@ export const UserProvider: FC<Props> = ({ children, initialUser }) => {
   };
 
   const signup = async ({ name, email, password, repeat_password }) => {
-    const isSignupCorrect = await signUp({ name, email, password, repeat_password });
-    if(!isSignupCorrect) return;
-    await login({email, password})
+    const isSignupCorrect = await signUp({
+      name,
+      email,
+      password,
+      repeat_password,
+    });
+    if (!isSignupCorrect) return;
+    await login({ email, password });
   };
 
   const logout = async ({ redirectLocation }) => {
@@ -109,6 +125,7 @@ export const UserProvider: FC<Props> = ({ children, initialUser }) => {
   return (
     <UserContext.Provider
       value={{
+        isUserResource,
         user,
         authenticate,
         logout,

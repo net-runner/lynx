@@ -15,16 +15,7 @@ interface Props {
   tags: Tag[];
 }
 const UserDashboard = ({ initialLinkGroups, tags }: Props) => {
-  const {
-    query: { user },
-  } = useRouter();
-  const { user: u } = useUser();
-  const isUserDashboard = useMemo(() => {
-    if (user && u && u.username) {
-      return user === u.username;
-    }
-    return false;
-  }, [user, u]);
+  const { isUserResource } = useUser();
   return (
     <>
       {initialLinkGroups.length === 0 && (
@@ -32,7 +23,7 @@ const UserDashboard = ({ initialLinkGroups, tags }: Props) => {
       )}
       <MainFeed
         linkGroupData={{
-          currentPage: '5',
+          currentPage: '3000',
           groups: initialLinkGroups,
         }}
         tags={tags}
