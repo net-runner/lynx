@@ -22,7 +22,7 @@ const TagList = ({
     return filterTags.map((tag) => {
       for (let index = 0; index < tags.length; index++) {
         const element = tags[index];
-        if (tag.tag === element.id) {
+        if (tag.tagId === element.id) {
           return element;
         }
       }

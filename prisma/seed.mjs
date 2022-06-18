@@ -168,53 +168,53 @@ const initialLinkGroups = [
 const initialGroupTags = [
   {
     groupId: initialLinkGroups[0].id,
-    tag: initialTags[13].id,
+    tagId: initialTags[13].id,
   },
   {
     groupId: initialLinkGroups[0].id,
-    tag: initialTags[10].id,
+    tagId: initialTags[10].id,
   },
   {
     groupId: initialLinkGroups[0].id,
-    tag: initialTags[11].id,
+    tagId: initialTags[11].id,
   },
   {
     groupId: initialLinkGroups[0].id,
-    tag: initialTags[12].id,
+    tagId: initialTags[12].id,
   },
   //- Poe
   {
     groupId: initialLinkGroups[1].id,
-    tag: initialTags[51].id,
+    tagId: initialTags[51].id,
   },
   {
     groupId: initialLinkGroups[1].id,
-    tag: initialTags[13].id,
+    tagId: initialTags[13].id,
   },
   {
     groupId: initialLinkGroups[1].id,
-    tag: initialTags[55].id,
+    tagId: initialTags[55].id,
   },
   {
     groupId: initialLinkGroups[1].id,
-    tag: initialTags[12].id,
+    tagId: initialTags[12].id,
   },
   //- Info
   {
     groupId: initialLinkGroups[2].id,
-    tag: initialTags[55].id,
+    tagId: initialTags[55].id,
   },
   {
     groupId: initialLinkGroups[2].id,
-    tag: initialTags[21].id,
+    tagId: initialTags[21].id,
   },
   {
     groupId: initialLinkGroups[2].id,
-    tag: initialTags[22].id,
+    tagId: initialTags[22].id,
   },
   {
     groupId: initialLinkGroups[2].id,
-    tag: initialTags[38].id,
+    tagId: initialTags[38].id,
   },
 ];
 

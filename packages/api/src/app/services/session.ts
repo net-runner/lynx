@@ -12,7 +12,7 @@ export async function createSession(
 ) {
   const session = await db.session.create({
     data: {
-      user: userId,
+      userId,
       userAgent,
       ip,
       authProvider,
@@ -32,7 +32,7 @@ export async function removeSession(sessionId: string) {
 }
 
 export async function removeAllSessions(userId: string) {
-  await db.session.deleteMany({ where: { user: userId } });
+  await db.session.deleteMany({ where: { userId } });
 }
 
 export async function findSession(sessionId: string) {

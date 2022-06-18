@@ -36,7 +36,7 @@ export const getTagLinkGroups = async (tagName: string) => {
     select: {
       Groups: {
         select: {
-          groupId: {
+          group: {
             include: {
               tags: true,
             },
@@ -47,7 +47,7 @@ export const getTagLinkGroups = async (tagName: string) => {
   });
   const linkGroups: LinkGroup[] = [];
   for (let index = 0; index < Groups.length; index++) {
-    const element = Groups[index].groupId;
+    const element = Groups[index].group;
     linkGroups.push(element);
   }
   return linkGroups;

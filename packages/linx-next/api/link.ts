@@ -12,7 +12,7 @@ export const addLink = async (
           link,
           description,
           privacyLevel,
-          group: groupId,
+          groupId,
         }),
       })
     ).json();

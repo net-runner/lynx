@@ -1,9 +1,8 @@
-import { Tag } from '@prisma/client';
 import {
   authorizedRouteHandler,
   defaultRouteHandler,
 } from '../../../interfaces';
-import log from '../../helpers/logger';
+
 import db from '../../lib/db';
 import { getTagLinkGroups, getTags } from '../../services/tag';
 
@@ -25,7 +24,7 @@ const handleCreateMultipleGroupTags: authorizedRouteHandler = async (
   req,
   res
 ) => {
-  const body: { group: string; tag: string }[] = await req.json();
+  const body: { groupId: string; tagId: string }[] = await req.json();
   await db.groupTag.createMany({ data: body });
 
   res.status(200).end();

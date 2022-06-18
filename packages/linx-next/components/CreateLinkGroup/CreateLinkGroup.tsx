@@ -16,7 +16,7 @@ interface Props {
 }
 const CreateLinkGroup = ({ tags }: Props) => {
   const router = useRouter();
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
   const {
     handleSubmit,
     register,
@@ -39,8 +39,6 @@ const CreateLinkGroup = ({ tags }: Props) => {
   }, [user.username, setValue]);
 
   const onSubmit = async (data) => {
-    console.log(data);
-
     //Request creation of new linkgroup
     const { id } = await createGroup(data);
 
@@ -49,7 +47,7 @@ const CreateLinkGroup = ({ tags }: Props) => {
     for (let index = 0; index < selectedTags.length; index++) {
       const tagIndex = selectedTags[index];
       const tag = tags[tagIndex];
-      preparedTags.push({ group: id, tag: tag.id });
+      preparedTags.push({ groupId: id, tagId: tag.id });
     }
 
     const res = await addMultipleGroupTags(preparedTags);
@@ -69,7 +67,9 @@ const CreateLinkGroup = ({ tags }: Props) => {
           {...(register('owner'), { required: true })}
         />
         <S.Header>
-          <Link href={`/u/${user.username}`}>{user.username}</Link>
+          {!isLoading && (
+            <Link href={`/u/${user.username}`}>{user.username}</Link>
+          )}
           <S.TitleDivider>&nbsp;/&nbsp;</S.TitleDivider>
           <S.Input
             defaultValue={'NewGroupName'}
