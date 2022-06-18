@@ -52,6 +52,7 @@ const LinkGroupForm: React.FC<Props> = ({ groupId, addNewLinkToState }) => {
           <S.TextArea
             {...register('description', { required: true })}
             placeholder="Enter link's description"
+            rows={4}
           />
           <Button type="submit">Add link</Button>
         </S.Form>

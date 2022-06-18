@@ -50,7 +50,7 @@ export const TextArea = styled.textarea`
   width: 30rem;
   max-width: 30rem;
   min-width: 30rem;
-  min-height: 6rem;
+  min-height: 10rem;
   margin: 0.4rem 0 1.2rem;
   padding: 0.5rem 1rem;
   border-color: rgba(249, 249, 249, 0.25);
@@ -61,5 +61,5 @@ export const TextArea = styled.textarea`
   font-weight: bold;
   font-size: 1.4rem;
   font-family: 'Poppins', sans-serif;
-  white-space: nowrap;
+  white-space: pre-wrap;
 `;
