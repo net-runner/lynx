@@ -13,8 +13,6 @@ type Inputs = {
 };
 
 const LinkGroupForm: React.FC = () => {
-  const { isUserResource } = useUser();
-
   const [isExpanded, setExpansionState] = useState(false);
   const ref = useRef(null);
   useOutside(ref, () => setExpansionState(false));
@@ -33,7 +31,6 @@ const LinkGroupForm: React.FC = () => {
     e.stopPropagation();
     setExpansionState(true);
   };
-  if (!isUserResource) return null;
   return (
     <S.Wrapper>
       {isExpanded ? (

@@ -4,6 +4,7 @@ import { GroupTag, Link as L, LinkGroup, Tag } from '@prisma/client';
 import LinkComponent from '../LinkComponent';
 import LinkGroupForm from '../LinkGroupForm';
 import TagList from '../TagList/';
+import { useUser } from '../../context/user.context';
 
 interface Props {
   data: LinkGroup & {
@@ -15,6 +16,7 @@ interface Props {
 
 const LinkGroupBody: React.FC<Props> = ({ data, tags }) => {
   const { id: groupId, description, links, tags: dT } = data;
+  const { isUserResource } = useUser();
   return (
     <S.Wrapper>
       <TagList tags={tags} filterTags={dT} />
@@ -22,7 +24,7 @@ const LinkGroupBody: React.FC<Props> = ({ data, tags }) => {
       {links?.map((link) => (
         <LinkComponent link={link} key={link.id} groupId={groupId} />
       ))}
-      <LinkGroupForm />
+      {isUserResource && links && <LinkGroupForm />}
     </S.Wrapper>
   );
 };
