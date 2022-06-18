@@ -16,7 +16,7 @@ interface serverSideLinkGroupData {
 }
 interface Props {
   linkGroupData: serverSideLinkGroupData;
-  tags: Tag[];
+  tags: (Tag & { _count: { Groups: number } })[];
 }
 const MainFeed = ({ linkGroupData, tags }: Props) => {
   const initialGroups = linkGroupData?.groups ? [...linkGroupData.groups] : [];
