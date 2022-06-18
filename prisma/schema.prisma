@@ -13,9 +13,9 @@ model Review {
   description String     @db.VarChar
   creator     String     @db.Uuid
   creatorId   User       @relation(fields: [creator], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  group       String?    @db.Uuid
+  groupId     String?    @db.Uuid
   link        String?    @db.Uuid
-  groupId     LinkGroup? @relation(fields: [group], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  group       LinkGroup? @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   linkId      Link?      @relation(fields: [link], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
@@ -47,9 +47,9 @@ model Link {
   owner        String?    @db.Uuid
   stars        Float      @default(0)
   description  String?    @db.VarChar
-  group        String?    @db.Uuid
-  userId       User?      @relation(fields: [owner], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  groupId      LinkGroup? @relation(fields: [group], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  groupId      String?    @db.Uuid
+  user         User?      @relation(fields: [owner], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  group        LinkGroup? @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   tags         LinkTag[]
   reviews      Review[]
 
@@ -57,7 +57,7 @@ model Link {
 }
 
 model Session {
-  user         String   @db.Uuid
+  userId       String   @db.Uuid
   valid        Boolean  @default(true)
   createdAt    DateTime @default(dbgenerated("CURRENT_DATE")) @db.Date
   updatedAt    DateTime @default(dbgenerated("CURRENT_DATE")) @db.Date
@@ -65,7 +65,7 @@ model Session {
   ip           String   @db.VarChar
   authProvider Int      @default(0)
   id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId       User     @relation(fields: [user], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "sessions_owner_fkey")
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "sessions_owner_fkey")
 }
 
 model User {
@@ -89,10 +89,10 @@ model User {
 
 model UserRole {
   id     String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user   String @db.Uuid
-  role   String @db.Uuid
-  userId User   @relation(fields: [user], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  roleId Role   @relation(fields: [role], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  userId String @db.Uuid
+  roleId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  role   Role   @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model Role {
@@ -114,18 +114,20 @@ model Tag {
 
 model GroupTag {
   id      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  group   String    @db.Uuid
-  tag     String    @db.Uuid
-  groupId LinkGroup @relation(fields: [group], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  tagId   Tag       @relation(fields: [tag], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  groupId String    @db.Uuid
+  tagId   String    @db.Uuid
+  group   LinkGroup @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tag     Tag       @relation(fields: [tagId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  @@unique([group, tag], map: "unique_tag_per_group")
+  @@unique([groupId, tagId], map: "unique_tag_per_group")
 }
 
 model LinkTag {
-  id      String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  link    String @db.Uuid
-  tag     String @db.Uuid
-  groupId Link   @relation(fields: [link], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  tagId   Tag    @relation(fields: [tag], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id     String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  linkId String @db.Uuid
+  tagId  String @db.Uuid
+  group  Link   @relation(fields: [linkId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([linkId, tagId], map: "unique_tag_per_link")
 }

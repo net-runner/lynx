@@ -8,8 +8,22 @@ export const getTags = async () => {
   if (cachedTags) {
     return cachedTags;
   }
-  const tags = await db.tag.findMany();
+  const tags = await db.tag.findMany({
+    include: {
+      _count: {
+        select: {
+          Groups: true,
+        },
+      },
+    },
+    orderBy: {
+      Groups: {
+        _count: 'desc',
+      },
+    },
+  });
   setExCache('allTags', 3600, JSON.stringify(tags));
+  return tags;
 };
 export const createTag = async (tag) => {
   return await db.tag.create(tag);
