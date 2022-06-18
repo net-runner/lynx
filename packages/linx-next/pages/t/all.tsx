@@ -17,7 +17,11 @@ export const Wrapper = styled.div`
 `;
 
 //Page with all tags listed
-const AllTags = ({ tags }: { tags: Tag[] }) => {
+const AllTags = ({
+  tags,
+}: {
+  tags: (Tag & { _count: { Groups: number } })[];
+}) => {
   return (
     <Wrapper>
       <TagList tags={tags} showCount />
