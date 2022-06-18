@@ -9,7 +9,7 @@ interface Props {
     tags: GroupTag[];
     links?: L[];
   };
-  tags: Tag[];
+  tags: (Tag & { _count: { Groups: number } })[];
   forwardedRef?: Ref<HTMLDivElement>;
   addNewLinkToState?: (link: string) => void;
 }

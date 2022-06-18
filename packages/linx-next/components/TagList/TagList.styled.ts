@@ -7,9 +7,14 @@ export const Wrapper = styled.div`
   align-self: flex-start;
 `;
 
-export const TagContainer = styled.div`
-  background-color: ${({ theme }) => theme.backgroundSecondary};
+export const TagContainer = styled.div<{ selected: boolean }>`
+  background-color: ${({ theme, selected }) =>
+    selected ? theme.primary : theme.backgroundSecondary};
   margin: 0.5rem;
   padding: 0.5rem;
   border-radius: 0.3rem;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.primary};
+  }
 `;
