@@ -10,7 +10,7 @@ interface Props {
     tags: GroupTag[];
     links: Link[];
   };
-  tags: Tag[];
+  tags: (Tag & { _count: { Groups: number } })[];
 }
 const ShowGroupContent = ({ groupWithLinks, tags }: Props) => {
   const [linksGroup, updateLinksGroup] = useState(groupWithLinks);

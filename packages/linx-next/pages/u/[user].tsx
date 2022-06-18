@@ -1,8 +1,6 @@
 import MainLayout from '../../layouts/MainLayout';
-import React, { ReactElement, useMemo } from 'react';
+import React, { ReactElement } from 'react';
 import MainFeed from '../../containers/MainFeed';
-import { useRouter } from 'next/router';
-import { useUser } from '../../context/user.context';
 import { GroupTag, LinkGroup, Tag } from '@prisma/client';
 import LynxInfoPanel from '../../components/LynxInfoPanel';
 import { getTags } from '../../api/tag';
@@ -12,10 +10,9 @@ interface Props {
     tags: GroupTag[];
     _count: { links: number };
   })[];
-  tags: Tag[];
+  tags: (Tag & { _count: { Groups: number } })[];
 }
 const UserDashboard = ({ initialLinkGroups, tags }: Props) => {
-  const { isUserResource } = useUser();
   return (
     <>
       {initialLinkGroups.length === 0 && (
