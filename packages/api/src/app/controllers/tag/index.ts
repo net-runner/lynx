@@ -1,3 +1,4 @@
+import * as qs from 'qs';
 import {
   authorizedRouteHandler,
   defaultRouteHandler,
@@ -12,9 +13,10 @@ const handleGetTags: defaultRouteHandler = async (req, res) => {
   return res.status(200).json(tags);
 };
 const handleGetTagLinkGroups: defaultRouteHandler = async (req, res) => {
-  const tag = req.params.tag;
+  const tag = Object.keys(qs.parse(req.params.tag))[0];
+
   const tagLinkGroups = await getTagLinkGroups(tag);
-  // log.info(tagLinkGroups);
+
   return res.status(200).json({ tagLinkGroups });
 };
 const handleCreateTag: authorizedRouteHandler = async (req, res) => {
