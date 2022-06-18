@@ -5,14 +5,18 @@ import useOutside from '../../hooks/useOutside';
 import * as S from './LinkGroupForm.styled';
 import Button from '../Button';
 import ExpandingButton from '../ExpandingButton';
-import { useUser } from '../../context/user.context';
+import { addLink } from '../../api/link';
 
+interface Props {
+  groupId: string;
+  addNewLinkToState?: (link: string) => void;
+}
 type Inputs = {
   link: string;
   description: string;
 };
 
-const LinkGroupForm: React.FC = () => {
+const LinkGroupForm: React.FC<Props> = ({ groupId, addNewLinkToState }) => {
   const [isExpanded, setExpansionState] = useState(false);
   const ref = useRef(null);
   useOutside(ref, () => setExpansionState(false));
@@ -25,7 +29,11 @@ const LinkGroupForm: React.FC = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log('submit');
+    const { link, description } = data;
+    const addedLink = await addLink(link, description, 0, groupId);
+    if (!addedLink) return;
+    addNewLinkToState(addedLink);
+    setExpansionState(false);
   };
   const expandForm = (e) => {
     e.stopPropagation();
@@ -41,7 +49,7 @@ const LinkGroupForm: React.FC = () => {
             placeholder="Enter new link"
           />
           <label>Description</label>
-          <S.Input
+          <S.TextArea
             {...register('description', { required: true })}
             placeholder="Enter link's description"
           />
