@@ -57,9 +57,7 @@ export async function authorizeAndEnd(
     return res
       .status(302)
       .redirect(
-        isProduction
-          ? process.env.FRONTEND_URL + 'home'
-          : 'http://localhost:4200/home'
+        isProduction ? process.env.FRONTEND_URL : 'http://localhost:4200/'
       );
 
   //Or if local just end
