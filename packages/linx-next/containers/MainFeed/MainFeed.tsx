@@ -43,9 +43,10 @@ const MainFeed = ({ linkGroupData, tags }: Props) => {
   }, [observedElement]);
 
   const loadData = useCallback(async () => {
-    const res = await getGroups(4, currentPage + 1, 7);
+    const requestedGroupsCount = 4;
+    const res = await getGroups(requestedGroupsCount, currentPage + 1, 7);
     if (!res?.groups) return;
-    if (res.groups.length === 0) return endFetching();
+    if (res.groups.length < requestedGroupsCount) return endFetching();
     const updatedList = [...linkGroups, ...res.groups];
     setLinkGroups(updatedList);
   }, [linkGroups, setLinkGroups, currentPage, endFetching]);
