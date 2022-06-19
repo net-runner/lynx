@@ -57,11 +57,7 @@ class GoogleAuthController {
       return authorizeAndEnd(user, req, res, AuthProvider.Google);
     } catch (e) {
       log.info(e);
-      log.error({
-        err: e.message,
-        desc: e.response.data.error_description,
-      });
-      res.json({ err: e.message, desc: e.response.data.error_description });
+      res.json({ err: e.message, desc: 'Google login failed' });
     }
   };
 }

@@ -11,18 +11,28 @@ const { GITHUB_APP_SECRET, GITHUB_APP_ID, FRONTEND_URL } = process.env;
 
 //Dictionary for request state checks
 const stateDict = {};
-
+const env = process.env.NODE_ENV;
+const isDev = env === 'development';
 class GithubAuthController {
   //Route for Oauth login with github
   public oauthRedirect: defaultRouteHandler = async (req, res) => {
+    const url = 'https://github.com/login/oauth/authorize';
     if (!GITHUB_APP_ID) {
       res.send('GitHub app id not specified');
     }
     const state = uuidv4();
     stateDict[state] = new Date().getMilliseconds() + 5 * 60 * 1000;
-    res.redirect(
-      `https://github.com/login/oauth/authorize?client_id=${GITHUB_APP_ID}&state=${state}&scope=read:user,user:email`
-    );
+    const body = {
+      state,
+      client_id: GITHUB_APP_ID,
+      scope: ['read:user', 'user:email'].join(','),
+      redirect_uri: `${
+        isDev ? 'http://localhost:4200' : FRONTEND_URL
+      }/api/auth/signin/github/callback`,
+    };
+    const qs = new URLSearchParams(body);
+
+    res.redirect(`${url}?${qs}`);
   };
   //Route for Oauth login callback
   //handle cancelation + token requesting

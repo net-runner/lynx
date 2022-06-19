@@ -17,7 +17,9 @@ interface TokenBundle {
 
 const env = process.env.NODE_ENV;
 const isDev = env === 'development';
-const opts = { headers: { accept: 'application/json' } };
+const opts = {
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+};
 
 export async function getGoogleOAuthTokens(code: string): Promise<TokenBundle> {
   const url = 'https://oauth2.googleapis.com/token';
@@ -27,15 +29,15 @@ export async function getGoogleOAuthTokens(code: string): Promise<TokenBundle> {
     client_id: GOOGLE_APP_ID,
     client_secret: GOOGLE_APP_SECRET,
     redirect_uri: `${
-      isDev ? 'http://localhost/' : API_URL
+      isDev ? 'http://localhost:4200/api/' : API_URL
     }auth/signin/google/callback`,
     grant_type: 'authorization_code',
   };
-  log.info(body);
+  const qs = new URLSearchParams(body);
   try {
     return axios.post(url, body, opts).then((res) => res.data);
   } catch (e) {
-    console.error(e.response.data.error_description);
+    log.error(e);
     throw new Error(e);
   }
 }
