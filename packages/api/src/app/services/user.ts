@@ -5,6 +5,7 @@ import { getFromCache, setExCache } from '../helpers/redis';
 import db from '../lib/db';
 import * as qs from 'qs';
 import { GoogleUser, LynxUser } from './user.types';
+import { PrivacyLevels } from '../../interfaces';
 
 const { GOOGLE_APP_ID, GOOGLE_APP_SECRET, FRONTEND_URL } = process.env;
 
@@ -54,6 +55,9 @@ export async function getAllUserGroups(username: string) {
       linkGroups: {
         include: {
           tags: true,
+        },
+        where: {
+          privacyLevel: PrivacyLevels.PUBLIC,
         },
       },
     },
