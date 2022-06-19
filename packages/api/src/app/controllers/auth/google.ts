@@ -19,7 +19,7 @@ class GoogleAuthController {
     const body = {
       redirect_uri: `${
         isDev ? 'http://localhost:4200/' : FRONTEND_URL
-      }api/auth/signin/google/callback`,
+      }/api/auth/signin/google/callback`,
       client_id: GOOGLE_APP_ID,
       access_type: 'offline',
       response_type: 'code',
