@@ -8,7 +8,7 @@ import { pushDiscordWebhook } from '../../helpers/pushDiscordWebhook';
 import { authorizeAndEnd } from '../../helpers/authorizeAndEnd';
 import { defaultRouteHandler } from '../../../interfaces';
 import log from '../../helpers/logger';
-const { GOOGLE_APP_ID, API_URL, FRONTEND_URL } = process.env;
+const { GOOGLE_APP_ID, FRONTEND_URL } = process.env;
 
 const env = process.env.NODE_ENV;
 const isDev = env === 'development';
@@ -57,11 +57,7 @@ class GoogleAuthController {
       return authorizeAndEnd(user, req, res, AuthProvider.Google);
     } catch (e) {
       log.info(e);
-      log.error({
-        err: e.message,
-        desc: e.response.data.error_description,
-      });
-      res.json({ err: e.message, desc: e.response.data.error_description });
+      res.json({ err: e.message, desc: 'Google login failed' });
     }
   };
 }

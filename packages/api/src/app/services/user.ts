@@ -3,9 +3,10 @@ import axios from 'axios';
 import log from '../helpers/logger';
 import { getFromCache, setExCache } from '../helpers/redis';
 import db from '../lib/db';
+import * as qs from 'qs';
 import { GoogleUser, LynxUser } from './user.types';
 
-const { GOOGLE_APP_ID, GOOGLE_APP_SECRET, API_URL } = process.env;
+const { GOOGLE_APP_ID, GOOGLE_APP_SECRET, FRONTEND_URL } = process.env;
 
 interface TokenBundle {
   access_token: string;
@@ -17,7 +18,12 @@ interface TokenBundle {
 
 const env = process.env.NODE_ENV;
 const isDev = env === 'development';
-const opts = { headers: { accept: 'application/json' } };
+const opts = {
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/x-www-form-urlencoded',
+  },
+};
 
 export async function getGoogleOAuthTokens(code: string): Promise<TokenBundle> {
   const url = 'https://oauth2.googleapis.com/token';
@@ -27,15 +33,14 @@ export async function getGoogleOAuthTokens(code: string): Promise<TokenBundle> {
     client_id: GOOGLE_APP_ID,
     client_secret: GOOGLE_APP_SECRET,
     redirect_uri: `${
-      isDev ? 'http://localhost/' : API_URL
-    }auth/signin/google/callback`,
+      isDev ? 'http://localhost:4200/' : FRONTEND_URL
+    }api/auth/signin/google/callback`,
     grant_type: 'authorization_code',
   };
-  log.info(body);
   try {
-    return axios.post(url, body, opts).then((res) => res.data);
+    return axios.post(url, qs.stringify(body), opts).then((res) => res.data);
   } catch (e) {
-    console.error(e.response.data.error_description);
+    log.error(e);
     throw new Error(e);
   }
 }
