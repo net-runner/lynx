@@ -5,7 +5,7 @@ import { getFromCache, setExCache } from '../helpers/redis';
 import db from '../lib/db';
 import { GoogleUser, LynxUser } from './user.types';
 
-const { GOOGLE_APP_ID, GOOGLE_APP_SECRET, API_URL } = process.env;
+const { GOOGLE_APP_ID, GOOGLE_APP_SECRET, FRONTEND_URL } = process.env;
 
 interface TokenBundle {
   access_token: string;
@@ -29,11 +29,10 @@ export async function getGoogleOAuthTokens(code: string): Promise<TokenBundle> {
     client_id: GOOGLE_APP_ID,
     client_secret: GOOGLE_APP_SECRET,
     redirect_uri: `${
-      isDev ? 'http://localhost:4200/api/' : API_URL
-    }auth/signin/google/callback`,
+      isDev ? 'http://localhost:4200/' : FRONTEND_URL
+    }api/auth/signin/google/callback`,
     grant_type: 'authorization_code',
   };
-  const qs = new URLSearchParams(body);
   try {
     return axios.post(url, body, opts).then((res) => res.data);
   } catch (e) {

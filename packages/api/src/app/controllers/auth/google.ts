@@ -8,7 +8,7 @@ import { pushDiscordWebhook } from '../../helpers/pushDiscordWebhook';
 import { authorizeAndEnd } from '../../helpers/authorizeAndEnd';
 import { defaultRouteHandler } from '../../../interfaces';
 import log from '../../helpers/logger';
-const { GOOGLE_APP_ID, API_URL, FRONTEND_URL } = process.env;
+const { GOOGLE_APP_ID, FRONTEND_URL } = process.env;
 
 const env = process.env.NODE_ENV;
 const isDev = env === 'development';
