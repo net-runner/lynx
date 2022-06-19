@@ -33,3 +33,9 @@ export interface authorizedRouteHandler {
     next?: MiddlewareNext
   );
 }
+
+export enum PrivacyLevels {
+  PUBLIC = 0,
+  FRIENDS = 3,
+  PRIVATE = 6,
+}

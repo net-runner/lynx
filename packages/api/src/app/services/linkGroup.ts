@@ -96,13 +96,26 @@ export async function incrementLinkGroupLinkedCount(linkGroupId) {
   }
 }
 
-export async function getLinkGroupsFromDatabase(limit, page, skip) {
+export async function getLinkGroupsFromDatabase(
+  limit,
+  page,
+  skip,
+  privacyLevels
+) {
   try {
+    const includedPrivacyLevels = [];
+    privacyLevels.forEach((privacyLevel) => {
+      includedPrivacyLevels.push({ privacyLevel: Number(privacyLevel) });
+    });
+
     const linkGroupsFromDb = await db.linkGroup.findMany({
       skip: limit * page + skip,
       take: limit,
       include: {
         tags: true,
+      },
+      where: {
+        OR: includedPrivacyLevels,
       },
     });
     if (!linkGroupsFromDb) return null;

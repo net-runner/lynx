@@ -14,5 +14,6 @@ linkGroupRouter.post('/incrementLinkedCount', linkGroupController.incrementLinke
 linkGroupRouter.get('/:id', cache, linkGroupController.getSingle);
 linkGroupRouter.get('/:limit/:page', linkGroupController.getMany);
 linkGroupRouter.get('/:limit/:page/:skip', linkGroupController.getMany);
+linkGroupRouter.get('/:limit/:page/:skip/:privacylevel', linkGroupController.getMany);
 
 export default linkGroupRouter;

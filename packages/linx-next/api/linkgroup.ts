@@ -1,10 +1,10 @@
 import { LinkGroup } from '@prisma/client';
 
-export const getGroups = async (limit, page = 0, skip = 0) => {
+export const getGroups = async (limit, page = 0, skip = 0, privacyLevel = 0) => {
   try {
     return await (
       await fetch(
-        `${process.env.FRONTEND_URL}/api/linkgroup/${limit}/${page}/${skip}`
+        `${process.env.FRONTEND_URL}/api/linkgroup/${limit}/${page}/${skip}/${privacyLevel}`
       )
     ).json();
   } catch (error) {
