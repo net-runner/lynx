@@ -12,8 +12,7 @@ export const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin: 0 auto;
-  transform: translateY(-2.5rem);
+  margin: 1rem auto 3rem;
 `;
 
 //Page with all tags listed
@@ -28,7 +27,7 @@ const AllTags = ({
     </Wrapper>
   );
 };
-export async function getStaticProps(context) {
+export async function getStaticProps() {
   const tags = await getTags();
 
   if (tags === null) {
