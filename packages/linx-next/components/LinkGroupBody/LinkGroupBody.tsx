@@ -20,7 +20,9 @@ const LinkGroupBody: React.FC<Props> = ({ data, tags, addNewLinkToState }) => {
   const { isUserResource } = useUser();
   return (
     <S.Wrapper>
-      <TagList tags={tags} filterTags={dT} />
+      <S.TagListContainer>
+        <TagList tags={tags} filterTags={dT} />
+      </S.TagListContainer>
       <S.Description>{description}</S.Description>
       {links?.map((link) => (
         <LinkComponent link={link} key={link.id} groupId={groupId} />
