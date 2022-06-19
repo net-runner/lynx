@@ -3,6 +3,7 @@ import axios from 'axios';
 import log from '../helpers/logger';
 import { getFromCache, setExCache } from '../helpers/redis';
 import db from '../lib/db';
+import * as qs from 'qs';
 import { GoogleUser, LynxUser } from './user.types';
 
 const { GOOGLE_APP_ID, GOOGLE_APP_SECRET, FRONTEND_URL } = process.env;
@@ -18,7 +19,10 @@ interface TokenBundle {
 const env = process.env.NODE_ENV;
 const isDev = env === 'development';
 const opts = {
-  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/x-www-form-urlencoded',
+  },
 };
 
 export async function getGoogleOAuthTokens(code: string): Promise<TokenBundle> {
@@ -34,7 +38,7 @@ export async function getGoogleOAuthTokens(code: string): Promise<TokenBundle> {
     grant_type: 'authorization_code',
   };
   try {
-    return axios.post(url, body, opts).then((res) => res.data);
+    return axios.post(url, qs.stringify(body), opts).then((res) => res.data);
   } catch (e) {
     log.error(e);
     throw new Error(e);
