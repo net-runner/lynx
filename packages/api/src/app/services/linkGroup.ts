@@ -4,6 +4,7 @@ import {
   hideSelectedObjectKeys,
 } from '../helpers/utilsJS';
 import log from '../helpers/logger';
+import { PrivacyLevels } from '../../interfaces';
 
 export async function createLinkGroup(linkGroup) {
   try {
@@ -97,17 +98,13 @@ export async function incrementLinkGroupLinkedCount(linkGroupId) {
 }
 
 export async function getLinkGroupsFromDatabase(
-  limit,
-  page,
-  skip,
-  privacyLevels
+  limit: number,
+  page: number,
+  skip: number,
+  privacyLevel: PrivacyLevels,
+  specificUsername?: string | undefined
 ) {
   try {
-    const includedPrivacyLevels = [];
-    privacyLevels.forEach((privacyLevel) => {
-      includedPrivacyLevels.push({ privacyLevel: Number(privacyLevel) });
-    });
-
     const linkGroupsFromDb = await db.linkGroup.findMany({
       skip: limit * page + skip,
       take: limit,
@@ -115,7 +112,10 @@ export async function getLinkGroupsFromDatabase(
         tags: true,
       },
       where: {
-        OR: includedPrivacyLevels,
+        AND: {
+          privacyLevel: Number(privacyLevel),
+          owner: specificUsername,
+        },
       },
     });
     if (!linkGroupsFromDb) return null;

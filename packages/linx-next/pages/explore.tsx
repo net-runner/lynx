@@ -6,7 +6,7 @@ import { getGroups } from '../api/linkgroup';
 import { getTags } from '../api/tag';
 
 const Explore = ({ linkGroupData, tags }) => (
-  <MainFeed linkGroupData={linkGroupData} tags={tags} />
+  <MainFeed linkGroupData={linkGroupData} tags={tags} mainFeedLocation={'explore'} />
 );
 
 export const getStaticProps: GetServerSideProps = async () => {

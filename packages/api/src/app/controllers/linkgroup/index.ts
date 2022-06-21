@@ -13,7 +13,6 @@ import {
   authorizedRouteHandler,
   ControllerMethodTypes,
   defaultRouteHandler,
-  PrivacyLevels,
 } from '../../../interfaces';
 import { Request } from 'hyper-express';
 import { showSelectedObjectKeys } from '../../helpers/utilsJS';
@@ -147,27 +146,23 @@ class LinkGroupController {
       const page = parseInt(req.params.page) || 0;
       const skip = parseInt(req.params.skip) || 0;
       const privacylevel = parseInt(req.params.privacylevel) || 0;
+      const specificUsername = req.params.specificUsername;
 
       if (isNaN(limit)) return res.status(400).send('Limit has to be a number');
       if (limit > 50) return res.status(400).send('Limit exceeded');
-
-      const includedPrivacyLevels = [];
-      for (const privacyLv in PrivacyLevels) {
-        if (Number(privacyLv) > privacylevel) break;
-        includedPrivacyLevels.push(privacyLv);
-      }
 
       const groupsFromDb = await getLinkGroupsFromDatabase(
         limit,
         page,
         skip,
-        includedPrivacyLevels
+        privacylevel,
+        specificUsername
       );
       if (!groupsFromDb) return res.status(404).end();
 
       const discordWebhookBody = {
         title: `GET link groups array from db`,
-        description: `limit: ${limit}, page: ${page}, skip: ${skip}, includedPrivacyLevels: ${includedPrivacyLevels}`,
+        description: `limit: ${limit}, page: ${page}, skip: ${skip}, privacylevel: ${privacylevel}, specificUsername: ${specificUsername}`,
       };
       pushDiscordWebhook(discordWebhookBody);
 

@@ -4,6 +4,7 @@ import { GroupTag, LinkGroup, Tag } from '@prisma/client';
 import LynxInfoPanel from '../../components/LynxInfoPanel';
 import { default as LinkGroupContainer } from '../../components/LinkGroupDisplay';
 import { getGroups } from '../../api/linkgroup';
+import { useUser } from '../../context/user.context';
 
 interface serverSideLinkGroupData {
   currentPage: string;
@@ -14,12 +15,18 @@ interface serverSideLinkGroupData {
     };
   })[];
 }
+
 interface Props {
   linkGroupData: serverSideLinkGroupData;
   tags: (Tag & { _count: { Groups: number } })[];
+  mainFeedLocation?: 'explore' | 'user_profile';
+  user?: string;
 }
-const MainFeed = ({ linkGroupData, tags }: Props) => {
+
+const MainFeed = ({ linkGroupData, tags, mainFeedLocation, user }: Props) => {
   const initialGroups = linkGroupData?.groups ? [...linkGroupData.groups] : [];
+  const { user: currentUserInstance } = useUser();
+  const currentUserName = currentUserInstance?.username;
   const [linkGroups, setLinkGroups] = useState(initialGroups);
   const [areAllListsFetched, setAllListsFetched] = useState(false);
   const [currentPage, setPage] = useState(parseInt(linkGroupData.currentPage));
@@ -38,18 +45,47 @@ const MainFeed = ({ linkGroupData, tags }: Props) => {
     );
   };
   const endFetching = useCallback(() => {
+    if (!observedElement) return;
     intersectionObserver.current.unobserve(observedElement);
     setAllListsFetched(true);
   }, [observedElement]);
 
   const loadData = useCallback(async () => {
     const requestedGroupsCount = 4;
-    const res = await getGroups(requestedGroupsCount, currentPage + 1, 7);
-    if (!res?.groups) return;
-    if (res.groups.length < requestedGroupsCount) return endFetching();
-    const updatedList = [...linkGroups, ...res.groups];
-    setLinkGroups(updatedList);
-  }, [linkGroups, setLinkGroups, currentPage, endFetching]);
+    const handleResponse = (response) => {
+      if (!response?.groups) return;
+      const updatedList = [...linkGroups, ...response.groups];
+      setLinkGroups(updatedList);
+      if (response.groups.length < requestedGroupsCount) endFetching();
+    };
+    switch (mainFeedLocation) {
+      case 'user_profile': {
+        const includePrivateLinkGroup = currentUserName === user;
+        const res = await getGroups(
+          requestedGroupsCount,
+          currentPage + 1,
+          0,
+          6,
+          includePrivateLinkGroup && currentUserName
+        );
+        handleResponse(res);
+        break;
+      }
+      case 'explore': {
+        const requestedGroupsCount = 4;
+        const res = await getGroups(requestedGroupsCount, currentPage + 1, 7);
+        handleResponse(res);
+        break;
+      }
+    }
+  }, [
+    mainFeedLocation,
+    currentUserName,
+    user,
+    currentPage,
+    endFetching,
+    linkGroups,
+  ]);
   const triggerFetch = useRef(loadData);
 
   useEffect(() => {
@@ -64,6 +100,10 @@ const MainFeed = ({ linkGroupData, tags }: Props) => {
       { threshold: 0.5 }
     );
   }, []);
+
+  useEffect(() => {
+    triggerFetch.current();
+  }, [user]);
 
   useEffect(() => {
     triggerFetch.current = loadData;

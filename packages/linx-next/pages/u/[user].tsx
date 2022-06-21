@@ -11,8 +11,9 @@ interface Props {
     _count: { links: number };
   })[];
   tags: (Tag & { _count: { Groups: number } })[];
+  user?: string
 }
-const UserDashboard = ({ initialLinkGroups, tags }: Props) => {
+const UserDashboard = ({ initialLinkGroups, tags, user }: Props) => {
   return (
     <>
       {initialLinkGroups?.length === 0 && (
@@ -20,10 +21,12 @@ const UserDashboard = ({ initialLinkGroups, tags }: Props) => {
       )}
       <MainFeed
         linkGroupData={{
-          currentPage: '3000',
+          currentPage: '-1',
           groups: initialLinkGroups,
         }}
         tags={tags}
+        mainFeedLocation={'user_profile'}
+        user={user}
       />
     </>
   );
@@ -56,7 +59,7 @@ export async function getStaticProps(context) {
   } else {
     const { linkGroups } = res;
     return {
-      props: { initialLinkGroups: linkGroups, tags },
+      props: { initialLinkGroups: linkGroups, tags, user },
     };
   }
 }
