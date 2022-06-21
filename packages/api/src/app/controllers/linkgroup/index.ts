@@ -29,6 +29,7 @@ class LinkGroupController {
     const linkGroup = showSelectedObjectKeys(body, [
       'id',
       'name',
+      'groupname',
       'description',
       'privacyLevel',
       'picture',

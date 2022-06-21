@@ -67,6 +67,7 @@ const linkGroupSchema = Joi.object({
   id: Joi.string().guid(),
   owner: Joi.string().guid(),
   name: Joi.string(),
+  groupname: Joi.string(),
   description: Joi.string(),
   privacyLevel: Joi.number(),
   picture: Joi.string(),

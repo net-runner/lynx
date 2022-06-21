@@ -20,7 +20,7 @@ export async function createLinkGroup(linkGroup) {
     return await db.linkGroup.create({
       data: {
         ...linkGroup,
-        groupname: linkGroup.name.toLowerCase().replaceAll(' ', '-'),
+        groupname: linkGroup.groupname.toLowerCase().replaceAll(' ', '-'),
         user: { connect: { id: owner } },
       },
     });
