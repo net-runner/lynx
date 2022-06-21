@@ -7,7 +7,7 @@ import { getGroups } from '../../api/linkgroup';
 import { useUser } from '../../context/user.context';
 
 interface serverSideLinkGroupData {
-  currentPage: string;
+  currentPage: string | null;
   groups: (LinkGroup & {
     tags: GroupTag[];
     _count: {
@@ -51,6 +51,7 @@ const MainFeed = ({ linkGroupData, tags, mainFeedLocation, user }: Props) => {
   }, [observedElement]);
 
   const loadData = useCallback(async () => {
+    if (currentPage === null) return;
     const requestedGroupsCount = 4;
     const handleResponse = (response) => {
       if (!response?.groups) return;
@@ -104,6 +105,10 @@ const MainFeed = ({ linkGroupData, tags, mainFeedLocation, user }: Props) => {
   useEffect(() => {
     triggerFetch.current();
   }, [user]);
+
+  useEffect(() => {
+    linkGroupData?.groups && setLinkGroups([...linkGroupData.groups]);
+  }, [linkGroupData]);
 
   useEffect(() => {
     triggerFetch.current = loadData;
