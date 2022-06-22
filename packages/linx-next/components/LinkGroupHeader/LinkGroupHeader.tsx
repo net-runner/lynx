@@ -22,6 +22,7 @@ const LinkGroupHeader: React.FC<Props> = ({ data }) => {
     groupname,
     linksCount,
     links,
+    privacyLevel,
   } = data;
   const getLinksCount = () => {
     if (links) return links.length;
@@ -34,6 +35,7 @@ const LinkGroupHeader: React.FC<Props> = ({ data }) => {
           <Link href={`/u/${owner}`}>{owner}</Link>
           <S.TitleDivider>&nbsp;/&nbsp;</S.TitleDivider>
           <Link href={`/u/${owner}/${groupname}`}>{name}</Link>
+          {privacyLevel === 6 && <S.LockIco />}
         </S.TitleWrapper>
       </S.HeaderLeftPart>
       <S.HeaderRightPart>
