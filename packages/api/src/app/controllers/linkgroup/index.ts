@@ -8,6 +8,7 @@ import {
   getLinkGroupFromDatabase,
   getLinkGroupsFromDatabase,
   incrementLinkGroupLinkedCount,
+  isLinkGroupFree,
 } from '../../services/linkGroup';
 import {
   authorizedRouteHandler,
@@ -22,7 +23,6 @@ import { setExCache } from '../../helpers/redis';
 class LinkGroupController {
   protected validateAndDestructureBody = async (
     req: Request,
-    userId: string,
     actionType: ControllerMethodTypes
   ) => {
     const body = await req.json();
@@ -37,8 +37,8 @@ class LinkGroupController {
       'linkedCount',
       'watcherCount',
       'linksAmount',
+      'owner',
     ]) as LinkGroup;
-    linkGroup.owner = userId;
 
     log.info(linkGroup.id, linkGroup.name);
     const isGroupValidated = await validateLinkGroup(linkGroup, actionType);
@@ -47,20 +47,26 @@ class LinkGroupController {
   };
   public add: authorizedRouteHandler = async (req, res) => {
     try {
-      const user = res.locals.id.user;
+      const userId = res.locals.id.user;
       const linkGroup = await this.validateAndDestructureBody(
         req,
-        user,
         ControllerMethodTypes.ADD
       );
       if (!linkGroup) return res.status(400).end();
 
-      const createdLinkGroup = await createLinkGroup(linkGroup);
+      const isGroupFree = await isLinkGroupFree(
+        linkGroup.groupname,
+        linkGroup.owner
+      );
+      if (!isGroupFree)
+        return res.status(403).send('This group is already in database');
+
+      const createdLinkGroup = await createLinkGroup(linkGroup, userId);
       if (!createdLinkGroup) return res.status(500).end();
 
       const discordWebhookBody = {
-        title: `New link group added: ${linkGroup.name}`,
-        description: `from user ${user}`,
+        title: `New link group added: ${linkGroup.groupname}`,
+        description: `Owner: ${linkGroup.owner}`,
       };
       pushDiscordWebhook(discordWebhookBody);
 
@@ -72,10 +78,8 @@ class LinkGroupController {
   };
   public edit: authorizedRouteHandler = async (req, res) => {
     try {
-      const user = res.locals.id.user;
       const linkGroup = await this.validateAndDestructureBody(
         req,
-        user,
         ControllerMethodTypes.EDIT
       );
       if (!linkGroup) return res.status(400).end();

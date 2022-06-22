@@ -5,10 +5,32 @@ import {
 } from '../helpers/utilsJS';
 import log from '../helpers/logger';
 import { PrivacyLevels } from '../../interfaces';
+import { getFromCache, setExCache } from '../helpers/redis';
 
-export async function createLinkGroup(linkGroup) {
+export async function isLinkGroupFree(
+  groupname: string,
+  owner: string
+): Promise<boolean> {
+  const cachedGroup = await getFromCache(`${groupname}${owner}`);
+
+  if (cachedGroup) {
+    return false;
+  } else {
+    const getGroup = await db.linkGroup.findUnique({
+      where: {
+        owner_groupname: {
+          groupname,
+          owner,
+        },
+      },
+    });
+    setExCache(`${groupname}${owner}`, 3600, JSON.stringify('x'));
+    return getGroup === null;
+  }
+}
+
+export async function createLinkGroup(linkGroup, ownerId) {
   try {
-    const { owner } = linkGroup;
     linkGroup = hideSelectedObjectKeys(linkGroup, [
       'id',
       'stars',
@@ -21,7 +43,7 @@ export async function createLinkGroup(linkGroup) {
       data: {
         ...linkGroup,
         groupname: linkGroup.groupname.toLowerCase().replaceAll(' ', '-'),
-        user: { connect: { id: owner } },
+        user: { connect: { id: ownerId } },
       },
     });
   } catch (e) {
