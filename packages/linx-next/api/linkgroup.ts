@@ -13,7 +13,7 @@ export const getGroups = async (
         `${
           process.env.FRONTEND_URL
         }/api/linkgroup/${limit}/${page}/${skip}/${privacyLevel}${
-          username && `/${username}`
+          username ? `/${username}` : ''
         }`
       )
     ).json();
