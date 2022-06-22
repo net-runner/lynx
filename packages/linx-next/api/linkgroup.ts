@@ -50,5 +50,6 @@ export const createGroup = async (data) => {
     return newGroup;
   } catch (error) {
     console.log('E ' + error);
+    return false;
   }
 };
