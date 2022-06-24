@@ -56,9 +56,13 @@ const MainFeed = ({ linkGroupData, tags, mainFeedLocation, user }: Props) => {
     const requestedGroupsCount = 4;
     const handleResponse = (response) => {
       if (!response?.groups) return;
-      const updatedList = [...linkGroups, ...response.groups];
+      const filteredResponseGroups = response.groups.filter(
+        (resGroup) =>
+          linkGroups.filter((group) => group.id === resGroup.id).length === 0
+      );
+      const updatedList = [...linkGroups, ...filteredResponseGroups];
       setLinkGroups(updatedList);
-      if (response.groups.length < requestedGroupsCount) endFetching();
+      if (filteredResponseGroups < requestedGroupsCount) endFetching();
     };
     switch (mainFeedLocation) {
       case 'user_profile': {
@@ -68,7 +72,7 @@ const MainFeed = ({ linkGroupData, tags, mainFeedLocation, user }: Props) => {
         if (!includePrivateLinkGroup) return;
         const res = await getGroups(
           requestedGroupsCount,
-          currentPage + 1,
+          currentPage,
           0,
           6,
           currentUserName
@@ -107,7 +111,10 @@ const MainFeed = ({ linkGroupData, tags, mainFeedLocation, user }: Props) => {
   }, []);
 
   useEffect(() => {
-    mainFeedLocation === 'user_profile' && triggerFetch.current();
+    if (mainFeedLocation === 'user_profile') {
+      triggerFetch.current = loadData;
+      triggerFetch.current();
+    }
   }, [currentUserName]);
 
   useEffect(() => {
