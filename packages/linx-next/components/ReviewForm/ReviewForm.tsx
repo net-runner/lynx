@@ -12,6 +12,7 @@ import { addReview } from '../../api/review';
 interface Props {
   groupId: string;
   creatorName: string;
+  defaultData?: Inputs;
 }
 type Inputs = {
   creatorName: string;
@@ -20,7 +21,7 @@ type Inputs = {
   groupId: string;
 };
 
-const ReviewForm = ({ groupId, creatorName }: Props) => {
+const ReviewForm = ({ groupId, creatorName, defaultData }: Props) => {
   const [isExpanded, setExpansionState] = useState(false);
   const ref = useRef(null);
   useOutside(ref, () => setExpansionState(false));

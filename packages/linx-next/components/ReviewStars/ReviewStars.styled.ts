@@ -7,7 +7,7 @@ export const Wrapper = styled.div<{ isInput: boolean }>`
   & > svg:not(:first-child) {
     margin-left: 0.2rem;
   }
-  ${(isInput) => {
-    return 'cursor:pointer';
+  ${({ isInput }) => {
+    return isInput === true ? 'cursor:pointer' : 'cursor:default';
   }}
 `;
