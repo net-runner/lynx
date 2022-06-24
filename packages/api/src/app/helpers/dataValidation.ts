@@ -43,7 +43,7 @@ const linkSchema = Joi.object({
   description: Joi.string().min(5),
   privacyLevel: Joi.number(),
   owner: Joi.string().guid(),
-  group: Joi.string().guid(),
+  groupId: Joi.string().guid(),
   stars: Joi.number(),
 });
 const linkAddSchema = linkSchema.fork(
