@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as S from './MainFeed.styled';
-import { GroupTag, LinkGroup, Tag } from '@prisma/client';
+import { GroupTag, LinkGroup, Review as R, Tag } from '@prisma/client';
 import LynxInfoPanel from '../../components/LynxInfoPanel';
 import { default as LinkGroupContainer } from '../../components/LinkGroupDisplay';
 import { getGroups } from '../../api/linkgroup';
@@ -10,6 +10,7 @@ interface serverSideLinkGroupData {
   currentPage: string | null;
   groups: (LinkGroup & {
     tags: GroupTag[];
+    reviews?: R[];
     _count: {
       links: number;
     };
@@ -77,7 +78,7 @@ const MainFeed = ({ linkGroupData, tags, mainFeedLocation, user }: Props) => {
       }
       case 'explore': {
         const requestedGroupsCount = 4;
-        const res = await getGroups(requestedGroupsCount, currentPage + 1, 7);
+        const res = await getGroups(requestedGroupsCount, currentPage, 7);
         handleResponse(res);
         break;
       }
@@ -106,7 +107,7 @@ const MainFeed = ({ linkGroupData, tags, mainFeedLocation, user }: Props) => {
   }, []);
 
   useEffect(() => {
-    triggerFetch.current();
+    mainFeedLocation === 'user_profile' && triggerFetch.current();
   }, [currentUserName]);
 
   useEffect(() => {

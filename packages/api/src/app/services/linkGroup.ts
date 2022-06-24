@@ -132,6 +132,7 @@ export async function getLinkGroupsFromDatabase(
       take: limit,
       include: {
         tags: true,
+        reviews: true,
       },
       where: {
         AND: {
