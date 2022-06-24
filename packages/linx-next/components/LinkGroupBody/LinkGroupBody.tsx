@@ -40,7 +40,7 @@ const LinkGroupBody: React.FC<Props> = ({ data, tags, addNewLinkToState }) => {
       {links?.map((link) => (
         <LinkComponent link={link} key={link.id} groupId={groupId} />
       ))}
-      {isUserResource && links && (
+      {isUserResource && (
         <LinkGroupForm
           groupId={groupId}
           addNewLinkToState={addNewLinkToState}

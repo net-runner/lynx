@@ -54,7 +54,9 @@ export async function getAllUserGroups(username: string) {
     select: {
       linkGroups: {
         include: {
+          links: true,
           tags: true,
+          reviews: true,
         },
         where: {
           privacyLevel: PrivacyLevels.PUBLIC,

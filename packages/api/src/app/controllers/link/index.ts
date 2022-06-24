@@ -30,7 +30,7 @@ class LinkController {
       'privacyLevel',
       'owner',
       'description',
-      'group',
+      'groupId',
       'stars',
     ]) as Link;
     lynxLink.owner = userId;
