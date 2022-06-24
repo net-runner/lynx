@@ -26,7 +26,9 @@ const handleSignin: defaultRouteHandler = async (req, res) => {
     return authorizeAndEnd(user, req, res, AuthProvider.Local, true);
   } catch (e) {
     log.error(e);
-    res.json({ err: e.message, desc: e.response.data.error_description });
+    res
+      .status(500)
+      .json({ err: e.message, desc: e.response.data.error_description });
   }
 };
 export default handleSignin;

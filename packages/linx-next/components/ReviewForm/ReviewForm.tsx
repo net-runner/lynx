@@ -7,10 +7,12 @@ import Button from '../Button';
 import ExpandingButton from '../ExpandingButton';
 import ReviewStars from '../ReviewStars';
 import { StarContainer } from './ReviewForm.styled';
+import { addReview } from '../../api/review';
 
 interface Props {
   groupId: string;
   creatorName: string;
+  defaultData?: Inputs;
 }
 type Inputs = {
   creatorName: string;
@@ -19,7 +21,7 @@ type Inputs = {
   groupId: string;
 };
 
-const ReviewForm = ({ groupId, creatorName }: Props) => {
+const ReviewForm = ({ groupId, creatorName, defaultData }: Props) => {
   const [isExpanded, setExpansionState] = useState(false);
   const ref = useRef(null);
   useOutside(ref, () => setExpansionState(false));
@@ -37,8 +39,8 @@ const ReviewForm = ({ groupId, creatorName }: Props) => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     // const { link, description } = data;
-    // const addedLink = await addLink(link, description, 0, groupId);
-    // if (!addedLink) return;
+    const addedLink = await addReview(data);
+    if (!addedLink) return;
     // addNewLinkToState(addedLink);
     setExpansionState(false);
   };
