@@ -67,7 +67,7 @@ export const UserProvider: FC<Props> = ({ children, initialUser }) => {
 
   const isUserResource = useMemo(() => {
     const current_route = router?.query?.user;
-    if (user && user && user.username) {
+    if (user && user.username) {
       return user.username === current_route;
     }
     return false;
