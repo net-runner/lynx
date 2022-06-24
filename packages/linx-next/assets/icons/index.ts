@@ -17,3 +17,4 @@ export { default as OpenInNewTab } from './OpenInNewTab';
 export { default as AddIcon } from './AddIcon';
 export { default as Lock } from './Lock';
 export { default as Eye } from './Eye';
+export { default as Trash } from './Trash';
