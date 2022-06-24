@@ -62,12 +62,15 @@ const MainFeed = ({ linkGroupData, tags, mainFeedLocation, user }: Props) => {
     switch (mainFeedLocation) {
       case 'user_profile': {
         const includePrivateLinkGroup = currentUserName === user;
+        if (currentUserName !== undefined && !includePrivateLinkGroup)
+          endFetching();
+        if (!includePrivateLinkGroup) return;
         const res = await getGroups(
           requestedGroupsCount,
           currentPage + 1,
           0,
           6,
-          includePrivateLinkGroup && currentUserName
+          currentUserName
         );
         handleResponse(res);
         break;
@@ -104,7 +107,7 @@ const MainFeed = ({ linkGroupData, tags, mainFeedLocation, user }: Props) => {
 
   useEffect(() => {
     triggerFetch.current();
-  }, [user]);
+  }, [currentUserName]);
 
   useEffect(() => {
     linkGroupData?.groups && setLinkGroups([...linkGroupData.groups]);
