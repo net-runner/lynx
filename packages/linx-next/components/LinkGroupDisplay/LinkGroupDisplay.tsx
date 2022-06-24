@@ -8,7 +8,7 @@ interface Props {
   data: LinkGroup & {
     tags: GroupTag[];
     links?: L[];
-    reviews?: (Review & { creatorId: { username: string } })[];
+    reviews?: Review[];
   };
   tags: (Tag & { _count: { Groups: number } })[];
   forwardedRef?: Ref<HTMLDivElement>;
