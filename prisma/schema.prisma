@@ -11,7 +11,7 @@ model Review {
   id          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   score       Int
   description String     @db.VarChar
-  creatorName String     @db.Uuid
+  creatorName String     @db.VarChar
   creator     User       @relation(fields: [creatorName], references: [username], onDelete: Cascade, onUpdate: NoAction)
   groupId     String?    @db.Uuid
   link        String?    @db.Uuid
