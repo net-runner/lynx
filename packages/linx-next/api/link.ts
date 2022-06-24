@@ -20,3 +20,16 @@ export const addLink = async (
     console.log('E ' + error);
   }
 };
+
+export const removeLink = async (id: string) => {
+  try {
+    return await fetch(`${process.env.FRONTEND_URL}/api/link/del`, {
+      method: 'POST',
+      body: JSON.stringify({
+        id,
+      }),
+    });
+  } catch (error) {
+    console.log('E ' + error);
+  }
+};

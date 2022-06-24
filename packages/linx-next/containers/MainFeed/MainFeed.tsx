@@ -1,25 +1,33 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as S from './MainFeed.styled';
-import { GroupTag, LinkGroup, Tag } from '@prisma/client';
+import { GroupTag, LinkGroup, Review as R, Tag } from '@prisma/client';
 import LynxInfoPanel from '../../components/LynxInfoPanel';
 import { default as LinkGroupContainer } from '../../components/LinkGroupDisplay';
 import { getGroups } from '../../api/linkgroup';
+import { useUser } from '../../context/user.context';
 
 interface serverSideLinkGroupData {
-  currentPage: string;
+  currentPage: string | null;
   groups: (LinkGroup & {
     tags: GroupTag[];
+    reviews?: R[];
     _count: {
       links: number;
     };
   })[];
 }
+
 interface Props {
   linkGroupData: serverSideLinkGroupData;
   tags: (Tag & { _count: { Groups: number } })[];
+  mainFeedLocation?: 'explore' | 'user_profile';
+  user?: string;
 }
-const MainFeed = ({ linkGroupData, tags }: Props) => {
+
+const MainFeed = ({ linkGroupData, tags, mainFeedLocation, user }: Props) => {
   const initialGroups = linkGroupData?.groups ? [...linkGroupData.groups] : [];
+  const { user: currentUserInstance } = useUser();
+  const currentUserName = currentUserInstance?.username;
   const [linkGroups, setLinkGroups] = useState(initialGroups);
   const [areAllListsFetched, setAllListsFetched] = useState(false);
   const [currentPage, setPage] = useState(parseInt(linkGroupData.currentPage));
@@ -38,17 +46,55 @@ const MainFeed = ({ linkGroupData, tags }: Props) => {
     );
   };
   const endFetching = useCallback(() => {
+    if (!observedElement) return;
     intersectionObserver.current.unobserve(observedElement);
     setAllListsFetched(true);
   }, [observedElement]);
 
   const loadData = useCallback(async () => {
-    const res = await getGroups(4, currentPage + 1, 7);
-    if (!res?.groups) return;
-    if (res.groups.length === 0) return endFetching();
-    const updatedList = [...linkGroups, ...res.groups];
-    setLinkGroups(updatedList);
-  }, [linkGroups, setLinkGroups, currentPage, endFetching]);
+    if (currentPage === null) return;
+    const requestedGroupsCount = 4;
+    const handleResponse = (response) => {
+      if (!response?.groups) return;
+      const filteredResponseGroups = response.groups.filter(
+        (resGroup) =>
+          linkGroups.filter((group) => group.id === resGroup.id).length === 0
+      );
+      const updatedList = [...linkGroups, ...filteredResponseGroups];
+      setLinkGroups(updatedList);
+      if (filteredResponseGroups < requestedGroupsCount) endFetching();
+    };
+    switch (mainFeedLocation) {
+      case 'user_profile': {
+        const includePrivateLinkGroup = currentUserName === user;
+        if (currentUserName !== undefined && !includePrivateLinkGroup)
+          endFetching();
+        if (!includePrivateLinkGroup) return;
+        const res = await getGroups(
+          requestedGroupsCount,
+          currentPage,
+          0,
+          6,
+          currentUserName
+        );
+        handleResponse(res);
+        break;
+      }
+      case 'explore': {
+        const requestedGroupsCount = 4;
+        const res = await getGroups(requestedGroupsCount, currentPage, 7);
+        handleResponse(res);
+        break;
+      }
+    }
+  }, [
+    mainFeedLocation,
+    currentUserName,
+    user,
+    currentPage,
+    endFetching,
+    linkGroups,
+  ]);
   const triggerFetch = useRef(loadData);
 
   useEffect(() => {
@@ -63,6 +109,17 @@ const MainFeed = ({ linkGroupData, tags }: Props) => {
       { threshold: 0.5 }
     );
   }, []);
+
+  useEffect(() => {
+    if (mainFeedLocation === 'user_profile') {
+      triggerFetch.current = loadData;
+      triggerFetch.current();
+    }
+  }, [currentUserName]);
+
+  useEffect(() => {
+    linkGroupData?.groups && setLinkGroups([...linkGroupData.groups]);
+  }, [linkGroupData]);
 
   useEffect(() => {
     triggerFetch.current = loadData;

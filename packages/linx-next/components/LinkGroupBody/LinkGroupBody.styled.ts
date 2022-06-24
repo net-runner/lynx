@@ -26,3 +26,8 @@ export const Description = styled.p`
   line-clamp: 3;
   -webkit-line-clamp: 3;
 `;
+
+export const TagListContainer = styled.div`
+  width: 100%;
+  margin-bottom: 1rem;
+`;

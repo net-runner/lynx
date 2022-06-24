@@ -6,7 +6,7 @@ import { getTags } from '../../api/tag';
 const TagName = ({ initialLinkGroups, tags }) => (
   <MainFeed
     linkGroupData={{
-      currentPage: '5',
+      currentPage: null,
       groups: initialLinkGroups,
     }}
     tags={tags}

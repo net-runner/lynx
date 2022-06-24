@@ -11,10 +11,18 @@ export const TagContainer = styled.div<{ selected: boolean }>`
   background-color: ${({ theme, selected }) =>
     selected ? theme.primary : theme.backgroundSecondary};
   margin: 0.5rem;
-  padding: 0.5rem;
   border-radius: 0.3rem;
+  padding: 0.5rem;
 
   &:hover {
     background-color: ${({ theme }) => theme.primary};
+  }
+
+  & div {
+    display: inline-block;
+    cursor: pointer;
+    padding: 0.5rem;
+    width: 100%;
+    height: 100%;
   }
 `;

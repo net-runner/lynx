@@ -15,6 +15,7 @@ import rateLimiterMiddleware from './app/middlewares/rateLimit';
 import * as cors from 'cors';
 import statRouter from './app/routes/stats';
 import { measureRequest } from './app/middlewares/measureRequest';
+import reviewRouter from './app/routes/review';
 const { FRONTEND_URL, NODE_ENV } = process.env;
 const isProduction = NODE_ENV === 'production';
 const app = new Server();
@@ -56,6 +57,7 @@ app.use('/usersgroup', userGroupRouter);
 app.use('/link', linkRouter);
 app.use('/linkgroup', linkGroupRouter);
 app.use('/tag', tagRouter);
+app.use('/review', reviewRouter);
 
 app
   .listen(port as number)

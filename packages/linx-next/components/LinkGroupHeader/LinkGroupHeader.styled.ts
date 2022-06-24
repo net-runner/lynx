@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { LinkIcon } from '../../assets/icons';
+import { LinkIcon, Lock } from '../../assets/icons';
 
 export const Header = styled.div`
   display: flex;
@@ -14,6 +14,15 @@ export const Header = styled.div`
 
 export const LinkIco = styled(LinkIcon)`
   transform: rotate(-45deg);
+`;
+
+export const LockIco = styled(Lock)`
+  height: 3rem;
+  width: 3rem;
+  margin-left: 0.5rem;
+  transform: translateY(0.1rem);
+  opacity: 0.3;
+  color: ${({ theme }) => theme.white};
 `;
 
 export const HeaderLeftPart = styled.div`

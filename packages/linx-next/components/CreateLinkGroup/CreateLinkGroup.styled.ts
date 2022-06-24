@@ -12,6 +12,7 @@ export const Wrapper = styled.div`
   border-radius: 2rem;
   background: ${({ theme }) => theme.backgroundSecondary};
   border: 0.3rem solid ${({ theme }) => theme.backgroundSecondary};
+
   & > * {
     z-index: 3;
   }
@@ -74,6 +75,7 @@ export const Input = styled.input`
   font-family: 'Poppins', sans-serif;
   white-space: nowrap;
 `;
+
 export const TitleDivider = styled.div`
   font-family: 'Segoe UI', serif;
   margin-top: 0.3rem;
@@ -81,18 +83,22 @@ export const TitleDivider = styled.div`
   font-weight: normal;
   font-size: 2.5rem;
 `;
+
 export const Description = styled.textarea`
-  margin-top: 1rem;
+  height: auto;
+  width: 100%;
+  line-height: 160%;
+  margin: 2rem 1rem;
+  padding: 0.5rem 1rem;
   background: transparent;
   resize: none;
   color: #f9f9f9;
-  width: 100%;
   font-size: 1.8rem;
   font-weight: normal;
-  margin-bottom: 0.75rem;
-  line-height: 160%;
-  height: auto;
+  border: 0.1rem solid ${({ theme }) => theme.backgroundTertiary};
+  border-radius: 0.4rem;
 `;
+
 export const UrlRow = styled.div`
   width: 100%;
   display: flex;
@@ -103,10 +109,39 @@ export const UrlRow = styled.div`
   flex-direction: row;
   margin-bottom: 1.75rem;
 `;
+
 export const ButtonRow = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
+
   & > button {
     margin-right: 1.4rem;
+  }
+`;
+
+export const IconWrapper = styled.div<{ isvisible?: boolean }>`
+  display: ${({ isvisible }) => (isvisible ? 'flex' : 'none')};
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: auto;
+  transform: translateY(0.5rem);
+
+  & > p {
+    margin-right: 1rem;
+  }
+
+  & > svg {
+    width: 4rem;
+    height: 4rem;
+    transition: tranform 0.3s ease-in-out;
+  }
+
+  &:hover > svg {
+    transform: scale(1.1);
+  }
+  &:hover > p {
+    color: ${({ theme }) => theme.white};
   }
 `;

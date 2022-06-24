@@ -4,10 +4,33 @@ import {
   hideSelectedObjectKeys,
 } from '../helpers/utilsJS';
 import log from '../helpers/logger';
+import { PrivacyLevels } from '../../interfaces';
+import { getFromCache, setExCache } from '../helpers/redis';
 
-export async function createLinkGroup(linkGroup) {
+export async function isLinkGroupFree(
+  groupname: string,
+  owner: string
+): Promise<boolean> {
+  const cachedGroup = await getFromCache(`${groupname}${owner}`);
+
+  if (cachedGroup) {
+    return false;
+  } else {
+    const getGroup = await db.linkGroup.findUnique({
+      where: {
+        owner_groupname: {
+          groupname,
+          owner,
+        },
+      },
+    });
+    setExCache(`${groupname}${owner}`, 3600, JSON.stringify('x'));
+    return getGroup === null;
+  }
+}
+
+export async function createLinkGroup(linkGroup, ownerId) {
   try {
-    const { owner } = linkGroup;
     linkGroup = hideSelectedObjectKeys(linkGroup, [
       'id',
       'stars',
@@ -19,8 +42,8 @@ export async function createLinkGroup(linkGroup) {
     return await db.linkGroup.create({
       data: {
         ...linkGroup,
-        groupname: linkGroup.name.toLowerCase().replaceAll(' ', '-'),
-        user: { connect: { id: owner } },
+        groupname: linkGroup.groupname.toLowerCase().replaceAll(' ', '-'),
+        user: { connect: { id: ownerId } },
       },
     });
   } catch (e) {
@@ -96,13 +119,26 @@ export async function incrementLinkGroupLinkedCount(linkGroupId) {
   }
 }
 
-export async function getLinkGroupsFromDatabase(limit, page, skip) {
+export async function getLinkGroupsFromDatabase(
+  limit: number,
+  page: number,
+  skip: number,
+  privacyLevel: PrivacyLevels,
+  specificUsername?: string | undefined
+) {
   try {
     const linkGroupsFromDb = await db.linkGroup.findMany({
       skip: limit * page + skip,
       take: limit,
       include: {
         tags: true,
+        reviews: true,
+      },
+      where: {
+        AND: {
+          privacyLevel: Number(privacyLevel),
+          owner: specificUsername,
+        },
       },
     });
     if (!linkGroupsFromDb) return null;

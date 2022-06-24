@@ -54,7 +54,7 @@ const LinkGroupForm: React.FC<Props> = ({ groupId, addNewLinkToState }) => {
             placeholder="Enter link's description"
             rows={4}
           />
-          <Button type="submit">Add link</Button>
+          <Button type="submit" isSecondary>Add link</Button>
         </S.Form>
       ) : (
         <ExpandingButton

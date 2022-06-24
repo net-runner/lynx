@@ -44,6 +44,11 @@ export const getTagLinkGroups = async (tagName: string) => {
               },
             },
           },
+          where: {
+            group: {
+              privacyLevel: 0,
+            },
+          },
         },
       },
     });
