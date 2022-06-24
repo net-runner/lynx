@@ -84,7 +84,15 @@ export async function getAllUserGroupLinks(
     include: {
       links: true,
       tags: true,
-      reviews: true,
+      reviews: {
+        include: {
+          creatorId: {
+            select: {
+              username: true,
+            },
+          },
+        },
+      },
     },
   });
 }

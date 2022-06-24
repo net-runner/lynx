@@ -12,6 +12,7 @@ export const TagContainer = styled.div<{ selected: boolean }>`
     selected ? theme.primary : theme.backgroundSecondary};
   margin: 0.5rem;
   border-radius: 0.3rem;
+  padding: 0.5rem;
 
   &:hover {
     background-color: ${({ theme }) => theme.primary};
