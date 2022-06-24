@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import * as S from './LinkGroupHeader.styled';
-import { Link as L, LinkGroup } from '@prisma/client';
+import { Link as L, Review as R, LinkGroup } from '@prisma/client';
 import StatPill from '../StatPill';
 import ReviewStars from '../ReviewStars';
 import { LinkedAmountIcon, WatchersIcon } from '../../assets/icons';
@@ -9,6 +9,7 @@ import { LinkedAmountIcon, WatchersIcon } from '../../assets/icons';
 interface Props {
   data: LinkGroup & {
     links?: L[];
+    reviews?: R[];
   };
 }
 
@@ -18,16 +19,28 @@ const LinkGroupHeader: React.FC<Props> = ({ data }) => {
     linkedCount,
     watcherCount,
     owner,
-    stars,
     groupname,
     linksCount,
     links,
     privacyLevel,
+    reviews,
   } = data;
+
+  const getReviewsCount = () => {
+    if (reviews) return reviews.length;
+    return 0;
+  };
+  const getScore = () => {
+    if (!reviews) return 0;
+    return (
+      reviews.reduce((sum, review) => sum + review.score, 0) / getReviewsCount()
+    );
+  };
   const getLinksCount = () => {
     if (links) return links.length;
     return linksCount || 0;
   };
+
   return (
     <S.Header>
       <S.HeaderLeftPart>
@@ -45,8 +58,8 @@ const LinkGroupHeader: React.FC<Props> = ({ data }) => {
           <StatPill stat={watcherCount} ico={<WatchersIcon />} />
         </S.StatsWrapper>
         <StatPill
-          stat={`(${watcherCount})`}
-          ico={<ReviewStars rating={stars} />}
+          stat={`(${getReviewsCount()})`}
+          ico={<ReviewStars rating={getScore()} />}
           isReversed={true}
         />
       </S.HeaderRightPart>
