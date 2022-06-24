@@ -18,11 +18,7 @@ model Review {
   group       LinkGroup? @relation(fields: [groupId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   linkId      Link?      @relation(fields: [link], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-<<<<<<< HEAD
   @@unique([creatorName, groupId], map: "unique_reviewer_per_group")
-=======
-  @@unique([creatorName, groupId], map: "unique_review_per_group")
->>>>>>> 611081614b850ea67b5cfa717343a06b48854012
 }
 
 model LinkGroup {
