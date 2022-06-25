@@ -11,17 +11,14 @@ import { SpecialLinkIcon } from '../AuthLinkFlavor/AuthLinkFlavor.styled';
 import { createGroup } from '../../api/linkgroup';
 import { addMultipleGroupTags } from '../../api/tag';
 import { useRouter } from 'next/router';
+import { revalidate } from '../../api/revalidate';
 interface Props {
   tags: (Tag & { _count: { Groups: number } })[];
 }
 const CreateLinkGroup = ({ tags }: Props) => {
   const router = useRouter();
   const { user, isLoading } = useUser();
-  const {
-    handleSubmit,
-    register,
-    setValue,
-  } = useForm();
+  const { handleSubmit, register, setValue } = useForm();
   const [selectedTags, setSelectedTags] = useState<number[]>([]);
   const [selectedPrivacyLevel, setPrivacyLevel] = useState(0);
 
@@ -59,6 +56,8 @@ const CreateLinkGroup = ({ tags }: Props) => {
     }
 
     const res = await addMultipleGroupTags(preparedTags);
+    await revalidate(`/u/${user.username}`);
+    await revalidate(`/t/all`);
 
     if (res.status === 200) {
       router.push(

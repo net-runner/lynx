@@ -6,9 +6,12 @@ import * as S from './LinkGroupForm.styled';
 import Button from '../Button';
 import ExpandingButton from '../ExpandingButton';
 import { addLink } from '../../api/link';
+import { revalidate } from '../../api/revalidate';
 
 interface Props {
   groupId: string;
+  creatorName: string;
+  groupName: string;
   addNewLinkToState?: (link: string) => void;
 }
 type Inputs = {
@@ -16,7 +19,12 @@ type Inputs = {
   description: string;
 };
 
-const LinkGroupForm: React.FC<Props> = ({ groupId, addNewLinkToState }) => {
+const LinkGroupForm: React.FC<Props> = ({
+  groupId,
+  addNewLinkToState,
+  creatorName,
+  groupName,
+}) => {
   const [isExpanded, setExpansionState] = useState(false);
   const ref = useRef(null);
   useOutside(ref, () => setExpansionState(false));
@@ -32,6 +40,8 @@ const LinkGroupForm: React.FC<Props> = ({ groupId, addNewLinkToState }) => {
     const { link, description } = data;
     const addedLink = await addLink(link, description, 0, groupId);
     if (!addedLink) return;
+    await revalidate(`/u/${creatorName}`);
+    await revalidate(`/u/${creatorName}/${groupName}`);
     addNewLinkToState(addedLink);
     setExpansionState(false);
   };
@@ -54,7 +64,9 @@ const LinkGroupForm: React.FC<Props> = ({ groupId, addNewLinkToState }) => {
             placeholder="Enter link's description"
             rows={4}
           />
-          <Button type="submit" isSecondary>Add link</Button>
+          <Button type="submit" isSecondary>
+            Add link
+          </Button>
         </S.Form>
       ) : (
         <ExpandingButton

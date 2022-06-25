@@ -43,7 +43,7 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: true,
     swcMinify: true,
-    reactStrictMode: false,
+    reactStrictMode: true,
     compiler: {
       styledComponents: true,
     },

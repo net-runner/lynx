@@ -40,10 +40,9 @@ export const LContainer = styled.div`
     height: 2.5rem;
   }
 
-  &:hover {
-    ${DeleteIconWrapper}, ${NewTabIconWrapper} {
-      visibility: visible;
-    }
+  &:hover > div,
+  &:hover > ${NewTabIconWrapper} {
+    visibility: visible;
   }
 `;
 
