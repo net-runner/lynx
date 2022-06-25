@@ -14,7 +14,6 @@ interface Props {
   tags: (Tag & { _count: { Groups: number } })[];
 }
 const ShowGroupContent = ({ groupWithLinks, tags }: Props) => {
-  console.log(groupWithLinks);
   const [linksGroup, updateLinksGroup] = useState(groupWithLinks);
   const addNewLinkToState = (link: Link) => {
     const updatedLinksGroup = { ...linksGroup };
