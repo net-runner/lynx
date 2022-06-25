@@ -46,13 +46,12 @@ const CreateLinkGroup = ({ tags }: Props) => {
     const newgroup = await createGroup(data);
     if (!newgroup) return;
 
-    const { id } = newgroup;
     //Create Group tags
     const preparedTags: Omit<GroupTag, 'id'>[] = [];
     for (let index = 0; index < selectedTags.length; index++) {
       const tagIndex = selectedTags[index];
       const tag = tags[tagIndex];
-      preparedTags.push({ groupId: id, tagId: tag.id });
+      preparedTags.push({ groupId: newgroup.id, tagId: tag.id });
     }
 
     const res = await addMultipleGroupTags(preparedTags);
