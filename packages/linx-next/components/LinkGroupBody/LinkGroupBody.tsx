@@ -7,6 +7,7 @@ import TagList from '../TagList/';
 import { useUser } from '../../context/user.context';
 import ReviewComponent from '../ReviewComponent';
 import ReviewForm from '../ReviewForm';
+import { useRouter } from 'next/router';
 
 interface Props {
   data: LinkGroup & {
@@ -15,11 +16,20 @@ interface Props {
     reviews?: Review[];
   };
   tags: (Tag & { _count: { Groups: number } })[];
-  addNewLinkToState?: (link: string) => void;
+  addNewLinkToState?: (link: L) => void;
 }
 
 const LinkGroupBody: React.FC<Props> = ({ data, tags, addNewLinkToState }) => {
-  const { id: groupId, description, links, tags: dT, reviews } = data;
+  const router = useRouter();
+  const {
+    owner,
+    id: groupId,
+    description,
+    links,
+    tags: dT,
+    reviews,
+    groupname: groupName,
+  } = data;
   const { isUserResource, isAuthenticated, user } = useUser();
 
   const hasAlreadyReviewed = useMemo(() => {
@@ -38,23 +48,41 @@ const LinkGroupBody: React.FC<Props> = ({ data, tags, addNewLinkToState }) => {
       </S.TagListContainer>
       <S.Description>{description}</S.Description>
       {links?.map((link) => (
-        <LinkComponent link={link} key={link.id} groupId={groupId} />
+        <LinkComponent
+          isUserResource={isUserResource}
+          creatorName={owner}
+          groupName={groupName}
+          link={link}
+          key={link.id}
+          groupId={groupId}
+        />
       ))}
       {isUserResource && (
         <LinkGroupForm
+          creatorName={owner}
+          groupName={groupName}
           groupId={groupId}
           addNewLinkToState={addNewLinkToState}
         />
       )}
-      {reviews?.length > 0 && (
+      {router.query?.group && reviews?.length > 0 && (
         <S.Description style={{ marginTop: 20 }}>Reviews</S.Description>
       )}
-      {reviews?.map((review) => (
-        <ReviewComponent key={review.id} data={review} />
-      ))}
-      {!isUserResource && !hasAlreadyReviewed && isAuthenticated && (
-        <ReviewForm creatorName={user && user.username} groupId={groupId} />
-      )}
+      {router.query?.group &&
+        reviews?.map((review) => (
+          <ReviewComponent key={review.id} data={review} />
+        ))}
+      {router.query?.group &&
+        !isUserResource &&
+        !hasAlreadyReviewed &&
+        isAuthenticated && (
+          <ReviewForm
+            groupName={groupName}
+            groupOwner={owner}
+            creatorName={user && user.username}
+            groupId={groupId}
+          />
+        )}
     </S.Wrapper>
   );
 };

@@ -11,17 +11,14 @@ import { SpecialLinkIcon } from '../AuthLinkFlavor/AuthLinkFlavor.styled';
 import { createGroup } from '../../api/linkgroup';
 import { addMultipleGroupTags } from '../../api/tag';
 import { useRouter } from 'next/router';
+import { revalidate } from '../../api/revalidate';
 interface Props {
   tags: (Tag & { _count: { Groups: number } })[];
 }
 const CreateLinkGroup = ({ tags }: Props) => {
   const router = useRouter();
   const { user, isLoading } = useUser();
-  const {
-    handleSubmit,
-    register,
-    setValue,
-  } = useForm();
+  const { handleSubmit, register, setValue } = useForm();
   const [selectedTags, setSelectedTags] = useState<number[]>([]);
   const [selectedPrivacyLevel, setPrivacyLevel] = useState(0);
 
@@ -49,16 +46,17 @@ const CreateLinkGroup = ({ tags }: Props) => {
     const newgroup = await createGroup(data);
     if (!newgroup) return;
 
-    const { id } = newgroup;
     //Create Group tags
     const preparedTags: Omit<GroupTag, 'id'>[] = [];
     for (let index = 0; index < selectedTags.length; index++) {
       const tagIndex = selectedTags[index];
       const tag = tags[tagIndex];
-      preparedTags.push({ groupId: id, tagId: tag.id });
+      preparedTags.push({ groupId: newgroup.id, tagId: tag.id });
     }
 
     const res = await addMultipleGroupTags(preparedTags);
+    await revalidate(`/u/${user.username}`);
+    await revalidate(`/t/all`);
 
     if (res.status === 200) {
       router.push(

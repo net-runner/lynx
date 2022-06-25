@@ -4,20 +4,32 @@ import React, { useState } from 'react';
 import * as S from './LinkComponent.styled';
 import { incrementLinkedCount } from '../../api/linkgroup';
 import { OpenInNewTab, Trash } from '../../assets/icons';
-import { useUser } from '../../context/user.context';
 import { removeLink } from '../../api/link';
-
-const LinkComponent = ({ link, groupId }: { link: L; groupId: string }) => {
-  const { isUserResource } = useUser();
+import { revalidate } from '../../api/revalidate';
+interface Props {
+  link: L;
+  groupId: string;
+  creatorName: string;
+  groupName: string;
+  isUserResource?: boolean;
+}
+const LinkComponent = ({
+  link,
+  groupId,
+  creatorName,
+  groupName,
+  isUserResource,
+}: Props) => {
   const [isDisplayed, setDisplay] = useState(true);
-
-  if (!isDisplayed) return null;
 
   const handleLinkRemove = async () => {
     const res = await removeLink(link.id);
     if (res.status === 200) setDisplay(false);
-  };
 
+    await revalidate(`/u/${creatorName}`);
+    await revalidate(`/u/${creatorName}/${groupName}`);
+  };
+  if (!isDisplayed) return null;
   return (
     <S.LContainer>
       <S.LinkIco />

@@ -39,6 +39,7 @@ export async function getStaticProps(context) {
     const { tagLinkGroups } = res;
     return {
       props: { initialLinkGroups: tagLinkGroups, tags },
+      revalidate: 60,
     };
   }
 }

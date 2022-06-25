@@ -1,9 +1,11 @@
+import { Link } from '@prisma/client';
+
 export const addLink = async (
   link: string,
   description: string,
   privacyLevel = 0,
   groupId?: string
-) => {
+): Promise<Link> => {
   try {
     return await (
       await fetch(`${process.env.FRONTEND_URL}/api/link/add`, {

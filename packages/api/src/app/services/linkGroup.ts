@@ -5,7 +5,7 @@ import {
 } from '../helpers/utilsJS';
 import log from '../helpers/logger';
 import { PrivacyLevels } from '../../interfaces';
-import { getFromCache, setExCache } from '../helpers/redis';
+import { deleteFromCache, getFromCache, setExCache } from '../helpers/redis';
 
 export async function isLinkGroupFree(
   groupname: string,
@@ -30,6 +30,7 @@ export async function isLinkGroupFree(
 }
 
 export async function createLinkGroup(linkGroup, ownerId) {
+  deleteFromCache('allTags');
   try {
     linkGroup = hideSelectedObjectKeys(linkGroup, [
       'id',
@@ -75,6 +76,7 @@ export async function editLinkGroupInDatabase(updatedLinkGroup, linkGroupId) {
 }
 
 export async function deleteLinkGroupFromDatabase(linkGroupId) {
+  deleteFromCache('allTags');
   try {
     await db.linkGroup.delete({
       where: {

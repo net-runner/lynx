@@ -1,6 +1,6 @@
 import { LinkGroup } from '@prisma/client';
 import log from '../helpers/logger';
-import { getFromCache, setExCache } from '../helpers/redis';
+import { getFromCache, setExCache, deleteFromCache } from '../helpers/redis';
 import db from '../lib/db';
 
 export const getTags = async () => {
@@ -27,6 +27,7 @@ export const getTags = async () => {
   return tags;
 };
 export const createTag = async (tag) => {
+  await deleteFromCache('allTags');
   return await db.tag.create(tag);
 };
 export const getTagLinkGroups = async (tagName: string) => {
