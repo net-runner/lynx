@@ -12,7 +12,7 @@ interface Props {
   };
   tags: (Tag & { _count: { Groups: number } })[];
   forwardedRef?: Ref<HTMLDivElement>;
-  addNewLinkToState?: (link: string) => void;
+  addNewLinkToState?: (link: L) => void;
 }
 
 const LinkGroupDisplay: React.FC<Props> = ({

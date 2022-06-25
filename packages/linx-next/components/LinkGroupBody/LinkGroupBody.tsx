@@ -16,12 +16,13 @@ interface Props {
     reviews?: Review[];
   };
   tags: (Tag & { _count: { Groups: number } })[];
-  addNewLinkToState?: (link: string) => void;
+  addNewLinkToState?: (link: L) => void;
 }
 
 const LinkGroupBody: React.FC<Props> = ({ data, tags, addNewLinkToState }) => {
   const router = useRouter();
   const {
+    owner,
     id: groupId,
     description,
     links,
@@ -49,7 +50,7 @@ const LinkGroupBody: React.FC<Props> = ({ data, tags, addNewLinkToState }) => {
       {links?.map((link) => (
         <LinkComponent
           isUserResource={isUserResource}
-          creatorName={user && user.username}
+          creatorName={owner}
           groupName={groupName}
           link={link}
           key={link.id}
@@ -58,7 +59,7 @@ const LinkGroupBody: React.FC<Props> = ({ data, tags, addNewLinkToState }) => {
       ))}
       {isUserResource && (
         <LinkGroupForm
-          creatorName={user && user.username}
+          creatorName={owner}
           groupName={groupName}
           groupId={groupId}
           addNewLinkToState={addNewLinkToState}
@@ -77,6 +78,7 @@ const LinkGroupBody: React.FC<Props> = ({ data, tags, addNewLinkToState }) => {
         isAuthenticated && (
           <ReviewForm
             groupName={groupName}
+            groupOwner={owner}
             creatorName={user && user.username}
             groupId={groupId}
           />

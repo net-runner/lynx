@@ -1,6 +1,6 @@
 import MainLayout from '../../../layouts/MainLayout';
-import React, { ReactElement, useState } from 'react';
-import { GroupTag, Link, LinkGroup, Tag, User } from '@prisma/client';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { GroupTag, Link, LinkGroup, Review, Tag, User } from '@prisma/client';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import LinkGroupDisplay from '../../../components/LinkGroupDisplay';
 import { getTags } from '../../../api/tag';
@@ -9,16 +9,22 @@ interface Props {
   groupWithLinks: LinkGroup & {
     tags: GroupTag[];
     links: Link[];
+    reviews: Review[];
   };
   tags: (Tag & { _count: { Groups: number } })[];
 }
 const ShowGroupContent = ({ groupWithLinks, tags }: Props) => {
+  console.log(groupWithLinks);
   const [linksGroup, updateLinksGroup] = useState(groupWithLinks);
-  const addNewLinkToState = (link) => {
+  const addNewLinkToState = (link: Link) => {
     const updatedLinksGroup = { ...linksGroup };
     updatedLinksGroup.links.push(link);
     updateLinksGroup(updatedLinksGroup);
   };
+  useEffect(() => {
+    updateLinksGroup(groupWithLinks);
+  }, [groupWithLinks]);
+
   if (linksGroup) {
     return (
       <LinkGroupDisplay

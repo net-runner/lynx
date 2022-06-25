@@ -14,6 +14,7 @@ interface Props {
   groupId: string;
   creatorName: string;
   groupName: string;
+  groupOwner: string;
   defaultData?: Inputs;
 }
 type Inputs = {
@@ -27,6 +28,7 @@ const ReviewForm = ({
   groupId,
   creatorName,
   groupName,
+  groupOwner,
   defaultData,
 }: Props) => {
   const [isExpanded, setExpansionState] = useState(false);
@@ -45,12 +47,11 @@ const ReviewForm = ({
   }, [creatorName, setValue, groupId]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    // const { link, description } = data;
-    const addedLink = await addReview(data);
-    if (!addedLink) return;
+    const addedReview = await addReview(data);
+    if (!addedReview) return;
     // addNewLinkToState(addedLink);
-    await revalidate(`/u/${creatorName}`);
-    await revalidate(`/u/${creatorName}/${groupName}`);
+    await revalidate(`/u/${groupOwner}`);
+    await revalidate(`/u/${groupOwner}/${groupName}`);
 
     setExpansionState(false);
   };

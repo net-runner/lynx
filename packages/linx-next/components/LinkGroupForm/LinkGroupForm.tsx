@@ -7,12 +7,13 @@ import Button from '../Button';
 import ExpandingButton from '../ExpandingButton';
 import { addLink } from '../../api/link';
 import { revalidate } from '../../api/revalidate';
+import { Link } from '@prisma/client';
 
 interface Props {
   groupId: string;
   creatorName: string;
   groupName: string;
-  addNewLinkToState?: (link: string) => void;
+  addNewLinkToState?: (link: Link) => void;
 }
 type Inputs = {
   link: string;
