@@ -37,10 +37,6 @@ const CreateLinkGroup = ({ tags }: Props) => {
     setValue('privacyLevel', selectedPrivacyLevel);
   }, [user.username, setValue, selectedPrivacyLevel]);
 
-  useEffect(() => {
-    setValue('privacyLevel', selectedPrivacyLevel);
-  }, [selectedPrivacyLevel, setValue]);
-
   const onSubmit = async (data) => {
     //Request creation of new linkgroup
     const newgroup = await createGroup(data);
