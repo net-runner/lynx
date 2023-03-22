@@ -15,7 +15,7 @@ import axios from 'axios';
 export interface UserContext {
   user?: User;
   authenticate: (newToken: string) => Promise<void>;
-  logout: ({ redirectLocation: string }) => void;
+  logout: ({ redirectLocation }) => void;
   setRedirect: (url: string) => void;
   login: ({ email, password }: { email: string; password: string }) => void;
   signup: ({
