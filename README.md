@@ -9,10 +9,14 @@
 
 </p>
 
+
+## [Now also on mobile](https://www.github.com/net-runner/lynx-mobile)
+
 ## Tech Stack
 - **Database**: PostgresSQL & Prisma as a ORM
 - **Frontend**: Next.js
 - **Backend**: Node.js + Hyper-Express
+- [**Mobile**](https://www.github.com/net-runner/lynx-mobile): React-Native
 
 ## Features
 
