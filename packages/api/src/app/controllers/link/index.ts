@@ -24,6 +24,7 @@ class LinkController {
     actionType: ControllerMethodTypes
   ) => {
     const body = await req.json();
+    // log.info(body);
     const lynxLink = showSelectedObjectKeys(body, [
       'id',
       'link',
@@ -41,7 +42,9 @@ class LinkController {
       !lynxLink.link.startsWith('http://')
     )
       lynxLink.link = `https://${lynxLink.link}`;
+    // console.log(lynxLink.link);
     const isLinkValidated = await validateLink(lynxLink, actionType);
+    // console.log(isLinkValidated);
     if (!isLinkValidated) return false;
     return lynxLink;
   };
@@ -53,6 +56,7 @@ class LinkController {
         user,
         ControllerMethodTypes.ADD
       );
+      console.log(lynxLink);
       if (!lynxLink) return res.status(400).end();
 
       const createdLink = await createLink(lynxLink);
