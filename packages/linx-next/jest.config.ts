@@ -1,4 +1,5 @@
 module.exports = {
+  testEnvironment: 'jsdom',
   displayName: 'linx-next',
   preset: '../../jest.preset.ts',
   transform: {
@@ -7,4 +8,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/packages/linx-next',
+  setupFilesAfterEnv: ['./specs/setupTests.ts'],
 };
