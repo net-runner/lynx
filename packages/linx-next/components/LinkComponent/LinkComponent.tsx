@@ -33,7 +33,7 @@ const LinkComponent = ({
   return (
     <S.LContainer>
       <S.LinkIco />
-      <Link href={link.link} passHref>
+      <Link data-testid={'new-tab-icon'} href={link.link} passHref>
         <span onClick={() => incrementLinkedCount(groupId)}>
           {link.description}
         </span>
@@ -51,6 +51,7 @@ const LinkComponent = ({
       </S.NewTabIconWrapper>
       {isUserResource && (
         <S.DeleteIconWrapper
+          data-testid={'delete-icon'}
           onClick={async (e) => {
             e.stopPropagation();
             handleLinkRemove();
