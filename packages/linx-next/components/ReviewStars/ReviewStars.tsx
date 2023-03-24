@@ -20,10 +20,23 @@ const ReviewStars: React.FC<Props> = ({ rating, isInput, onChange }) => {
     const stars = [];
     for (let i = 0; i < 5; i++) {
       if (i + 0.25 < rating && rating < i + 0.75)
-        stars.push(<StarHalf key={i} />);
+        stars.push(<StarHalf data-testid={'star-half'} key={i} />);
       else if (i < rating)
-        stars.push(<StarFull onClick={() => handlePress(i + 1)} key={i} />);
-      else stars.push(<StarEmpty onClick={() => handlePress(i + 1)} key={i} />);
+        stars.push(
+          <StarFull
+            data-testid={'star-full'}
+            onClick={() => handlePress(i + 1)}
+            key={i}
+          />
+        );
+      else
+        stars.push(
+          <StarEmpty
+            data-testid={'star-empty'}
+            onClick={() => handlePress(i + 1)}
+            key={i}
+          />
+        );
     }
     return stars;
   };

@@ -35,4 +35,10 @@ describe('LinkGroupHeader', () => {
     expect(screen.getByText(data.watcherCount.toString())).toBeInTheDocument();
     expect(screen.getByText(`(${data.reviews.length})`)).toBeInTheDocument();
   });
+
+  it('calculates the correct score and displays it', () => {
+    render(<LinkGroupHeader data={data as any} />);
+    expect(screen.getAllByTestId('star-full')).toHaveLength(4);
+    expect(screen.getAllByTestId('star-half')).toHaveLength(1);
+  });
 });
