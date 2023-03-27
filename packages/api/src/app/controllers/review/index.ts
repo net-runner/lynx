@@ -21,7 +21,7 @@ const handleReviewAdd: authorizedRouteHandler = async (req, res) => {
       };
       pushDiscordWebhook(discordWebhookBody);
 
-      res.status(200).json({ success: true });
+      res.status(200).json(review);
     } else {
       return res.status(403).end();
     }

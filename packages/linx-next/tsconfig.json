@@ -11,7 +11,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
-    "types": ["jest", "node"],
+    "types": ["jest", "node",  "@testing-library/jest-dom"],
     "paths": {
       "@/components/*": ["components/*"],
       "@/icons/*":["assets/icons/*"],

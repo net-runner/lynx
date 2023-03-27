@@ -2,6 +2,7 @@ import * as Joi from 'joi';
 import { Link, LinkGroup } from '@prisma/client';
 import { LynxUser } from '../services/user.types';
 import { ControllerMethodTypes } from '../../interfaces';
+import log from './logger';
 
 const signUpSchema = Joi.object({
   name: Joi.string().alphanum().min(3).max(30).required(),
@@ -58,6 +59,7 @@ export const validateLink = async (
   let value;
   if (actionType === ControllerMethodTypes.ADD)
     value = linkAddSchema.validate(link);
+  // log.info(value);
   if (actionType === ControllerMethodTypes.EDIT)
     value = linkSchema.validate(link);
   return !value.error;

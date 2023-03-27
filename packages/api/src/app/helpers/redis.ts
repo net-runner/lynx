@@ -7,7 +7,7 @@ const setExCache = async (
   key: string,
   duration_seconds: number,
   value: string
-) => await redisClient.setex(key, duration_seconds, value);
+) => await redisClient.setEx(key, duration_seconds, value);
 
 const deleteFromCache = async (key: string) => await redisClient.del(key);
 

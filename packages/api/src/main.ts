@@ -16,6 +16,7 @@ import * as cors from 'cors';
 import statRouter from './app/routes/stats';
 import { measureRequest } from './app/middlewares/measureRequest';
 import reviewRouter from './app/routes/review';
+import redisClient from './app/lib/redis';
 const { FRONTEND_URL, NODE_ENV } = process.env;
 const isProduction = NODE_ENV === 'production';
 const app = new Server();
@@ -61,7 +62,14 @@ app.use('/review', reviewRouter);
 
 app
   .listen(port as number)
-  .then(() => log.info('[START] LYNX API ONLINE: ' + port))
+  .then(async () => {
+    log.info('[START] LYNX API ONLINE: ' + port);
+    try {
+      await redisClient.connect();
+    } catch (e) {
+      log.info('[REDIS] ' + e);
+    }
+  })
   .catch((error) =>
     log.error('FAILED TO START API: ' + port + ' Error ' + error)
   );
